@@ -1,4 +1,4 @@
-# jQuery Form Styler Modern
+# jQuery FormStyler Modern
 **Форк плагина для стилизации элементов HTML-форм.**
 
 ***Оригинальный плагин: https://github.com/Dimox/jQueryFormStyler***
