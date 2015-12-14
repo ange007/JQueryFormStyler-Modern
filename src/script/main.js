@@ -104,23 +104,23 @@
 			//
 			if( el.is( ':checkbox' ) )
 			{
-				//= checkbox.js
+				//= _checkbox.js
 			}
 			else if( el.is( ':radio' ) )
 			{
-				//= radio.js
+				//= _radio.js
 			}
 			else if ( el.is( ':file' ) ) 
 			{
-				//= file.js
+				//= _file.js
 			}
 			else if( el.is( 'input[type="number"]' ) )
 			{
-				//= number.js
+				//= _number.js
 			} 
 			else if( el.is( 'select' ) )
 			{
-				//= select.js
+				//= _select.js
 			}
 			else if( el.is( ':reset' ) )
 			{
@@ -214,5 +214,5 @@
 		}
 	};
 	
-	//= extra.js
+	//= _extra.js
 } ) );
