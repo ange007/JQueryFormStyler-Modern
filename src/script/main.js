@@ -1,8 +1,3 @@
-/*!
- * Developers:
- * Borisenko V.
- */
-
 ;( function( factory )
 {
 	// AMD
@@ -46,7 +41,7 @@
 
 	Plugin.prototype = 
 	{
-		// инициализация
+		// Инициализация
 		init: function()
 		{
 			var el = $( this.element ),
@@ -86,7 +81,8 @@
 					classes = ' ' + el.attr( 'class' );
 				}
 			
-				var data = el.data();
+				var data = el.data( );
+				
 				for( var i in data )
 				{
 					if( data[i] !== '' && i !== '_styler' )
@@ -101,7 +97,6 @@
 				this.classes = classes;
 			}
 
-			//
 			if( el.is( ':checkbox' ) )
 			{
 				//= _checkbox.js
@@ -174,20 +169,22 @@
 	$.fn[ pluginName ] = function( options )
 	{
 		var args = arguments;
+		
+		//
 		if( options === undefined || typeof options === 'object' )
 		{
-			//
-			this.each( function()
+			// Проходим по объектам
+			this.each( function( )
 			{
 				if( !$.data( this, '_' + pluginName ) )
 				{
 					$.data( this, '_' + pluginName, new Plugin( this, options ) );
 				}
 			} )
-			// колбек после выполнения плагина
-			.promise()
-			//
-			.done( function()
+			// Ожидаем полного прохода
+			.promise( )
+			// Колбек после выполнения плагина
+			.done( function( )
 			{
 				var opt = $( this[0] ).data( '_' + pluginName );
 				if( opt )
@@ -196,7 +193,8 @@
 			} );
 					
 			return this;
-		} 
+		}
+		//
 		else if( typeof options === 'string' && options[0] !== '_' && options !== 'init' )
 		{
 			var returns;
@@ -204,6 +202,7 @@
 			this.each( function()
 			{
 				var instance = $.data( this, '_' + pluginName );
+				
 				if( instance instanceof Plugin && typeof instance[options] === 'function' )
 				{
 					returns = instance[options].apply( instance, Array.prototype.slice.call( args, 1 ) );

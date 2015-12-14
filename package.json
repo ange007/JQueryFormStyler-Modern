@@ -1,7 +1,9 @@
 {
   "name": "JQueryFormStylerModern",
-  "version": "0.1.0",
-  "author": "Borisenko V.",
+  "version": "1.0.0",
+  "author": "Borisenko V. ( автор оригинального плагина: Dimox, http://dimox.name/ )",
+  "license": "MIT",
+  "homepage": "https://github.com/ange007/JQueryFormStylerModern",
   "description": "Плагин для стилизации элементов HTML-форм.",
   "devDependencies": {
     "autoprefixer": "^6.0.3",
@@ -10,11 +12,13 @@
     "gulp-concat": "~2.5.2",
     "gulp-cssmin": "~0.1.6",
     "gulp-debug": "^2.0.1",
-    "gulp-if": "1.2.5",
-    "gulp-minify-css": "1.2.1",
+    "gulp-header": "~1.7.1",
+    "gulp-if": "2.0.0",
+    "gulp-minify-css": "1.2.2",
     "gulp-postcss": "^6.0.0",
+    "gulp-rename": "~1.2.2",
     "gulp-rigger": "0.5.8",
-    "gulp-sass": "2.0.4",
+    "gulp-sass": "2.1.1",
     "gulp-uglify": "~1.2.0",
     "gulp-watch": "~4.2.4"
   },
@@ -22,7 +26,6 @@
     "node": ">= 0.12"
   },
   "scripts": {},
-  "license": "MIT",
   "repository": {},
   "main": "gulpfile.js",
   "dependencies": {

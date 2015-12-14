@@ -16,6 +16,7 @@ var gulp = require( 'gulp' ),
 	rigger = require( 'gulp-rigger' ),
 	watch = require( 'gulp-watch' ),
 	debug = require( 'gulp-debug' ),
+	header = require('gulp-header'),
 	rimraf = require( 'rimraf' );
 
 /* * * * * * * * * * * * * *
@@ -69,12 +70,27 @@ gulp.task( 'clean', function( )
 // Задача обработки скриптов библиотеки
 gulp.task( 'js:build', function( ) 
 {
+	// Основные параметры
 	var fileName = bundle.filename + ( bundle.name === 'min' ? '.min' : '' ) + '.js',
 		path = bundle.name === 'min' ? paths.build.min : paths.build.main;
 	
+	// Формируем заголовок для файла
+	var pkg = require( './package.json' ),
+		banner = [ '/**',
+					' * <%= pkg.name %> - <%= pkg.description %>',
+					' * @version v<%= pkg.version %>',
+					' * @link <%= pkg.homepage %>',
+					' * @license <%= pkg.license %>',
+					' * @author <%= pkg.author %>',
+					' */',
+					'',
+					'' ].join( '\n' );
+	
+	// Собираем файл
     return gulp.src( paths.src.script + 'main.js')
-				.pipe( rigger( ) )
+				.pipe( rigger( ) ) // Объединение js файлов
 				.pipe( concat( fileName ) ) // Объединение файлов
+				.pipe( header( banner, { pkg : pkg } ) ) // Установка хидера
 				.pipe( gulpif( bundle.compress, uglify( { mangle: true, compress: false } ) ) ) //
 				.pipe( debug( { title: 'js:' } ) ) // Вывод пофайлового лога
 				.pipe( gulp.dest( path ) );
@@ -90,7 +106,7 @@ gulp.task( 'scss:build', function( )
 				.pipe( sass( { errLogToConsole: true } ) ) // Компилируем SCSS файлы
 				.pipe( postcss( [ autoprefixer( ) ] ) ) // Добавим префиксы
 				.pipe( gulpif( bundle.compress, cssmin( ) ) ) // Сжимаем
-				.pipe( rename( fileName ) )
+				.pipe( rename( fileName ) ) // Переименовываем
 				.pipe( debug( { title: 'scss:' } ) ) // Вывод пофайлового лога
 				.pipe( gulp.dest( path ) );	
 } );
