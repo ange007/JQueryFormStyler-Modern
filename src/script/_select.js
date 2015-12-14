@@ -276,8 +276,8 @@ var selectboxOutput = function()
 			opacity: 0
 		} );
 
-		var selectHeight = selectbox.outerHeight( ),
-			searchHeight = search.outerHeight( ),
+		var selectHeight = selectbox.outerHeight( true ),
+			searchHeight = search.parent( ).outerHeight( true ),
 			isMaxHeight = ul.css( 'max-height' ),
 			liSelected = li.filter( '.selected' ),
 			position = dropdown.css( 'top' );
