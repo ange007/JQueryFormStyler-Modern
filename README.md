@@ -17,7 +17,7 @@ jQuery-плагин для стилизации элементов HTML-форм
 - Cборка проекта при помощи Gulp
 - Автоматизация сборки через Travis-CI ***(в планах)***
 
-## [Список изменений и планов: ](https://github.com/ange007/JQueryFormStylerModern/CHANGES.md)
+## [Список изменений и планов](https://github.com/ange007/JQueryFormStylerModern/CHANGES.md)
 
 ## Ссылки
 - [Оригинальный плагин](https://github.com/Dimox/jQueryFormStyler/)
