@@ -199,21 +199,25 @@ var selectboxOutput = function()
 			search.parent( ).hide( );
 		}
 
-		// показываем опцию по умолчанию
-		// если 1-я опция пустая и выбрана по умолчанию, то показываем плейсхолдер
-		if( el.val() === '' )
+		// Показываем опцию по умолчанию
+		// Если 1-я опция пустая и выбрана по умолчанию, то показываем плейсхолдер
+		if( optionSelected.text( ) === '' )
 		{
-			divText.text( selectPlaceholder ).addClass( 'placeholder' );
+			divText.text( selectPlaceholder )
+					.addClass( 'placeholder' );
 		}
 		else
 		{
 			divText.text( optionSelected.text( ) );
 		}
 
-		// определяем самый широкий пункт селекта
+		// Определяем самый широкий пункт селекта
 		var liWidthInner = 0,
 			liWidth = 0;
 	
+		li.css( { 'display': 'inline-block' } );
+	
+		//
 		li.each( function( )
 		{
 			var l = $( this );
@@ -224,11 +228,12 @@ var selectboxOutput = function()
 				liWidthInner = l.innerWidth();
 				liWidth = l.width();
 			}
-			
-			l.css( { 'display': '' } );
 		} );
+		
+		//
+		li.css( { 'display': '' } );
 
-		// подстраиваем ширину свернутого селекта в зависимости
+		// Подстраиваем ширину свернутого селекта в зависимости
 		// от ширины плейсхолдера или самого широкого пункта
 		if( divText.is( '.placeholder' ) && ( divText.width() > liWidthInner ) )
 		{
@@ -276,8 +281,8 @@ var selectboxOutput = function()
 			opacity: 0
 		} );
 
-		var selectHeight = selectbox.outerHeight( ),
-			searchHeight = search.outerHeight( ),
+		var selectHeight = selectbox.outerHeight( true ),
+			searchHeight = search.parent( ).outerHeight( true ),
 			isMaxHeight = ul.css( 'max-height' ),
 			liSelected = li.filter( '.selected' ),
 			position = dropdown.css( 'top' );
@@ -657,7 +662,7 @@ var selectboxOutput = function()
 		{
 			var liHeight = li.data( 'li-height' );
 			
-			if( el.val() === '' )
+			if( el.val( ) === '' )
 			{
 				divText.text( selectPlaceholder ).addClass( 'placeholder' );
 			}
@@ -670,23 +675,23 @@ var selectboxOutput = function()
 			// вверх, влево, Page Up, Home
 			if( e.which === 38 || e.which === 37 || e.which === 33 || e.which === 36 )
 			{
-				if( el.val() === '' )
+				if( el.val( ) === '' )
 				{
 					ul.scrollTop( 0 );
 				} else
 				{
-					ul.scrollTop( ul.scrollTop() + li.filter( '.selected' ).position().top );
+					ul.scrollTop( ul.scrollTop() + li.filter( '.selected' ).position( ).top );
 				}
 			}
 			// вниз, вправо, Page Down, End
 			if( e.which === 40 || e.which === 39 || e.which === 34 || e.which === 35 )
 			{
-				ul.scrollTop( ul.scrollTop() + li.filter( '.selected' ).position().top - ul.innerHeight() + liHeight );
+				ul.scrollTop( ul.scrollTop( ) + li.filter( '.selected' ).position( ).top - ul.innerHeight( ) + liHeight );
 			}
 			// закрываем выпадающий список при нажатии Enter
 			if( e.which === 13 )
 			{
-				e.preventDefault();
+				e.preventDefault( );
 				dropdown.hide( );
 				selectbox.removeClass( 'opened dropup dropdown' );
 				
