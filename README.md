@@ -1,4 +1,4 @@
-# jQuery FormStyler Modern  [![Build Status](https://travis-ci.org/ange007/JQueryFormStylerModern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStylerModern)
+# jQuery FormStyler Modern  [![Build Status](https://travis-ci.org/ange007/JQueryFormStyler-Modern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStyler-Modern)
 **Форк плагина для стилизации элементов HTML-форм.**
 
 *Оригинальный плагин: https://github.com/Dimox/jQueryFormStyler*
