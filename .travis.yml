@@ -16,7 +16,8 @@ deploy:
     - "jquery.formStylerModern.css"
   skip_cleanup: true
   on:
-    tags: true    
+    branch: master
+    tags: false    
 sudo: false
 cache:
   directories:
