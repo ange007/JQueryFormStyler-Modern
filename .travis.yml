@@ -7,7 +7,10 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 before_script:
   - npm install -g gulp
-script: gulp clean && gulp build
+script: 
+  - gulp clean && gulp build
+after_script: 
+  - gulp build:min
 deploy:
   provider: releases
   api_key: $OAuth
@@ -23,4 +26,3 @@ sudo: false
 cache:
   directories:
     - node_modules
-
