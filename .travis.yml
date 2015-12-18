@@ -18,7 +18,4 @@ deploy:
   on:
     tags: true    
 sudo: false
-cache:
-  directories:
-    - node_modules
 
