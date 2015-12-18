@@ -215,13 +215,13 @@ var selectboxOutput = function()
 		var liWidthInner = 0,
 			liWidth = 0;
 	
+		//
 		li.css( { 'display': 'inline-block' } );
 	
 		//
 		li.each( function( )
 		{
 			var l = $( this );
-				l.css( { 'display': 'inline-block' } );
 			
 			if( l.innerWidth() > liWidthInner )
 			{

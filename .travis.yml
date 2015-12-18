@@ -8,4 +8,17 @@ before_install:
 before_script:
   - npm install -g gulp
 script: gulp clean && gulp build
+deploy:
+  provider: releases
+  api_key: $OAuth
+  file:
+    - "jquery.formStylerModern.js"
+    - "jquery.formStylerModern.css"
+  skip_cleanup: true
+  on:
+    tags: true    
 sudo: false
+cache:
+  directories:
+    - node_modules
+

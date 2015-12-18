@@ -71,7 +71,7 @@ gulp.task( 'clean', function( )
 gulp.task( 'js:build', function( ) 
 {
 	// Основные параметры
-	var fileName = bundle.filename + ( bundle.name === 'min' ? '.min' : '' ) + '.js',
+	var fileName = bundle.filename + '.js',
 		path = bundle.name === 'min' ? paths.build.min : paths.build.main;
 	
 	// Формируем заголовок для файла
@@ -99,7 +99,7 @@ gulp.task( 'js:build', function( )
 // Создаем SASS/SCSS задание	
 gulp.task( 'scss:build', function( ) 
 { 
-	var fileName = bundle.filename + ( bundle.name === 'min' ? '.min' : '' ) + '.css',
+	var fileName = bundle.filename + '.css',
 		path = bundle.name === 'min' ? paths.build.min : paths.build.main;
 	
 	return gulp.src( paths.src.style + 'main.scss' )
