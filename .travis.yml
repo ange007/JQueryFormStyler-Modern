@@ -24,5 +24,7 @@ deploy:
     tags: false
 sudo: false
 cache:
+  npm: true
+  gulp: true
   directories:
     - node_modules
