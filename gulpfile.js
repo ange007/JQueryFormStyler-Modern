@@ -88,11 +88,11 @@ gulp.task( 'js:build', function( )
 	
 	// Собираем файл
     return gulp.src( paths.src.script + 'main.js')
+				.pipe( debug( { title: 'js:' } ) ) // Вывод пофайлового лога
 				.pipe( rigger( ) ) // Объединение js файлов
 				.pipe( concat( fileName ) ) // Объединение файлов
 				.pipe( header( banner, { pkg : pkg } ) ) // Установка хидера
 				.pipe( gulpif( bundle.compress, uglify( { mangle: true, compress: false } ) ) ) //
-				.pipe( debug( { title: 'js:' } ) ) // Вывод пофайлового лога
 				.pipe( gulp.dest( path ) );
 } );
 
@@ -103,11 +103,11 @@ gulp.task( 'scss:build', function( )
 		path = bundle.name === 'min' ? paths.build.min : paths.build.main;
 	
 	return gulp.src( paths.src.style + 'main.scss' )
+				.pipe( debug( { title: 'scss:' } ) ) // Вывод пофайлового лога
 				.pipe( sass( { errLogToConsole: true } ) ) // Компилируем SCSS файлы
 				.pipe( postcss( [ autoprefixer( ) ] ) ) // Добавим префиксы
 				.pipe( gulpif( bundle.compress, cssmin( ) ) ) // Сжимаем
 				.pipe( rename( fileName ) ) // Переименовываем
-				.pipe( debug( { title: 'scss:' } ) ) // Вывод пофайлового лога
 				.pipe( gulp.dest( path ) );	
 } );
 
