@@ -16,8 +16,9 @@ deploy:
     - "jquery.formStylerModern.css"
   skip_cleanup: true
   on:
+    repo: ange007/JQueryFormStyler-Modern
     branch: master
-    tags: false    
+    tags: false
 sudo: false
 cache:
   directories:
