@@ -25,6 +25,6 @@ deploy:
     #branch: master
     tags: true
 sudo: false
-#cache:
-  #directories:
-    #- node_modules
+cache:
+  directories:
+    - node_modules
