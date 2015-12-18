@@ -27,14 +27,14 @@ var gulp = require( 'gulp' ),
 var paths = 
 {
 	src: { 
-		main: 'src/',
-		script: 'src/script/',
-		style: 'src/style/'
+		main: './src/',
+		script: './src/script/',
+		style: './src/style/'
 	},
 	
 	build: {
-		main: 'build/',
-		min: 'build/min/'
+		main: './build/',
+		min: './build/min/'
 	}
 };
 
