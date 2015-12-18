@@ -20,7 +20,7 @@ deploy:
   skip_cleanup: true
   on:
     repo: ange007/JQueryFormStyler-Modern
-    branch: master
+    #branch: master
     tags: true
 sudo: false
 cache:
