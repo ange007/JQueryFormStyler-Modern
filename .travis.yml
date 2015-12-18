@@ -12,7 +12,7 @@ after_script:
   - gulp build:min
 deploy:
   provider: releases
-  api_key: $OAuth
+  api_key: OAuth
   file:
     - "jquery.formStylerModern.js"
     - "jquery.formStylerModern.css"
@@ -20,7 +20,7 @@ deploy:
   on:
     repo: ange007/JQueryFormStyler-Modern
     branch: master
-    tags: true
+    #tags: true
 sudo: false
 cache:
   directories:
