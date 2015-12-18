@@ -7,9 +7,10 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 before_script:
   - npm install -g gulp
-after_script: 
+script: 
   - gulp clean && gulp build
   - gulp build:min
+#after_script:
 deploy:
   provider: releases
   api_key: $OAuth
@@ -20,6 +21,7 @@ deploy:
   on:
     repo: ange007/JQueryFormStyler-Modern
     branch: master
+    tags: true
 sudo: false
 cache:
   directories:
