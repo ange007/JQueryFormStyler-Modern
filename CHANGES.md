@@ -6,6 +6,6 @@
 $( el ).styler( 'reinitialize', { checkboxIndeterminate: true } );
 ```
 * Группы ***input:radio*** работают так-же и "вне" **form**.
-* Исправлено поведение в случае динамического изменения состояния у "отключенного" **input:checkbox** *(не убиралась отметка)*.
+* Исправлено поведение в случае динамического изменения состояния у "отключенного" **input:radio** *(не убиралась отметка)*.
 * У **input:checkbox** реализован вызов события **change** при вызове события **refresh** *(например после динамического изменения состояния)*.
 * Внесены правки из https://github.com/Dimox/jQueryFormStyler/pull/95 https://github.com/Dimox/jQueryFormStyler/pull/94 и https://github.com/Dimox/jQueryFormStyler/pull/93
