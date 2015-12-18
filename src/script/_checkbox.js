@@ -1,7 +1,7 @@
 var checkboxOutput = function( )
 {
 	var att = new Attributes( ),
-		checkbox = $( '<div' + att.id + ' class="jq-checkbox' + att.classes + '"' + att.title + '><div class="jq-checkbox__div"></div></div>' );
+		checkbox = $( '<div' + att.id + ' class="' + classPrefix + 'checkbox' + att.classes + '"' + att.title + '><div class="' + classPrefix + 'checkbox__div"></div></div>' );
 
 	// Прячем оригинальный чекбокс
 	el.css( {
@@ -14,15 +14,16 @@ var checkboxOutput = function( )
 	.after( checkbox ).prependTo( checkbox );
 
 	// 
-	checkbox.attr( 'unselectable', 'on' ).css( {
-		'-webkit-user-select': 'none',
-		'-moz-user-select': 'none',
-		'-ms-user-select': 'none',
-		'-o-user-select': 'none',
-		'user-select': 'none',
-		display: 'inline-block',
-		position: 'relative',
-		overflow: 'hidden'
+	checkbox.attr( 'unselectable', 'on' )
+		.css( {
+			'-webkit-user-select': 'none',
+			'-moz-user-select': 'none',
+			'-ms-user-select': 'none',
+			'-o-user-select': 'none',
+			'user-select': 'none',
+			display: 'inline-block',
+			position: 'relative',
+			overflow: 'hidden'
 	} );
 
 	// Установка изначального состояния псевдоблока
@@ -74,22 +75,22 @@ var checkboxOutput = function( )
 				checkbox.addClass( 'checked' );
 			}
 
-			el.focus().change();
+			el.focus( ).change( );
 		}
 	} );
 
 	// Клик по label привязанному к данному checkbox
-	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).on( 'click.styler', function( e )
+	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).on( 'click.' + pluginName, function( e )
 	{
 		if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( checkbox ).length )
 		{
 			checkbox.triggerHandler( 'click' );
-			e.preventDefault();
+			e.preventDefault( );
 		}
 	} );
 
 	// Переключение по Space или Enter
-	el.on( 'change.styler', function( )
+	el.on( 'change.' + pluginName, function( )
 	{
 		if( el.is( ':checked' ) )
 		{
@@ -101,7 +102,7 @@ var checkboxOutput = function( )
 		}
 	} )
 	// 
-	.on( 'keydown.styler', function( e )
+	.on( 'keydown.' + pluginName, function( e )
 	{
 		if( e.which === 32 )
 		{
@@ -109,7 +110,7 @@ var checkboxOutput = function( )
 		}
 	} )
 	// Обработка наведения фокуса
-	.on( 'focus.styler', function( )
+	.on( 'focus.' + pluginName, function( )
 	{
 		if( !checkbox.is( '.disabled' ) )
 		{
@@ -117,24 +118,28 @@ var checkboxOutput = function( )
 		}
 	} )
 	// Обработка снятия фокуса
-	.on( 'blur.styler', function( )
+	.on( 'blur.' + pluginName, function( )
 	{
 		checkbox.removeClass( 'focused' );
 	} );
 };
 
-// 
+// Стилизируем компонент
 checkboxOutput( );
 
 // Обновление при динамическом изменении
-el.on( 'refresh', function()
+el.on( 'refresh', function( )
 {
 	//
-	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).off( '.styler' );
+	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).off( '.' + pluginName );
 
-	//
-	el.off( '.styler' )
-		.parent( ).before( el ).remove();
+	// Убираем стилизацию компонента
+	el.off( '.' + pluginName )
+		.parent( ).before( el ).remove( );
 
-	checkboxOutput();
+	// Если мы перезагрузили стиль блока - видимо его состояние изменилось
+	el.change( );
+
+	// Стилизируем компонент снова
+	checkboxOutput( );
 } );

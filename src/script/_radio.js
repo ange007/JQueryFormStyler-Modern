@@ -1,7 +1,7 @@
 var radioOutput = function( )
 {
 	var att = new Attributes( ),
-		radio = $( '<div' + att.id + ' class="jq-radio' + att.classes + '"' + att.title + '><div class="jq-radio__div"></div></div>' );
+		radio = $( '<div' + att.id + ' class="' + classPrefix + 'radio' + att.classes + '"' + att.title + '><div class="' + classPrefix + 'radio__div"></div></div>' );
 
 	// Прячем оригинальную радиокнопку
 	el.css( {
@@ -14,14 +14,15 @@ var radioOutput = function( )
 	.after( radio ).prependTo( radio );
 
 	//
-	radio.attr( 'unselectable', 'on' ).css( {
-		'-webkit-user-select': 'none',
-		'-moz-user-select': 'none',
-		'-ms-user-select': 'none',
-		'-o-user-select': 'none',
-		'user-select': 'none',
-		display: 'inline-block',
-		position: 'relative'
+	radio.attr( 'unselectable', 'on' )
+		.css( {
+			'-webkit-user-select': 'none',
+			'-moz-user-select': 'none',
+			'-ms-user-select': 'none',
+			'-o-user-select': 'none',
+			'user-select': 'none',
+			display: 'inline-block',
+			position: 'relative'
 	} );
 
 	// Установка изначального состояния псевдоблока
@@ -73,51 +74,51 @@ var radioOutput = function( )
 	} );
 	
 	// Клик на label
-	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).on( 'click.styler', function( e )
+	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).on( 'click.' + pluginName, function( e )
 	{
 		if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( radio ).length )
 		{
 			radio.triggerHandler( 'click' );
-			e.preventDefault();
+			e.preventDefault( );
 		}
 	} );
 	
 	// Переключение стрелками
-	el.on( 'change.styler', function()
+	el.on( 'change.' + pluginName, function( )
 	{
 		el.parent( ).addClass( 'checked' );
 	} )
 	// Обработка наведения фокуса
-	.on( 'focus.styler', function()
+	.on( 'focus.' + pluginName, function( )
 	{
 		if( !radio.is( '.disabled' ) )
 
 			radio.addClass( 'focused' );
 	} )
 	// Обработка снятия фокуса
-	.on( 'blur.styler', function()
+	.on( 'blur.' + pluginName, function( )
 	{
 		radio.removeClass( 'focused' );
 	} );
 
 };
 
-//
-radioOutput();
+// Стилизируем компонент
+radioOutput( );
 
 // Обновление при динамическом изменении
-el.on( 'refresh', function()
+el.on( 'refresh', function( )
 {
 	//
-	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).off( '.styler' );
+	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).off( '.' + pluginName );
 
-	//
-	el.off( '.styler' )
-		.parent( ).before( el ).remove();
+	// Убираем стилизацию компонента
+	el.off( '.' + pluginName )
+		.parent( ).before( el ).remove( );
 
 	// Если мы перезагрузили стиль блока - видимо его состояние изменилось
-	el.change();
+	el.change( );
 
-	//
-	radioOutput();
+	// Стилизируем компонент снова
+	radioOutput( );
 } );

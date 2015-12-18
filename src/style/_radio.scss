@@ -1,4 +1,4 @@
-.jq-radio {
+.#{$prefix}radio {
 	top: -1px;
 	vertical-align: middle;
 	width: 16px;
@@ -12,7 +12,7 @@
 	cursor: pointer;
 }
 
-.jq-radio.checked .jq-radio__div {
+.#{$prefix}radio.checked .#{$prefix}radio__div {
 	width: 10px;
 	height: 10px;
 	margin: 3px 0 0 3px;
@@ -21,10 +21,10 @@
 	box-shadow: inset 1px 1px 1px rgba(0,0,0,.7);
 }
 
-.jq-radio.focused {
+.#{$prefix}radio.focused {
 	border: 1px solid #08C;
 }
 
-.jq-radio.disabled {
+.#{$prefix}radio.disabled {
 	opacity: .55;
 }

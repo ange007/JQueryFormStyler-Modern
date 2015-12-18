@@ -26,10 +26,10 @@ var fileOutput = function( )
 		browse = opt.fileBrowse;
 	}
 	
-	var file = $( '<div' + att.id + ' class="jq-file' + att.classes + '"' + att.title + ' style="display: inline-block; position: relative; overflow: hidden"></div>' ),
-		name = $( '<div class="jq-file__name">' + placeholder + '</div>' ).appendTo( file );
+	var file = $( '<div' + att.id + ' class="' + classPrefix + 'file' + att.classes + '"' + att.title + ' style="display: inline-block; position: relative; overflow: hidden"></div>' ),
+		name = $( '<div class="' + classPrefix + 'file__name">' + placeholder + '</div>' ).appendTo( file );
 
-	$( '<div class="jq-file__browse">' + browse + '</div>' ).appendTo( file );
+	$( '<div class="' + classPrefix + 'file__browse">' + browse + '</div>' ).appendTo( file );
 	el.after( file ).appendTo( file );
 
 	if( el.is( ':disabled' ) )
@@ -37,7 +37,8 @@ var fileOutput = function( )
 		file.addClass( 'disabled' );
 	}
 
-	el.on( 'change.styler', function()
+	// Обработка "изменения" состояния
+	el.on( 'change.' + pluginName, function( )
 	{
 		var value = el.val( );
 		
@@ -59,7 +60,9 @@ var fileOutput = function( )
 				value = number;
 			}
 		}
+		
 		name.text( value.replace( /.+[\\\/]/, '' ) );
+		
 		if( value === '' )
 		{
 			name.text( placeholder );
@@ -70,30 +73,35 @@ var fileOutput = function( )
 			file.addClass( 'changed' );
 		}
 	} )
-	//
-	.on( 'focus.styler', function()
+	// Работа с "фокусировкой"
+	.on( 'focus.' + pluginName, function( )
 	{
 		file.addClass( 'focused' );
 	} )
-	//
-	.on( 'blur.styler', function()
+	.on( 'blur.' + pluginName, function( )
 	{
 		file.removeClass( 'focused' );
 	} )
-	//
-	.on( 'click.styler', function()
+	.on( 'click.' + pluginName, function( )
 	{
 		file.removeClass( 'focused' );
 	} );
 
 };
 
-// 
+// Стилизируем компонент
 fileOutput( );
 
-// обновление при динамическом изменении
+// Обновление при динамическом изменении
 el.on( 'refresh', function( )
 {
-	el.off( '.styler' ).parent().before( el ).remove();
-	fileOutput();
+	// Убираем стилизацию компонента
+	el.off( '.' + pluginName )
+		.parent( ).before( el ).remove( );
+	
+	// Если мы перезагрузили стиль блока - видимо его состояние изменилось
+	el.change( );
+	
+	// Стилизируем компонент снова
+	fileOutput( );
 } );

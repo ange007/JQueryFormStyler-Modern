@@ -1,10 +1,10 @@
-input[type='email'].styler,
-input[type='password'].styler,
-input[type='search'].styler,
-input[type='tel'].styler,
-input[type='text'].styler,
-input[type='url'].styler,
-textarea.styler {
+input[type='email'].#{$pluginName},
+input[type='password'].#{$pluginName},
+input[type='search'].#{$pluginName},
+input[type='tel'].#{$pluginName},
+input[type='text'].#{$pluginName},
+input[type='url'].#{$pluginName},
+textarea.#{$pluginName} {
 	padding: 8px 9px;
 	border: 1px solid #CCC;
 	border-bottom-color: #B3B3B3;
@@ -14,41 +14,41 @@ textarea.styler {
 	color: #333;
 }
 
-input[type='search'].styler {
+input[type='search'].#{$pluginName} {
 	-webkit-appearance: none;
 }
 
-textarea.styler {
+textarea.#{$pluginName} {
 	overflow: auto;
 }
 
-input[type='email'].styler:hover,
-input[type='password'].styler:hover,
-input[type='search'].styler:hover,
-input[type='tel'].styler:hover,
-input[type='text'].styler:hover,
-input[type='url'].styler:hover,
-textarea.styler:hover {
+input[type='email'].#{$pluginName}:hover,
+input[type='password'].#{$pluginName}:hover,
+input[type='search'].#{$pluginName}:hover,
+input[type='tel'].#{$pluginName}:hover,
+input[type='text'].#{$pluginName}:hover,
+input[type='url'].#{$pluginName}:hover,
+textarea.#{$pluginName}:hover {
 	border-color: #B3B3B3;
 }
 
-input[type='email'].styler:focus,
-input[type='password'].styler:focus,
-input[type='search'].styler:focus,
-input[type='tel'].styler:focus,
-input[type='text'].styler:focus,
-input[type='url'].styler:focus,
-textarea.styler:focus {
+input[type='email'].#{$pluginName}:focus,
+input[type='password'].#{$pluginName}:focus,
+input[type='search'].#{$pluginName}:focus,
+input[type='tel'].#{$pluginName}:focus,
+input[type='text'].#{$pluginName}:focus,
+input[type='url'].#{$pluginName}:focus,
+textarea.#{$pluginName}:focus {
 	border-color: #CCC;
 	border-top-color: #B3B3B3;
 	outline: none;
 	box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
 }
 
-button.styler,
-input[type='button'].styler,
-input[type='submit'].styler,
-input[type='reset'].styler {
+button.#{$pluginName},
+input[type='button'].#{$pluginName},
+input[type='submit'].#{$pluginName},
+input[type='reset'].#{$pluginName} {
 	overflow: visible;
 	padding: 8px 11px;
 	border: 1px solid #CCC;
@@ -64,33 +64,33 @@ input[type='reset'].styler {
 	cursor: pointer;
 }
 
-button.styler::-moz-focus-inner,
-input[type='button'].styler::-moz-focus-inner,
-input[type='submit'].styler::-moz-focus-inner,
-input[type='reset'].styler::-moz-focus-inner {
+button.#{$pluginName}::-moz-focus-inner,
+input[type='button'].#{$pluginName}::-moz-focus-inner,
+input[type='submit'].#{$pluginName}::-moz-focus-inner,
+input[type='reset'].#{$pluginName}::-moz-focus-inner {
 	padding: 0;
 	border: 0;
 }
 
-button.styler:not([disabled]):hover,
-input[type='button'].styler:not([disabled]):hover,
-input[type='submit'].styler:not([disabled]):hover,
-input[type='reset'].styler:hover {
+button.#{$pluginName}:not([disabled]):hover,
+input[type='button'].#{$pluginName}:not([disabled]):hover,
+input[type='submit'].#{$pluginName}:not([disabled]):hover,
+input[type='reset'].#{$pluginName}:hover {
 	background: #E6E6E6;
 	background: linear-gradient(#F6F6F6, #E6E6E6);
 }
 
-button.styler:not([disabled]):active,
-input[type='button'].styler:not([disabled]):active,
-input[type='submit'].styler:not([disabled]):active,
-input[type='reset'].styler:active {
+button.#{$pluginName}:not([disabled]):active,
+input[type='button'].#{$pluginName}:not([disabled]):active,
+input[type='submit'].#{$pluginName}:not([disabled]):active,
+input[type='reset'].#{$pluginName}:active {
 	background: #F5F5F5;
 	box-shadow: inset 1px 1px 3px #DDD;
 }
 
-button.styler[disabled],
-input[type='button'].styler[disabled],
-input[type='submit'].styler[disabled] {
+button.#{$pluginName}[disabled],
+input[type='button'].#{$pluginName}[disabled],
+input[type='submit'].#{$pluginName}[disabled] {
 	border-color: #CCC;
 	background: #F5F5F5;
 	box-shadow: none;
