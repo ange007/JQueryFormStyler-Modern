@@ -15,10 +15,10 @@ deploy:
   provider: releases
   api_key: $OAuth
   file:
-    - "/build/jquery.formStylerModern.js"
-    - "/build/jquery.formStylerModern.css"
-    - "/build/jquery.formStylerModern.min.js"
-    - "/build/jquery.formStylerModern.min.css"
+    - "./build/jquery.formStylerModern.js"
+    - "./build/jquery.formStylerModern.css"
+    - "./build/jquery.formStylerModern.min.js"
+    - "./build/jquery.formStylerModern.min.css"
   skip_cleanup: true
   on:
     repo: ange007/JQueryFormStyler-Modern
