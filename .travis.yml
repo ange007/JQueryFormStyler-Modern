@@ -17,8 +17,8 @@ deploy:
   file:
     - $JS
     - $CSS
-    - $JS:min
-    - $CSS:min
+    - $JS_MIN
+    - $CSS_MIN
   skip_cleanup: true
   on:
     repo: ange007/JQueryFormStyler-Modern
