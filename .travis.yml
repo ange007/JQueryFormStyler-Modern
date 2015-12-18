@@ -15,14 +15,16 @@ deploy:
   provider: releases
   api_key: $OAuth
   file:
-    - "jquery.formStylerModern.js"
-    - "jquery.formStylerModern.css"
+    - "/build/jquery.formStylerModern.js"
+    - "/build/jquery.formStylerModern.css"
+    - "/build/jquery.formStylerModern.min.js"
+    - "/build/jquery.formStylerModern.min.js"
   skip_cleanup: true
   on:
     repo: ange007/JQueryFormStyler-Modern
     #branch: master
     tags: true
 sudo: false
-cache:
-  directories:
-    - node_modules
+#cache:
+  #directories:
+    #- node_modules
