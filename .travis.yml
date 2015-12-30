@@ -5,9 +5,9 @@ node_js:
   
 env:
     global:
-        - GIT_NAME=Travis-CI
-        - GIT_EMAIL=johnagan+travis@github.com
-        - GIT_DOMAIN=github.com
+        - GIT_NAME=ange007
+        - GIT_EMAIL=ange007@users.noreply.github.com
+        - GIT_DOMAIN=ange007.github.io
 
 before_install:
   - export CHROME_BIN=chromium-browser
