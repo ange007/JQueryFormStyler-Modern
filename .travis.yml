@@ -7,12 +7,12 @@ env:
     global:
         - GIT_NAME=ange007
         - GIT_EMAIL=ange007@users.noreply.github.com
-        - GIT_DOMAIN=ange007.github.io
+        - GIT_DOMAIN=github.com
 
-before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+#before_install:
+#  - export CHROME_BIN=chromium-browser
+#  - export DISPLAY=:99.0
+#  - sh -e /etc/init.d/xvfb start
 
 before_script:
   - npm install -g gulp
@@ -33,6 +33,8 @@ after_success:
       cd $TRAVIS_BUILD_DIR && npm run build;
       cd $DIST_PATH && git add -A && git commit -am "Travis build $TRAVIS_BUILD_NUMBER";
       git push $REPO_URL gh-pages;
+    fi
+
 #after_script:    
 
 deploy:
