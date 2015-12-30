@@ -133,7 +133,7 @@ small {
 
 .wrapper {
 	position: relative;
-	width: 1000px;
+	width: 1200px;
 	margin: 0 auto;
 }
 .wrapper:after {
@@ -151,7 +151,7 @@ small {
 	background: #E8EDF1;
 	background: #FFF;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
 	.menu {
 		position: absolute;
 	}
@@ -183,7 +183,7 @@ small {
 }
 .content {
 	float: right;
-	width: 700px;
+	width: 900px;
 }
 .box {
 	position: absolute;
@@ -198,6 +198,14 @@ small {
 	width: auto;
 	height: auto;
 }
+
+code.state {
+	display: inline-block;
+	line-height: 18px;
+	text-align: center;
+	min-width: 100px;
+}
+
 .section {
 	margin: 0 0 12px;
 	padding: 20px 25px 22px;

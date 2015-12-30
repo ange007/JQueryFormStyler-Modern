@@ -47,12 +47,12 @@
 								<button type="submit" class="button disable-input">Переключить активность</button>
 								<button type="submit" class="button check">Переключить галочки</button>
 							</div>
-							<input type="checkbox" /> без тега <code>label</code><br />
-							<span id="r"><input type="checkbox" id="checkbox1" /></span> <label for="checkbox1"> в тег <code>label</code> помещен только текст</label><br />
-							<label><input type="checkbox" /> и текст, и <code>input</code> помещены в тег <code>label</code></label><br />
-							<label><input type="checkbox" disabled checked /> неактивный чекбокс</label><br />
-							<label><input type="checkbox" id="indeterminate"/> чекбокс единоразово установленный в "неопределённое" состояниее</label><br />
-							<label><input type="checkbox" id="indeterminate-change"/> чекбокс с постоянными тремя состояниями </label>
+							<code class="state" data-checkbox="checkbox0"></code> <input type="checkbox" id="checkbox0" /> без тега <code>label</code><br />
+							<code class="state" data-checkbox="checkbox1"></code> <input type="checkbox" id="checkbox1" /> <label for="checkbox1"> в тег <code>label</code> помещен только текст</label><br />
+							<code class="state" data-checkbox="checkbox2"></code> <label><input type="checkbox" id="checkbox2" /> и текст, и <code>input</code> помещены в тег <code>label</code></label><br />
+							<code class="state" data-checkbox="checkbox-disabled"></code> <label><input type="checkbox" id="checkbox-disabled" disabled checked /> неактивный</label><br />
+							<code class="state" data-checkbox="checkbox-indeterminate"></code> <label><input type="checkbox" id="checkbox-indeterminate"/> установлен в "неопределённое" состояниее</label><br />
+							<code class="state" data-checkbox="checkbox-indeterminate-change"></code> <label><input type="checkbox" id="checkbox-indeterminate-change"/> с постоянными тремя состояниями</label>
 						</div><!-- .section -->
 					</div><!-- .box -->
 

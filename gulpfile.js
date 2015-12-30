@@ -145,6 +145,6 @@ gulp.task( 'default', function( )
 	 * Смотрители 
 	 * * * * * * * * * * * * * */
 
-	var wJS = gulp.watch( paths.src.libraries + '/*.js', [ 'js:build' ] ),
-		wSASS = gulp.watch( paths.src.addons + '/*.scss', [ 'scss:build' ] );
+	var wJS = gulp.watch( paths.src.script + '/*.js', [ 'js:build' ] ),
+		wSASS = gulp.watch( paths.src.style + '/*.scss', [ 'scss:build' ] );
 } );

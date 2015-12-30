@@ -139,14 +139,20 @@
 		},
 		
 		// Убрать стилизацию елемент(а/ов) 
-		destroy: function( )
+		destroy: function( reinitialize )
 		{
 			var el = $( this.element );
+			
+			// Если происходит уничтожение для переинициализации - data удалять не нужно
+			if( !reinitialize )
+			{
+				el.removeData( '_' + pluginName );
+			}
 
 			//
 			if( el.is( ':checkbox' ) || el.is( ':radio' ) )
 			{
-				el.removeData( '_' + pluginName ).off( '.' + pluginName + ' refresh' )
+				el.off( '.' + pluginName + ' refresh' )
 					.removeAttr( 'style' )
 					.parent( ).before( el ).remove( );
 			
@@ -155,13 +161,13 @@
 			//
 			else if( el.is( 'input[type="number"]' ) )
 			{
-				el.removeData( '_' + pluginName ).off( '.' + pluginName + ' refresh' )
+				el.off( '.' + pluginName + ' refresh' )
 					.closest( '.' + classPrefix + 'number' ).before( el ).remove( );
 			} 
 			//
 			else if( el.is( ':file' ) || el.is( 'select' ) )
 			{
-				el.removeData( '_' + pluginName ).off( '.' + pluginName + ' refresh' )
+				el.off( '.' + pluginName + ' refresh' )
 					.removeAttr( 'style' )
 					.parent( ).before( el ).remove( );
 			}
@@ -171,11 +177,14 @@
 		reinitialize: function( options )
 		{
 			// Убираем стилизацию елементов
-			this.destroy( );
+			this.destroy( true ); 
 
 			// Перезаписываем настройки и снова инициализируем стилизацию
 			this.options = $.extend( { }, defaults, options );
 			this.init( );
+			
+			// Вызываем событие
+			// this.change( );
 		}
 	};
 

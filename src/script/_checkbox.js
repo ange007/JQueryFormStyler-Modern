@@ -26,56 +26,49 @@ var checkboxOutput = function( )
 			overflow: 'hidden'
 	} );
 
-	// Установка изначального состояния псевдоблока
-	if( el.is( ':indeterminate' ) )
-	{
-		checkbox.addClass( 'indeterminate' );
-	}
-	else if( el.is( ':checked' ) )
-	{
-		checkbox.addClass( 'checked' );
-	}
-
+	// Установка активности
 	if( el.is( ':disabled' ) )
 	{
 		checkbox.addClass( 'disabled' );
 	}
-
-	// Клик по псевдоблоку
+	
+	// Клик по псевдоблоку ( смена состояния )
 	checkbox.click( function( e )
 	{
 		e.preventDefault( );
 
+		// 
 		if( !checkbox.is( '.disabled' ) )
 		{
-			// Отмечено
+			// Текущее состояние: "Отмечено"
 			if( el.is( ':checked' ) || el.is( ':indeterminate' ) )
 			{
-				if( opt.checkboxIndeterminate === true && !el.prop( 'indeterminate' ) )
+				// ... если работаем через 3 состояния - отмечаем "неопределено",  или просто снимаем отметку
+				el.prop( 'checked', ( opt.checkboxIndeterminate === true && el.is( ':indeterminate' ) ) );
+
+				// "Неопределено" в любом случае снимаем
+				el.prop( 'indeterminate', false );
+			}
+			// Текущее состояние: "Не отмечено"
+			else
+			{
+				// ... если работаем через 3 состояния - отмечаем "неопределено"
+				if( opt.checkboxIndeterminate === true )
 				{
 					el.prop( 'checked', false );
 					el.prop( 'indeterminate', true );
-					checkbox.removeClass( 'checked' );
-					checkbox.addClass( 'indeterminate' );
 				}
+				// ... или просто отмечаем
 				else
 				{
-					el.prop( 'checked', false );
+					el.prop( 'checked', true );
 					el.prop( 'indeterminate', false );
-					checkbox.removeClass( 'indeterminate' );
-					checkbox.removeClass( 'checked' );
 				}
 			}
-			// Не отмечено
-			else
-			{
-				el.prop( 'checked', true );
-				el.prop( 'indeterminate', false );
-				checkbox.removeClass( 'indeterminate' );
-				checkbox.addClass( 'checked' );
-			}
-
-			el.focus( ).change( );
+			
+			// Фокусируем и изменяем вызываем состояние изменения
+			el.focus( )
+				.change( );
 		}
 	} );
 
@@ -89,23 +82,36 @@ var checkboxOutput = function( )
 		}
 	} );
 
-	// Переключение по Space или Enter
+	// Обработка изменений
 	el.on( 'change.' + pluginName, function( )
 	{
-		if( el.is( ':checked' ) )
+		// Отмечено
+		if( el.is( ':checked' ) || el.is( ':indeterminate' ) )
 		{
-			checkbox.addClass( 'checked' );
+			if( el.is( ':indeterminate' ) )
+			{
+				checkbox.removeClass( 'checked' );
+				checkbox.addClass( 'indeterminate' );
+			}
+			else
+			{
+				checkbox.removeClass( 'indeterminate' );
+				checkbox.addClass( 'checked' );
+			}
 		}
+		// Не отмечено
 		else
 		{
+			checkbox.removeClass( 'indeterminate' );
 			checkbox.removeClass( 'checked' );
 		}
 	} )
-	// 
+	// Обработка переключения при помощи клавиатуры
 	.on( 'keydown.' + pluginName, function( e )
 	{
 		if( e.which === 32 )
 		{
+			e.preventDefault( );
 			checkbox.click( );
 		}
 	} )
@@ -122,6 +128,9 @@ var checkboxOutput = function( )
 	{
 		checkbox.removeClass( 'focused' );
 	} );
+	
+	// Мы установили стиль, уведомляем об изменении
+	el.change( );
 };
 
 // Стилизируем компонент
@@ -131,14 +140,12 @@ checkboxOutput( );
 el.on( 'refresh', function( )
 {
 	//
-	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).off( '.' + pluginName );
+	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' )
+						.off( '.' + pluginName );
 
 	// Убираем стилизацию компонента
 	el.off( '.' + pluginName )
 		.parent( ).before( el ).remove( );
-
-	// Если мы перезагрузили стиль блока - видимо его состояние изменилось
-	el.change( );
 
 	// Стилизируем компонент снова
 	checkboxOutput( );
