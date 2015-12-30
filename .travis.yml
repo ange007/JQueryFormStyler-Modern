@@ -8,6 +8,7 @@ env:
         - GIT_NAME=ange007
         - GIT_EMAIL=ange007@users.noreply.github.com
         - GIT_DOMAIN=github.com
+        - REPO_URL=https://$OAuth@$GIT_DOMAIN/$TRAVIS_REPO_SLUG.git
 
 #before_install:
 #  - export CHROME_BIN=chromium-browser
@@ -23,14 +24,18 @@ script:
 
 after_success:
   - DIST_PATH=$TRAVIS_BUILD_DIR/demo
-  - REPO_URL=https://$OAuth@$GIT_DOMAIN/$TRAVIS_REPO_SLUG.git
   - git config --global user.name "$GIT_NAME"
   - git config --global user.email "$GIT_EMAIL"    
+  # переходим в директорию
   #- cd $DIST_PATH;
-  #- git clone $REPO_URL dist;
-  #- cd $DIST_PATH && git checkout gh-pages && rm -rf *;
+  # копируем в неё репозиторий
+  #- git clone $REPO_URL actual;
+  # переходим обратно в верхнюю директорию
+  #- cd $DIST_PATH && git checkout gh-pages;
   #- cd $TRAVIS_BUILD_DIR && npm run build;
-  - cd $DIST_PATH && git add -A && git commit -am "Travis build $TRAVIS_BUILD_NUMBER";
+  # Переходим в директорию добавляе коммит
+  - cd $DIST_PATH && git checkout gh-pages && git add -A && git commit -am "Travis build $TRAVIS_BUILD_NUMBER";
+  # Отправляем коммит
   - git push $REPO_URL gh-pages;
 
 #after_script:    
