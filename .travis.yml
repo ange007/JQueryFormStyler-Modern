@@ -32,7 +32,7 @@ after_success:
   - git clone $REPO_URL actual;
   # переходим обратно в верхнюю директорию
   - cd $DIST_PATH && git checkout gh-pages && rm -rf *;
-  - cp -rp $TRAVIS_BUILD_DIR/demo $DIST_PATH
+  - cp -rp $TRAVIS_BUILD_DIR/demo/* $DIST_PATH
   #- cd $TRAVIS_BUILD_DIR && npm run build;
   # Переходим в директорию добавляе коммит
   - cd $DIST_PATH && git add -A && git commit -am "Travis build $TRAVIS_BUILD_NUMBER";
