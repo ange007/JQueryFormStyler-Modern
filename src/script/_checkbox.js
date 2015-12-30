@@ -37,7 +37,7 @@ var checkboxOutput = function( )
 	{
 		e.preventDefault( );
 
-		// 
+		// Обрабатываем только активный псевдобокс
 		if( !checkbox.is( '.disabled' ) )
 		{
 			// Текущее состояние: "Отмечено"

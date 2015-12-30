@@ -22,6 +22,3 @@ jQuery-плагин для стилизации элементов HTML-форм
 
 ## Ссылки
 - [Оригинальный плагин](https://github.com/Dimox/jQueryFormStyler/)
-- [Страница с примерами оригинального плагина](http://dimox.github.io/jQueryFormStyler/demo/)
-- [Домашняя страница оригинального плагина](http://dimox.name/jquery-form-styler/)
-- [Оригинальный плагин в CDN jsDelivr](http://www.jsdelivr.com/#!jquery.formstyler)
