@@ -16,24 +16,22 @@ env:
 
 before_script:
   - npm install -g gulp
-  - DIST_PATH=$TRAVIS_BUILD_DIR/demo
-  - REPO_URL=https://$OAuth@$GIT_DOMAIN/$TRAVIS_REPO_SLUG.git
-  - git config --global user.name "$GIT_NAME"
-  - git config --global user.email "$GIT_EMAIL"
 
 script: 
   - gulp clean && gulp build
   - gulp build:min
 
 after_success:
-  - if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
-      cd $DIST_PATH;
-      git clone $REPO_URL dist;
-      cd $DIST_PATH && git checkout gh-pages && rm -rf *;
-      cd $TRAVIS_BUILD_DIR && npm run build;
-      cd $DIST_PATH && git add -A && git commit -am "Travis build $TRAVIS_BUILD_NUMBER";
-      git push $REPO_URL gh-pages;
-    fi
+  - DIST_PATH=$TRAVIS_BUILD_DIR/demo
+  - REPO_URL=https://$OAuth@$GIT_DOMAIN/$TRAVIS_REPO_SLUG.git
+  - git config --global user.name "$GIT_NAME"
+  - git config --global user.email "$GIT_EMAIL"    
+  - cd $DIST_PATH;
+  - git clone $REPO_URL dist;
+  - cd $DIST_PATH && git checkout gh-pages && rm -rf *;
+  - cd $TRAVIS_BUILD_DIR && npm run build;
+  - cd $DIST_PATH && git add -A && git commit -am "Travis build $TRAVIS_BUILD_NUMBER";
+  - git push $REPO_URL gh-pages;
 
 #after_script:    
 
