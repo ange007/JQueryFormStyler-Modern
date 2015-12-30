@@ -143,7 +143,7 @@
 					{
 						e.preventDefault( );
 				
-						// Обрабатываем только активный псевдобокс
+						// 
 						if( !checkbox.is( '.disabled' ) )
 						{
 							// Текущее состояние: "Отмечено"
@@ -292,18 +292,46 @@
 					{
 						radio.addClass( 'disabled' );
 					} 
-					
+					else if( el.is( ':checked' ) )
+					{
+						radio.addClass( 'checked' );
+					}
+				
 					// Клик по псевдоблоку
 					radio.click( function( e )
 					{
 						e.preventDefault( );
 				
-						// Обрабатываем только активную радиокнопку
+						//
 						if( !radio.is( '.disabled' ) )
-						{			
+						{
+							// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
+							var findElement = radio.closest( opt.wrapper )
+													.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
+				
+							// ... если не нашли - ищем по родителям
+							if( findElement.length <= 0 )
+							{
+								findElement = radio.closest( '#' + el.attr( 'name' ) )
+													.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
+							}
+				
+							// ... или же по всему документу
+							if( findElement.length <= 0 )
+							{
+								findElement = $( 'body' ).find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
+							}
+				
+							// Снимаем отметку с найденного блока
+							findElement.prop( 'checked', false )
+										.parent( ).removeClass( 'checked' );
+				
+							// Отмечаем 
+							el.prop( 'checked', true )
+									.parent( ).addClass( 'checked' );
+							
 							// Передаём фокус и вызываем событие - изменения
-							el.focus( )
-								.change( );
+							el.focus( ).change( );
 						}
 					} );
 					
@@ -320,35 +348,7 @@
 					// Переключение стрелками
 					el.on( 'change.' + pluginName, function( )
 					{
-						if( radio.is( '.disabled' ) )
-						{
-							return;
-						}
-						
-						// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
-						var findElement = radio.closest( opt.wrapper )
-												.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
-				
-						// ... если не нашли - ищем по родителям
-						if( findElement.length <= 0 )
-						{
-							findElement = radio.closest( '#' + el.attr( 'name' ) )
-												.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
-						}
-				
-						// ... или же по всему документу
-						if( findElement.length <= 0 )
-						{
-							findElement = $( 'body' ).find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
-						}
-				
-						// Снимаем отметку с найденного блока
-						findElement.prop( 'checked', false )
-									.parent( ).removeClass( 'checked' );			
-				
-						// Отмечаем 
-						el.prop( 'checked', true )
-								.parent( ).addClass( 'checked' );
+						el.parent( ).addClass( 'checked' );
 					} )
 					// Обработка наведения фокуса
 					.on( 'focus.' + pluginName, function( )
