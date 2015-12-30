@@ -987,7 +987,6 @@ var selectboxOutput = function( )
 	{
 		doSelect( );
 	}
-
 };
 
 // Стилизируем компонент

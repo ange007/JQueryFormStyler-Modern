@@ -7,6 +7,7 @@
 		{
 			if( $( 'div.' + classPrefix + 'selectbox.opened' ).length )
 			{
+				//
 				var selectbox = $( 'div.' + classPrefix + 'selectbox.opened' ),
 					search = $( 'div.' + classPrefix + 'selectbox__search input', selectbox ),
 					dropdown = $( 'div.' + classPrefix + 'selectbox__dropdown', selectbox ),
@@ -15,14 +16,17 @@
 				// колбек при закрытии селекта
 				opt.onSelectClosed.call( selectbox );
 
+				//
 				if( search.length )
 				{
 					search.val( '' ).keyup( );
 				}
 				
+				//
 				dropdown.hide( )
 						.find( 'li.sel' ).addClass( 'selected' );
 				
+				//
 				selectbox.removeClass( 'focused opened dropup dropdown' );
 			}
 		}

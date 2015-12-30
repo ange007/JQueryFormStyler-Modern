@@ -120,7 +120,9 @@ var numberOutput = function( )
 			number.removeClass( 'focused' );
 		} );
 	}
-
+	
+	// Мы установили стиль, уведомляем об изменении
+	el.change( );
 }; 
 
 // Стилизируем компонент
@@ -132,9 +134,6 @@ el.on( 'refresh', function( )
 	// Убираем стилизацию компонента
 	el.off( '.' + pluginName )
 		.closest( '.' + classPrefix + 'number' ).before( el ).remove( );
-
-	// Если мы перезагрузили стиль блока - видимо его состояние изменилось
-	el.change( );
 
 	// Стилизируем компонент снова
 	numberOutput( );

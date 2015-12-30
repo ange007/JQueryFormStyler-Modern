@@ -86,7 +86,9 @@ var fileOutput = function( )
 	{
 		file.removeClass( 'focused' );
 	} );
-
+	
+	// Мы установили стиль, уведомляем об изменении
+	el.change( );
 };
 
 // Стилизируем компонент
@@ -98,10 +100,7 @@ el.on( 'refresh', function( )
 	// Убираем стилизацию компонента
 	el.off( '.' + pluginName )
 		.parent( ).before( el ).remove( );
-	
-	// Если мы перезагрузили стиль блока - видимо его состояние изменилось
-	el.change( );
-	
+		
 	// Стилизируем компонент снова
 	fileOutput( );
 } );
