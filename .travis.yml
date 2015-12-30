@@ -19,8 +19,7 @@ before_script:
   - npm install -g gulp
 
 script: 
-  - gulp clean && gulp build
-  - gulp build:min
+  - gulp clean && gulp build && gulp build:min
 
 after_success:
   - DIST_PATH=$TRAVIS_BUILD_DIR/actual
@@ -30,13 +29,14 @@ after_success:
   - cd $TRAVIS_BUILD_DIR;
   # копируем в неё репозиторий
   - git clone $REPO_URL actual;
-  # переходим обратно в верхнюю директорию
+  # переходим в скопированный репозиторий, переходим в нужную ветку и чистим файлы
   - cd $DIST_PATH && git checkout gh-pages && rm -rf *;
+  # перемещаем файлы
   - cp -rp $TRAVIS_BUILD_DIR/demo/* $DIST_PATH
-  #- cd $TRAVIS_BUILD_DIR && npm run build;
-  # Переходим в директорию добавляе коммит
+  - cp -rp $TRAVIS_BUILD_DIR/build/* $DIST_PATH
+  # переходим в директорию добавляе коммит
   - cd $DIST_PATH && git add -A && git commit -am "Travis build $TRAVIS_BUILD_NUMBER";
-  # Отправляем коммит
+  # отправляем коммит
   - git push $REPO_URL gh-pages;
 
 #after_script:    
