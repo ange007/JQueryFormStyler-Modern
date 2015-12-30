@@ -26,7 +26,7 @@ script:
   - gulp build:min
 
 after_success:
-  - if [[ $TRAVIS_BRANCH == "master" ]] && [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
+  - if [[ $TRAVIS_PULL_REQUEST == "false" ]]; then
       cd $DIST_PATH;
       git clone $REPO_URL dist;
       cd $DIST_PATH && git checkout gh-pages && rm -rf *;
