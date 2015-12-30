@@ -53,7 +53,7 @@ var bundles =
 	},
 	
 	min: {
-		fileSuffix: 'min',
+		fileSuffix: '.min',
 		compress: true,
 		path: 'min/'
 	}
