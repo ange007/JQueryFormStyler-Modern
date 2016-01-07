@@ -1,0 +1,66 @@
+.#{$prefix}file {
+	width: 270px;
+	border-radius: 4px;
+	box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+
+.#{$prefix}file input {
+	height: auto;
+	line-height: 1em;
+	cursor: pointer;
+}
+
+.#{$prefix}file__name {
+	overflow: hidden;
+	box-sizing: border-box;
+	width: 100%;
+	height: 34px;
+	padding: 0 80px 0 10px;
+	border: 1px solid #CCC;
+	border-bottom-color: #B3B3B3;
+	border-radius: 4px;
+	background: #FFF;
+	box-shadow: inset 1px 1px #F1F1F1;
+	font: 14px/32px Arial, sans-serif;
+	color: #333;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.#{$prefix}file__browse {
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	padding: 0 10px;
+	border-left: 1px solid #CCC;
+	border-radius: 0 4px 4px 0;
+	background: #F5F5F5;
+	background: linear-gradient(#FFF, #E6E6E6);
+	box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
+	font: 14px/32px Arial, sans-serif;
+	color: #333;
+	text-shadow: 1px 1px #FFF;
+}
+
+.#{$prefix}file:hover .#{$prefix}file__browse {
+	background: #E6E6E6;
+	background: linear-gradient(#F6F6F6, #E6E6E6);
+}
+
+.#{$prefix}file:active .#{$prefix}file__browse {
+	background: #F5F5F5;
+	box-shadow: inset 1px 1px 3px #DDD;
+}
+
+.#{$prefix}file.focused .#{$prefix}file__name {
+	border: 1px solid #5794BF;
+}
+
+.#{$prefix}file.disabled,
+.#{$prefix}file.disabled .#{$prefix}file__name,
+.#{$prefix}file.disabled .#{$prefix}file__browse {
+	border-color: #CCC;
+	background: #F5F5F5;
+	box-shadow: none;
+	color: #888;
+}

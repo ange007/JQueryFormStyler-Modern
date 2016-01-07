@@ -1,0 +1,28 @@
+{
+  "name": "ange007/formstyler-modern",
+  "description": "jQuery плагин для стилизации элементов форм",
+  "keywords": [
+    "jquery",
+    "formstyler",
+    "form",
+    "styler",
+    "select",
+    "checkbox",
+    "radio",
+    "file"
+  ],
+  "homepage": "https://github.com/ange007/JQueryFormStyler-Modern",
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/ange007/JQueryFormStyler-Modern/issues",
+    "source": "https://github.com/ange007/JQueryFormStyler-Modern"
+  },
+  "authors": [
+    {
+      "name": "Vladimir B"
+    }
+  ],
+  "dependencies": {
+    "components/jquery": "^1.8"
+  }
+}
