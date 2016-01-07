@@ -1,11 +1,12 @@
 {
   "name": "ange007/formstyler-modern",
   "description": "jQuery плагин для стилизации элементов форм",
+  "type": "library",
   "keywords": [
+    "javascript",
     "jquery",
     "formstyler",
     "form",
-    "styler",
     "select",
     "checkbox",
     "radio",
@@ -22,7 +23,7 @@
       "name": "Vladimir B"
     }
   ],
-  "dependencies": {
-    "components/jquery": "^1.8"
+  "require": {
+    "components/jquery": "^1.8.3 || ^2.0.0"
   }
 }
