@@ -1,10 +1,13 @@
-# jQuery FormStyler Modern  [![Build Status](https://travis-ci.org/ange007/JQueryFormStylerModern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStylerModern)
-**Форк плагина для стилизации элементов HTML-форм.**
+# jQuery FormStyler Modern  [![Build Status](https://travis-ci.org/ange007/JQueryFormStyler-Modern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStyler-Modern)
+>Ответвление от плагина **jQueryFormStyler** 
+*( оригинальный плагин: https://github.com/Dimox/jQueryFormStyler )*
 
-*Оригинальный плагин: https://github.com/Dimox/jQueryFormStyler*
+- [Страница с примерами](http://ange007.github.io/JQueryFormStyler-Modern/)
+- [Список изменений](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGES.md)
+- [Скачать](https://github.com/ange007/JQueryFormStyler-Modern/releases)
 
+## Описание
 jQuery-плагин для стилизации элементов HTML-форм:
-
 - `<input type="checkbox">`
 - `<input type="radio">`
 - `<input type="file">`
@@ -12,16 +15,10 @@ jQuery-плагин для стилизации элементов HTML-форм
 - `<select>`
 
 ## Структурные отличия от репозитория оригинала:
-
-- Разделение на dev и master ветки
+- Разделение на **dev** и **master** ветки
 - Разбивка плагина на части
-- Cборка проекта при помощи Gulp
-- Автоматизация сборки через Travis-CI ***(в планах)***
-
-## [Список изменений и планов](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGES.md)
+- Cборка проекта при помощи **Gulp**
+- Автоматизация сборки через **Travis-CI**
 
 ## Ссылки
 - [Оригинальный плагин](https://github.com/Dimox/jQueryFormStyler/)
-- [Страница с примерами оригинального плагина](http://dimox.github.io/jQueryFormStyler/demo/)
-- [Домашняя страница оригинального плагина](http://dimox.name/jquery-form-styler/)
-- [Оригинальный плагин в CDN jsDelivr](http://www.jsdelivr.com/#!jquery.formstyler)

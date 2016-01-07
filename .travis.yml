@@ -1,11 +1,62 @@
 language: node_js
+
 node_js:
   - 0.12
-before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  
+env:
+    global:
+        - GIT_NAME=ange007
+        - GIT_EMAIL=ange007@users.noreply.github.com
+        - GIT_DOMAIN=github.com
+        - REPO_URL=https://$OAuth@$GIT_DOMAIN/$TRAVIS_REPO_SLUG.git
+
+#before_install:
+#  - export CHROME_BIN=chromium-browser
+#  - export DISPLAY=:99.0
+#  - sh -e /etc/init.d/xvfb start
+
 before_script:
   - npm install -g gulp
-script: gulp clean && gulp build
+
+script: 
+  - gulp clean && gulp build && gulp build:min
+
+after_success:
+  - DIST_PATH=$TRAVIS_BUILD_DIR/actual
+  - git config --global user.name "$GIT_NAME"
+  - git config --global user.email "$GIT_EMAIL"    
+  # переходим в директорию
+  - cd $TRAVIS_BUILD_DIR;
+  # копируем в неё репозиторий
+  - git clone $REPO_URL actual;
+  # переходим в скопированный репозиторий, переходим в нужную ветку и чистим файлы
+  - cd $DIST_PATH && git checkout gh-pages && rm -rf *;
+  # перемещаем файлы
+  - cp -rp $TRAVIS_BUILD_DIR/demo/* $DIST_PATH
+  - cp -rp $TRAVIS_BUILD_DIR/build/ $DIST_PATH
+  # переходим в директорию добавляе коммит
+  - cd $DIST_PATH && git add -A && git commit -am "Travis build $TRAVIS_BUILD_NUMBER";
+  # отправляем коммит
+  - git push $REPO_URL gh-pages;
+
+#after_script:    
+
+deploy:
+  provider: releases
+  api_key: $OAuth
+  file:
+    - $TRAVIS_BUILD_DIR/build/jquery.formStylerModern.js
+    - $TRAVIS_BUILD_DIR/build/jquery.formStylerModern.css
+    - $TRAVIS_BUILD_DIR/build/min/jquery.formStylerModern.min.js
+    - $TRAVIS_BUILD_DIR/build/min/jquery.formStylerModern.css
+  skip_cleanup: true
+  on:
+    repo: ange007/JQueryFormStyler-Modern
+    #branch: master
+    tags: true
+
 sudo: false
+
+cache:
+  directories:
+    - node_modules

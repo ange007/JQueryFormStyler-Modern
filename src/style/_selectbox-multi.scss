@@ -1,4 +1,4 @@
-.jq-select-multiple {
+.#{$prefix}select-multiple {
 	box-sizing: border-box;
 	padding: 1px;
 	border: 1px solid #CCC;
@@ -11,56 +11,56 @@
 	cursor: default;
 }
 
-.jq-select-multiple.focused {
+.#{$prefix}select-multiple.focused {
 	border: 1px solid #5794BF;
 }
 
-.jq-select-multiple.disabled {
+.#{$prefix}select-multiple.disabled {
 	border-color: #CCC;
 	background: #F5F5F5;
 	box-shadow: none;
 	color: #888;
 }
 
-.jq-select-multiple ul {
+.#{$prefix}select-multiple ul {
 	margin: 0;
 	padding: 0;
 }
 
-.jq-select-multiple li {
+.#{$prefix}select-multiple li {
 	padding: 3px 9px 4px;
 	list-style: none;
 	user-select: none;
 	white-space: nowrap;
 }
 
-.jq-select-multiple li:first-child {
+.#{$prefix}select-multiple li:first-child {
 	border-radius: 3px 3px 0 0;
 }
 
-.jq-select-multiple li:last-child {
+.#{$prefix}select-multiple li:last-child {
 	border-radius: 0 0 3px 3px;
 }
 
-.jq-select-multiple li.selected {
+.#{$prefix}select-multiple li.selected {
 	background: #08C;
 	color: #FFF;
 }
 
-.jq-select-multiple li.disabled {
+.#{$prefix}select-multiple li.disabled {
 	color: #AAA;
 }
 
-.jq-select-multiple.disabled li.selected,
-.jq-select-multiple li.selected.disabled {
+.#{$prefix}select-multiple.disabled li.selected,
+.#{$prefix}select-multiple li.selected.disabled {
 	background: #CCC;
 	color: #FFF;
 }
 
-.jq-select-multiple li.optgroup {
+.#{$prefix}select-multiple li.optgroup {
 	font-weight: bold;
 }
 
-.jq-select-multiple li.option {
+.#{$prefix}select-multiple li.option {
 	padding-left: 25px;
 }

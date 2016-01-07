@@ -1,16 +1,16 @@
-.jq-file {
+.#{$prefix}file {
 	width: 270px;
 	border-radius: 4px;
 	box-shadow: 0 1px 2px rgba(0,0,0,.1);
 }
 
-.jq-file input {
+.#{$prefix}file input {
 	height: auto;
 	line-height: 1em;
 	cursor: pointer;
 }
 
-.jq-file__name {
+.#{$prefix}file__name {
 	overflow: hidden;
 	box-sizing: border-box;
 	width: 100%;
@@ -27,7 +27,7 @@
 	text-overflow: ellipsis;
 }
 
-.jq-file__browse {
+.#{$prefix}file__browse {
 	position: absolute;
 	top: 1px;
 	right: 1px;
@@ -42,23 +42,23 @@
 	text-shadow: 1px 1px #FFF;
 }
 
-.jq-file:hover .jq-file__browse {
+.#{$prefix}file:hover .#{$prefix}file__browse {
 	background: #E6E6E6;
 	background: linear-gradient(#F6F6F6, #E6E6E6);
 }
 
-.jq-file:active .jq-file__browse {
+.#{$prefix}file:active .#{$prefix}file__browse {
 	background: #F5F5F5;
 	box-shadow: inset 1px 1px 3px #DDD;
 }
 
-.jq-file.focused .jq-file__name {
+.#{$prefix}file.focused .#{$prefix}file__name {
 	border: 1px solid #5794BF;
 }
 
-.jq-file.disabled,
-.jq-file.disabled .jq-file__name,
-.jq-file.disabled .jq-file__browse {
+.#{$prefix}file.disabled,
+.#{$prefix}file.disabled .#{$prefix}file__name,
+.#{$prefix}file.disabled .#{$prefix}file__browse {
 	border-color: #CCC;
 	background: #F5F5F5;
 	box-shadow: none;

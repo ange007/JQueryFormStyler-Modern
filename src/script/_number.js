@@ -1,7 +1,7 @@
-var numberOutput = function()
+var numberOutput = function( )
 {
 	// Инициализируем переменные
-	var number = $( '<div class="jq-number"><div class="jq-number__spin minus"></div><div class="jq-number__spin plus"></div></div>' ),
+	var number = $( '<div class="' + classPrefix + 'number"><div class="' + classPrefix + 'number__spin minus"></div><div class="' + classPrefix + 'number__spin plus"></div></div>' ),
 		min,
 		max,
 		step,
@@ -9,9 +9,9 @@ var numberOutput = function()
 		interval = null;
 	
 	// Добавляем нужные блоки
-	el.after( number ).prependTo( number ).wrap( '<div class="jq-number__field"></div>' );
+	el.after( number ).prependTo( number ).wrap( '<div class="' + classPrefix + 'number__field"></div>' );
 
-		//
+	// Обработка "неактивности"
 	if( el.is( ':disabled' ) )
 	{
 		number.addClass( 'disabled' );
@@ -36,7 +36,7 @@ var numberOutput = function()
 		step = Number( 1 );
 	}
 
-	// 
+	// Изменение значения
 	var changeValue = function( spin )
 	{
 		var value = el.val( ),
@@ -93,45 +93,48 @@ var numberOutput = function()
 		}
 	};
 
-	// 
+	// Обработчики в случае "активности" компонента
 	if( !number.is( '.disabled' ) )
 	{
-		number.on( 'mousedown', 'div.jq-number__spin', function( )
+		// Обработка клика на компонент
+		number.on( 'mousedown', 'div.' + classPrefix + 'number__spin', function( )
 		{
 			var spin = $( this );
 			changeValue( spin );
 			
 			timeout = setTimeout( function( ) { interval = setInterval( function( ) { changeValue( spin ); }, 40 ); }, 350 );
 		} )
-		//
-		.on( 'mouseup mouseout', 'div.jq-number__spin', function( )
+		.on( 'mouseup mouseout', 'div.' + classPrefix + 'number__spin', function( )
 		{
 			clearTimeout( timeout );
 			clearInterval( interval );
 		} );
 		
-		//
-		el.on( 'focus.styler', function()
+		// Фокусировка
+		el.on( 'focus.' + pluginName, function( )
 		{
 			number.addClass( 'focused' );
 		} )
-		.on( 'blur.styler', function()
+		.on( 'blur.' + pluginName, function( )
 		{
 			number.removeClass( 'focused' );
 		} );
 	}
-
+	
+	// Мы установили стиль, уведомляем об изменении
+	el.change( );
 }; 
 
-//
+// Стилизируем компонент
 numberOutput( );
 
 // Обновление при динамическом изменении
-el.on( 'refresh', function()
+el.on( 'refresh', function( )
 {
-	el.off( '.styler' )
-		.closest( '.jq-number' ).before( el ).remove();
+	// Убираем стилизацию компонента
+	el.off( '.' + pluginName )
+		.closest( '.' + classPrefix + 'number' ).before( el ).remove( );
 
-	//
-	numberOutput();
+	// Стилизируем компонент снова
+	numberOutput( );
 } );
