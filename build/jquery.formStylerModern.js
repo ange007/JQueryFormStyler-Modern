@@ -1,6 +1,6 @@
 /**
  * JQueryFormStylerModern - Плагин для стилизации элементов HTML-форм.
- * @version v1.0.5
+ * @version v1.1.5
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
  * @author Borisenko V. ( автор оригинального плагина: Dimox, http://dimox.name/ )
@@ -246,8 +246,9 @@
 				el.on( 'refresh', function( )
 				{
 					//
-					el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' )
-										.off( '.' + pluginName );
+					el.closest( 'label' )
+						.add( 'label[for="' + el.attr( 'id' ) + '"]' )
+						.off( '.' + pluginName );
 				
 					// Убираем стилизацию компонента
 					el.off( '.' + pluginName )
@@ -296,35 +297,9 @@
 					// Клик по псевдоблоку
 					radio.click( function( e )
 					{
+						//
 						e.preventDefault( );
 				
-						// Обрабатываем только активную радиокнопку
-						if( !radio.is( '.disabled' ) )
-						{			
-							// Передаём фокус и вызываем событие - изменения
-							el.focus( )
-								.change( );
-						}
-					} );
-					
-					// Клик на label
-					el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).on( 'click.' + pluginName, function( e )
-					{
-						if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( radio ).length )
-						{
-							radio.triggerHandler( 'click' );
-							e.preventDefault( );
-						}
-					} );
-					
-					// Переключение стрелками
-					el.on( 'change.' + pluginName, function( )
-					{
-						if( radio.is( '.disabled' ) )
-						{
-							return;
-						}
-						
 						// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
 						var findElement = radio.closest( opt.wrapper )
 												.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
@@ -346,21 +321,58 @@
 						findElement.prop( 'checked', false )
 									.parent( ).removeClass( 'checked' );			
 				
-						// Отмечаем 
-						el.prop( 'checked', true )
-								.parent( ).addClass( 'checked' );
+						// Обрабатываем только активную радиокнопку
+						if( !radio.is( '.disabled' ) )
+						{
+							// Передаём фокус и вызываем событие - изменения
+							el.prop( 'checked', true )
+								.focus( )
+								.change( );
+						}
+					} );
+						
+					// Переключение стрелками
+					el.on( 'change.' + pluginName, function( e )
+					{
+						if( !el.is( ':disabled' ) )
+						{
+							if( $( this ).is(':checked') )
+							{
+								el.parent( )
+									.addClass( 'checked' );
+							}
+							else
+							{
+								el.parent( )
+									.removeClass( 'checked' );
+							}
+						}
+						
 					} )
 					// Обработка наведения фокуса
 					.on( 'focus.' + pluginName, function( )
 					{
 						if( !radio.is( '.disabled' ) )
-				
+						{
 							radio.addClass( 'focused' );
+						}
 					} )
 					// Обработка снятия фокуса
 					.on( 'blur.' + pluginName, function( )
 					{
 						radio.removeClass( 'focused' );
+					} );
+					
+					// Клик на label
+					el.closest( 'label' )
+						.add( 'label[for="' + el.attr( 'id' ) + '"]' )
+						.on( 'click.' + pluginName, function( e )
+					{
+						if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( radio ).length )
+						{
+							radio.triggerHandler( 'click' );
+							e.preventDefault( );
+						}
 					} );
 					
 					// Мы установили стиль, уведомляем об изменении
@@ -374,7 +386,9 @@
 				el.on( 'refresh', function( )
 				{
 					//
-					el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).off( '.' + pluginName );
+					el.closest( 'label' )
+						.add( 'label[for="' + el.attr( 'id' ) + '"]' )
+						.off( '.' + pluginName );
 				
 					// Убираем стилизацию компонента
 					el.off( '.' + pluginName )
