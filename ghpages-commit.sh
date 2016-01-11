@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 DIST_PATH=${TRAVIS_BUILD_DIR}/gh-pages
 # переходим в директорию
 cd ${TRAVIS_BUILD_DIR};

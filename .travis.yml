@@ -21,8 +21,8 @@ env:
 
 before_script:
   - npm install -g gulp
-  - chmod a+x ${TRAVIS_BUILD_DIR}/build-commit.sh
-  - chmod a+x ${TRAVIS_BUILD_DIR}/ghpages-commit.sh
+  #- chmod a+x ${TRAVIS_BUILD_DIR}/build-commit.sh
+  #- chmod a+x ${TRAVIS_BUILD_DIR}/ghpages-commit.sh
 
 script: 
   - gulp clean && gulp build && gulp build:min
