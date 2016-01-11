@@ -28,6 +28,8 @@
   ],
   "ignore": [
     "**/.*",
+    "node_modules",
+    "bower_components",
     "*.txt",
     "src",
 	"demo"
