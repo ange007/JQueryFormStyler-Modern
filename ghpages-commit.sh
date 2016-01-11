@@ -7,8 +7,8 @@ git clone ${REPO_URL} gh-pages;
 # переходим в скопированный директорию репозитория, переключаемся в нужную ветку и чистим файлы
 cd ${DIST_PATH} && git checkout gh-pages && rm -rf *;
 # перемещаем файлы
-cp -rp ${TRAVIS_BUILD_DIR}/demo/* ${DIST_PATH}
-cp -rp ${TRAVIS_BUILD_DIR}/build/ ${DIST_PATH}
+cp -rp ${TRAVIS_BUILD_DIR}/demo/* ${DIST_PATH};
+cp -rp ${TRAVIS_BUILD_DIR}/build/ ${DIST_PATH};
 # переходим в директорию добавляе коммит
 cd ${DIST_PATH} && git add -A && git commit -am "Travis build ${TRAVIS_BUILD_NUMBER}";
 # отправляем коммит
