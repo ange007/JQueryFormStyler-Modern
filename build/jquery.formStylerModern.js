@@ -1,9 +1,9 @@
 /**
- * JQueryFormStylerModern - Плагин для стилизации элементов HTML-форм.
+ * jquery-formstyler-modern - JQuery HTML form styling plugin
  * @version v1.1.5
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
- * @author Borisenko V. ( автор оригинального плагина: Dimox, http://dimox.name/ )
+ * @author Borisenko Vladimir ( original: Dimox <http://dimox.name/> )
  */
 
 ;( function( factory )
@@ -1698,7 +1698,9 @@
 					.removeAttr( 'style' )
 					.parent( ).before( el ).remove( );
 			
-				el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).off( '.' + pluginName );
+				el.closest( 'label' )
+					.add( 'label[for="' + el.attr( 'id' ) + '"]' )
+					.off( '.' + pluginName );
 			}
 			//
 			else if( el.is( 'input[type="number"]' ) )
