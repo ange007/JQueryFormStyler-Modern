@@ -37,30 +37,30 @@ var radioOutput = function( )
 		//
 		e.preventDefault( );
 
-		// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
-		var findElement = radio.closest( opt.wrapper )
-								.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
-
-		// ... если не нашли - ищем по родителям
-		if( findElement.length <= 0 )
-		{
-			findElement = radio.closest( '#' + el.attr( 'name' ) )
-								.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
-		}
-
-		// ... или же по всему документу
-		if( findElement.length <= 0 )
-		{
-			findElement = $( 'body' ).find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
-		}
-
-		// Снимаем отметку с найденного блока
-		findElement.prop( 'checked', false )
-					.parent( ).removeClass( 'checked' );			
-
 		// Обрабатываем только активную радиокнопку
 		if( !radio.is( '.disabled' ) )
 		{
+			// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
+			var findElement = radio.closest( opt.wrapper )
+								.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
+
+			// ... если не нашли - ищем по родителям
+			if( findElement.length <= 0 )
+			{
+				findElement = radio.closest( '#' + el.attr( 'name' ) )
+								.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
+			}
+
+			// ... или же по всему документу
+			if( findElement.length <= 0 )
+			{
+				findElement = $( 'body' ).find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
+			}
+
+			// Снимаем отметку с найденного блока
+			findElement.prop( 'checked', false )
+					.parent( ).removeClass( 'checked' );			
+
 			// Передаём фокус и вызываем событие - изменения
 			el.prop( 'checked', true )
 				.focus( )
