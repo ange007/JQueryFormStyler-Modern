@@ -12,6 +12,6 @@ cd ${DIST_PATH} && git checkout gh-pages && rm -rf *;
 cp -rp ${TRAVIS_BUILD_DIR}/demo/* ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/build/ ${DIST_PATH};
 # переходим в директорию добавляе коммит
-cd ${DIST_PATH} && git add -A && git commit -am "Travis build ${TRAVIS_BUILD_NUMBER}";
+cd ${DIST_PATH} && git add -A && git commit -am "Автоматическая сборка (${TRAVIS_BUILD_NUMBER})";
 # отправляем коммит
 git push ${REPO_URL} gh-pages;
