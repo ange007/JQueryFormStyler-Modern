@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 DIST_PATH=${TRAVIS_BUILD_DIR}/build
-git config --global user.name "${GIT_NAME}"
-git config --global user.email "${GIT_EMAIL}"
+# переходим в директорию
+cd ${TRAVIS_BUILD_DIR};
 # переключаемся в текущую ветку
 git checkout ${TRAVIS_BRANCH}
 # переходим в директорию добавляе коммит
