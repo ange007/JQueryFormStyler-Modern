@@ -10,6 +10,7 @@ var gulp = require( 'gulp' ),
 	replace = require('gulp-replace'),
 	watch = require( 'gulp-watch' ),
 	debug = require( 'gulp-debug' ),
+	sync = require( 'gulp-config-sync' ),
 	header = require('gulp-header'),
 	rimraf = require( 'rimraf' ),
 	rigger = require( 'gulp-rigger' ),
@@ -70,6 +71,31 @@ var bundle = bundles[ 'dev' ];
 gulp.task( 'clean', function( )
 {  
     return rimraf.sync( paths.build.main + '/**' );
+} );
+
+// Синхронизация изменений конфигураций для bower и сomposer
+gulp.task( 'config:sync', function( )
+{
+	var options = 
+	{
+		fields: [
+			'version',
+			'description',
+			'keywords',
+			'repository',
+			'license',
+			{
+				from: 'contributors',
+				to: 'authors'
+			}
+		],
+		space: '  '
+	};
+	
+	//
+	gulp.src( [ 'bower.json', 'composer.json' ] )
+		.pipe( sync( options ) ) // Синхронизируем данные
+		.pipe( gulp.dest( '.' ) );
 } );
 
 // Задача обработки скриптов библиотеки
