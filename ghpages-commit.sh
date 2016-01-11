@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
 # encoding: utf-8
 
-DIST_PATH=${TRAVIS_BUILD_DIR}/gh-pages
+DIST_PATH=${TRAVIS_BUILD_DIR}/actual-gh-pages
 # переходим в директорию
 cd ${TRAVIS_BUILD_DIR};
 # копируем в неё репозиторий
-git clone ${REPO_URL} gh-pages;
+git clone ${REPO_URL} actual-gh-pages;
 # переходим в скопированный директорию репозитория, переключаемся в нужную ветку и чистим файлы
 cd ${DIST_PATH} && git checkout gh-pages && rm -rf *;
 # перемещаем файлы
