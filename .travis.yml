@@ -26,17 +26,17 @@ script:
   - gulp clean && gulp build && gulp build:min
 
 after_success: 
-  - ./build-commit.sh
-  - ./ghpages-commit.sh
+  - ${TRAVIS_BUILD_DIR}/build-commit.sh
+  - ${TRAVIS_BUILD_DIR}/ghpages-commit.sh
 
 deploy:
   provider: releases
   api_key: $OAuth
   file:
-    - $TRAVIS_BUILD_DIR/build/jquery.formStylerModern.js
-    - $TRAVIS_BUILD_DIR/build/jquery.formStylerModern.css
-    - $TRAVIS_BUILD_DIR/build/min/jquery.formStylerModern.min.js
-    - $TRAVIS_BUILD_DIR/build/min/jquery.formStylerModern.css
+    - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.js
+    - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.css
+    - ${TRAVIS_BUILD_DIR}/build/min/jquery.formStylerModern.min.js
+    - ${TRAVIS_BUILD_DIR}/build/min/jquery.formStylerModern.css
   skip_cleanup: true
   on:
     repo: ange007/JQueryFormStyler-Modern
