@@ -1,21 +1,19 @@
+
+/* Стили */
+
 .#{$prefix}radio {
-	top: -1px;
-	vertical-align: middle;
-	width: 16px;
-	height: 16px;
-	margin: 0 4px 0 0;
 	border: 1px solid #C3C3C3;
 	border-radius: 50%;
 	background: #F5F5F5;
 	background: linear-gradient(#FFF, #E6E6E6);
 	box-shadow: 0 1px 1px rgba(0,0,0,.05), inset -1px -1px #FFF, inset 1px -1px #FFF;
-	cursor: pointer;
+}
+
+.#{$prefix}radio:not(.disabled):hover {
+	border-color: gray;
 }
 
 .#{$prefix}radio.checked .#{$prefix}radio__div {
-	width: 10px;
-	height: 10px;
-	margin: 3px 0 0 3px;
 	border-radius: 50%;
 	background: #777;
 	box-shadow: inset 1px 1px 1px rgba(0,0,0,.7);
@@ -25,6 +23,28 @@
 	border: 1px solid #08C;
 }
 
+/* Каркас */
+
+.#{$prefix}radio {
+	top: -1px;
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+	margin: 0 4px 0 0;
+	cursor: pointer;
+}
+
+.#{$prefix}radio.checked .#{$prefix}radio__div {
+	width: 10px;
+	height: 10px;
+	margin: 3px 0 0 3px;
+}
+
+.#{$prefix}radio.focused {
+
+}
+
 .#{$prefix}radio.disabled {
 	opacity: .55;
+	cursor: default;
 }
