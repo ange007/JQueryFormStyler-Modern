@@ -23,8 +23,8 @@
     "file"
   ],
   "main": [
-    "/build/jquery.formStylerModern.js",
-    "/build/jquery.formStylerModern.css"
+    "jquery.formStylerModern.js",
+    "jquery.formStylerModern.css"
   ],
   "ignore": [
     "**/.*",
@@ -43,5 +43,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ange007/JQueryFormStyler-Modern.git"
+  },
+  "dependencies": {
+    "jquery": "~1.8.3"
   }
 }
