@@ -20,7 +20,7 @@ cd ${DIST_PATH} && git add -A && git commit -am "Автоматическая с
 # создаём тег и отправляем коммит
 if [ "$TRAVIS_BRANCH" == "master" ] 
 then 
-	git tag -a v${VERS} -m "Релиз версии ${VERS}"; 
+	git tag -a "v${VERS}" -m "Релиз версии ${VERS}"; 
 	git push ${REPO_URL} release --tags;
 fi
 # или просто отправляем коммит
