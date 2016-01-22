@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # encoding: utf-8
-
+ 
 DIST_PATH=${TRAVIS_BUILD_DIR}/actual-release
 # переходим в директорию
 cd ${TRAVIS_BUILD_DIR};
