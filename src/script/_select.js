@@ -28,7 +28,7 @@ var selectboxOutput = function( )
 	var option = $( 'option', el ),
 		list = '';
 	
-	// формируем список селекта
+	// Формируем список селекта
 	function makeList( )
 	{
 		for( var i = 0; i < option.length; i++ )
@@ -343,9 +343,9 @@ var selectboxOutput = function( )
 			// Фокусируем
 			el.focus( );
 
-			// если iOS, то не показываем выпадающий список,
+			// Если iOS, то не показываем выпадающий список,
 			// т.к. отображается нативный и неизвестно, как его спрятать
-			if( iOS )
+			if( Android || iOS )
 			{
 				return;
 			}
@@ -439,14 +439,14 @@ var selectboxOutput = function( )
 
 			if( selectSmartPositioning === true || selectSmartPositioning === 1 )
 			{
-				// раскрытие вниз
+				// Раскрытие вниз
 				if( bottomOffset > ( minHeight + searchHeight + 20 ) )
 				{
 					dropDown( );
 					selectbox.removeClass( 'dropup' ).addClass( 'dropdown' );
 					
 				} 
-				// раскрытие вверх
+				// Раскрытие вверх
 				else
 				{
 					dropUp( );
@@ -455,7 +455,7 @@ var selectboxOutput = function( )
 			} 
 			else if( selectSmartPositioning === false || selectSmartPositioning === 0 )
 			{
-				// раскрытие вниз
+				// Раскрытие вниз
 				if( bottomOffset > ( minHeight + searchHeight + 20 ) )
 				{
 					dropDown( );
@@ -463,7 +463,7 @@ var selectboxOutput = function( )
 				}
 			}
 
-			// если выпадающий список выходит за правый край окна браузера,
+			// Если выпадающий список выходит за правый край окна браузера,
 			// то меняем позиционирование с левого на правое
 			if( selectbox.offset( ).left + dropdown.outerWidth( ) > win.width( ) )
 			{
@@ -507,15 +507,19 @@ var selectboxOutput = function( )
 			// Поисковое поле
 			if( search.length )
 			{
+				// Сбрасываем значение и начинаем поиск
 				search.val( '' )
 						.keyup( );
 				
+				// Прячем блок "не найдено"
 				notFound.hide( );
 				
+				// Начинаем поиск после "отжатия кнопки"
 				search.keyup( function( )
 				{
 					var query = $( this ).val( );
 					
+					// Проходим по содержимому
 					li.each( function( )
 					{
 						if( !$( this ).html( ).match( new RegExp( '.*?' + query + '.*?', 'i' ) ) )
@@ -528,7 +532,7 @@ var selectboxOutput = function( )
 						}
 					} );
 					
-					// прячем 1-ю пустую опцию
+					// Прячем 1-ю пустую опцию
 					if( option.first( ).text( ) === '' && el.data( 'placeholder' ) !== '' )
 					{
 						li.first( ).hide( );
@@ -545,7 +549,7 @@ var selectboxOutput = function( )
 				} );
 			}
 
-			// прокручиваем до выбранного пункта при открытии списка
+			// Прокручиваем до выбранного пункта при открытии списка
 			if( li.filter( '.selected' ).length )
 			{
 				if( el.val( ) === '' )
@@ -554,7 +558,7 @@ var selectboxOutput = function( )
 				}
 				else
 				{
-					// если нечетное количество видимых пунктов,
+					// Если нечетное количество видимых пунктов,
 					// то высоту пункта делим пополам для последующего расчета
 					if( ( ul.innerHeight( ) / liHeight ) % 2 !== 0 )
 					{
@@ -620,12 +624,13 @@ var selectboxOutput = function( )
 
 		} );
 		
+		//
 		dropdown.mouseout( function( )
 		{
 			$( 'li.sel', dropdown ).addClass( 'selected' );
 		} );
 
-		// изменение селекта
+		// Изменение селекта
 		el.on( 'change.' + pluginName, function( )
 		{
 			divText.text( option.filter( ':selected' ).text( ) )
@@ -634,7 +639,7 @@ var selectboxOutput = function( )
 			li.removeClass( 'selected sel' )
 				.not( '.optgroup' ).eq( el[0].selectedIndex ).addClass( 'selected sel' );
 			
-			// добавляем класс, показывающий изменение селекта
+			// Добавляем класс, показывающий изменение селекта
 			if( option.first( ).text( ) !== li.filter( '.selected' ).text( ) )
 			{
 				selectbox.addClass( 'changed' );
@@ -644,7 +649,7 @@ var selectboxOutput = function( )
 				selectbox.removeClass( 'changed' );
 			}
 		} )
-		//
+		// Фокусировка
 		.on( 'focus.' + pluginName, function( )
 		{
 			selectbox.addClass( 'focused' );
@@ -652,12 +657,12 @@ var selectboxOutput = function( )
 			$( 'div.jqselect' ).not( '.focused' ).removeClass( 'opened dropup dropdown' )
 								.find( 'div.' + classPrefix + 'selectbox__dropdown' ).hide( );
 		} )
-		//
+		// Расфокусировка
 		.on( 'blur.' + pluginName, function( )
 		{
 			selectbox.removeClass( 'focused' );
 		} )
-		// изменение селекта с клавиатуры
+		// Изменение селекта с клавиатуры
 		.on( 'keydown.' + pluginName + ' keyup.' + pluginName, function( e )
 		{
 			var liHeight = li.data( 'li-height' );
@@ -673,7 +678,7 @@ var selectboxOutput = function( )
 			
 			li.removeClass( 'selected sel' ).not( '.optgroup' ).eq( el[0].selectedIndex ).addClass( 'selected sel' );
 			
-			// вверх, влево, Page Up, Home
+			// Вверх, влево, Page Up, Home
 			if( e.which === 38 || e.which === 37 || e.which === 33 || e.which === 36 )
 			{
 				if( el.val( ) === '' )
@@ -685,27 +690,27 @@ var selectboxOutput = function( )
 					ul.scrollTop( ul.scrollTop( ) + li.filter( '.selected' ).position( ).top );
 				}
 			}
-			// вниз, вправо, Page Down, End
+			// Вниз, вправо, Page Down, End
 			if( e.which === 40 || e.which === 39 || e.which === 34 || e.which === 35 )
 			{
 				ul.scrollTop( ul.scrollTop( ) + li.filter( '.selected' ).position( ).top - ul.innerHeight( ) + liHeight );
 			}
 			
-			// закрываем выпадающий список при нажатии Enter
+			// Закрываем выпадающий список при нажатии Enter
 			if( e.which === 13 )
 			{
 				e.preventDefault( );
 				dropdown.hide( );
 				selectbox.removeClass( 'opened dropup dropdown' );
 				
-				// колбек при закрытии селекта
+				// Колбек при закрытии селекта
 				opt.onSelectClosed.call( selectbox );
 			}
 		} )
 		//
 		.on( 'keydown.' + pluginName, function( e )
 		{
-			// открываем выпадающий список при нажатии Space
+			// Открываем выпадающий список при нажатии Space
 			if( e.which === 32 )
 			{
 				e.preventDefault( );
@@ -713,7 +718,7 @@ var selectboxOutput = function( )
 			}
 		} );
 
-		// прячем выпадающий список при клике за пределами селекта
+		// Прячем выпадающий список при клике за пределами селекта
 		if( !onDocumentClick.registered )
 		{
 			$( document ).on( 'click', onDocumentClick );
