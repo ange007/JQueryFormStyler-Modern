@@ -23,8 +23,8 @@
     "file"
   ],
   "main": [
-    "build/jquery.formstyler.js",
-    "build/jquery.formstyler.css"
+    "/build/jquery.formStylerModern.js",
+    "/build/jquery.formStylerModern.css"
   ],
   "ignore": [
     "**/.*",
