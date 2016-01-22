@@ -156,7 +156,9 @@
 					.removeAttr( 'style' )
 					.parent( ).before( el ).remove( );
 			
-				el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' ).off( '.' + pluginName );
+				el.closest( 'label' )
+					.add( 'label[for="' + el.attr( 'id' ) + '"]' )
+					.off( '.' + pluginName );
 			}
 			//
 			else if( el.is( 'input[type="number"]' ) )

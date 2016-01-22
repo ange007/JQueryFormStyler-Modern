@@ -1,6 +1,16 @@
 {
-  "name": "ange007/formstyler-modern",
-  "description": "jQuery плагин для стилизации элементов форм",
+  "name": "ange007/jquery-formstyler-modern",
+  "version": "1.1.6",
+  "description": "JQuery HTML form styling plugin",
+  "homepage": "https://github.com/ange007/JQueryFormStyler-Modern",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Borisenko Vladimir",
+      "email": "ange007@users.noreply.github.com",
+      "url": "https://github.com/ange007/JQueryFormStyler-Modern/"
+    }
+  ],
   "type": "library",
   "keywords": [
     "javascript",

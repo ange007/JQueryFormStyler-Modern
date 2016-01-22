@@ -140,8 +140,9 @@ checkboxOutput( );
 el.on( 'refresh', function( )
 {
 	//
-	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' )
-						.off( '.' + pluginName );
+	el.closest( 'label' )
+		.add( 'label[for="' + el.attr( 'id' ) + '"]' )
+		.off( '.' + pluginName );
 
 	// Убираем стилизацию компонента
 	el.off( '.' + pluginName )
