@@ -2,7 +2,7 @@
 # encoding: utf-8
  
 DIST_PATH=${TRAVIS_BUILD_DIR}/actual-release
-VERS=$(cat package.json | jq '.version')
+VERS=$(cat package.json | jq --raw-output '.version')
 # переходим в директорию
 cd ${TRAVIS_BUILD_DIR};
 # копируем в неё репозиторий
