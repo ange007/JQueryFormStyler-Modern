@@ -28,9 +28,14 @@
   ],
   "ignore": [
     "**/.*",
+	".*",
+    "*.txt",
+	"*.json",
+	"*.md",
+	"gulpfile.js",
+	"LICENSE",
     "node_modules",
     "bower_components",
-    "*.txt",
     "src",
 	"demo"
   ],
