@@ -1,0 +1,41 @@
+{
+  "name": "jquery-formstyler-modern",
+  "version": "1.1.5",
+  "description": "JQuery HTML form styling plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Borisenko Vladimir",
+      "email": "ange007@users.noreply.github.com",
+      "url": "https://github.com/ange007/JQueryFormStyler-Modern/"
+    }
+  ],
+  "keywords": [
+    "javascript",
+    "jquery",
+    "formstyler",
+    "form",
+    "styler",
+    "modern",
+    "select",
+    "checkbox",
+    "radio",
+    "file"
+  ],
+  "main": [
+    "build/jquery.formstyler.js",
+    "build/jquery.formstyler.css"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "*.txt",
+    "src",
+	"demo"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ange007/JQueryFormStyler-Modern.git"
+  }
+}
