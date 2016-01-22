@@ -29,6 +29,7 @@ after_success:
   - git config --global user.name "${GIT_NAME}"
   - git config --global user.email "${GIT_EMAIL}"
   - ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh
+  - ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh
 
 deploy:
   provider: releases
