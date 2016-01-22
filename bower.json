@@ -1,6 +1,6 @@
 {
   "name": "jquery-formstyler-modern",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "JQuery HTML form styling plugin",
   "license": "MIT",
   "authors": [
@@ -32,7 +32,7 @@
     "bower_components",
     "*.txt",
     "src",
-	"demo"
+    "demo"
   ],
   "repository": {
     "type": "git",
