@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 # encoding: utf-8
  
 DIST_PATH=${TRAVIS_BUILD_DIR}/actual-release
@@ -24,7 +24,7 @@ then
 	git push ${REPO_URL} release --tags;
 fi
 # или просто отправляем коммит
-if [ "$TRAVIS_BRANCH" != "master" ]; 
+if [ "$TRAVIS_BRANCH" != "master" ]
 then 
 	git push ${REPO_URL} release;
 fi

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 # encoding: utf-8
 
 DIST_PATH=${TRAVIS_BUILD_DIR}/actual-gh-pages
