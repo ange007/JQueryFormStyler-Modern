@@ -1,6 +1,4 @@
 
-/* Стили */
-
 .#{$prefix}radio {
 	border: 1px solid #C3C3C3;
 	border-radius: 50%;
@@ -21,30 +19,4 @@
 
 .#{$prefix}radio.focused {
 	border: 1px solid #08C;
-}
-
-/* Каркас */
-
-.#{$prefix}radio {
-	top: -1px;
-	vertical-align: middle;
-	width: 16px;
-	height: 16px;
-	margin: 0 4px 0 0;
-	cursor: pointer;
-}
-
-.#{$prefix}radio.checked .#{$prefix}radio__div {
-	width: 10px;
-	height: 10px;
-	margin: 3px 0 0 3px;
-}
-
-.#{$prefix}radio.focused {
-
-}
-
-.#{$prefix}radio.disabled {
-	opacity: .55;
-	cursor: default;
 }

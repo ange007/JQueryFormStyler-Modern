@@ -1,12 +1,5 @@
-.#{$prefix}number {
-	position: relative;
-	display: inline-block;
-	vertical-align: middle;
-	padding: 0 36px 0 0;
-}
 
 .#{$prefix}number__field {
-	width: 100px;
 	border: 1px solid #CCC;
 	border-bottom-color: #B3B3B3;
 	border-radius: 4px;
@@ -14,54 +7,24 @@
 }
 
 .#{$prefix}number__field:hover {
-	border-color: #B3B3B3;
+	border-color: gray;
 }
 
 .#{$prefix}number__field input {
-	box-sizing: border-box;
-	width: 100%;
-	padding: 8px 9px;
-	border: none;
-	outline: none;
-	background: none;
-	font: 14px Arial, sans-serif;
 	color: #333;
-	text-align: left; /* для Opera Presto */
-	-moz-appearance: textfield;
-}
-
-.#{$prefix}number__field input::-webkit-inner-spin-button,
-.#{$prefix}number__field input::-webkit-outer-spin-button {
-	margin: 0; /* в каких-то браузерах присутствует отступ */
-	-webkit-appearance: none;
 }
 
 .#{$prefix}number__spin {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 32px;
-	height: 14px;
 	border: 1px solid #CCC;
 	border-bottom-color: #B3B3B3;
 	border-radius: 4px;
 	background: #F5F5F5;
-	background: linear-gradient(#FFF, #E6E6E6);
 	box-shadow: 0 1px 2px rgba(0,0,0,.1);
-	box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
-	user-select: none;
 	text-shadow: 1px 1px #FFF;
-	cursor: pointer;
-}
-
-.#{$prefix}number__spin.minus {
-	top: auto;
-	bottom: 0;
 }
 
 .#{$prefix}number__spin:hover {
 	background: #E6E6E6;
-	background: linear-gradient(#F6F6F6, #E6E6E6);
 }
 
 .#{$prefix}number__spin:active {
@@ -70,19 +33,12 @@
 }
 
 .#{$prefix}number__spin:after {
-	content: '';
-	position: absolute;
-	top: 4px;
-	left: 11px;
-	width: 0;
-	height: 0;
 	border-right: 5px solid transparent;
 	border-bottom: 5px solid #999;
 	border-left: 5px solid transparent;
 }
 
 .#{$prefix}number__spin.minus:after {
-	top: 5px;
 	border-top: 5px solid #999;
 	border-right: 5px solid transparent;
 	border-bottom: none;
@@ -98,7 +54,7 @@
 }
 
 .#{$prefix}number.focused .#{$prefix}number__field {
-	border: 1px solid #5794BF;
+	border: 1px solid gray;
 }
 
 .#{$prefix}number.disabled .#{$prefix}number__field,
