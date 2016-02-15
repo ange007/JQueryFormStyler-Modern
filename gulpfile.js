@@ -14,6 +14,7 @@ var gulp = require( 'gulp' ),
 	header = require('gulp-header'),
 	rimraf = require( 'rimraf' ),
 	rigger = require( 'gulp-rigger' ),
+	concat = require( 'gulp-concat' ),
 	uglify = require( 'gulp-uglify' ),
 	sass = require( 'gulp-sass' ),
 	cssmin = require( 'gulp-minify-css' ),
@@ -38,7 +39,12 @@ var paths =
 	src: { 
 		main: './src/',
 		script: './src/script/',
-		style: './src/style/'
+		frame: './src/frame/',
+		style: './src/style/',
+		styles: {
+			default: 'default/',
+			flat: 'flat/'
+		}
 	},
 	
 	build: './build/'
@@ -50,13 +56,15 @@ var bundles =
 	dev: {
 		fileSuffix: '',
 		compress: false,
-		path: ''
+		themePath: 'theme/',
+		mainPath: ''
 	},
 	
 	min: {
 		fileSuffix: '.min',
 		compress: true,
-		path: 'min/'
+		themePath: 'theme.min/',
+		mainPath: 'min/'
 	}
 };
 
@@ -103,7 +111,7 @@ gulp.task( 'js:build', function( )
 {
 	// Основные параметры
 	var fileName = params.fileName + bundle.fileSuffix + '.js',
-		path = paths.build + bundle.path;
+		path = paths.build + bundle.mainPath;
 	
 	// Формируем заголовок для файла
 	var pkg = require( './package.json' ),
@@ -129,28 +137,53 @@ gulp.task( 'js:build', function( )
 				.pipe( gulp.dest( path ) );
 } );
 
-// Создаем SASS/SCSS задание	
-gulp.task( 'scss:build', function( ) 
-{ 
-	var fileName = params.fileName + bundle.fileSuffix + '.css',
-		path = paths.build + bundle.path;
-	
-	return gulp.src( paths.src.style + 'main.scss' )
+// Функция для сборки SASS/SCSS
+var scssBuildFunc = function( target, fileName, buildPath )
+{
+	return gulp.src( target )
 				.pipe( debug( { title: 'scss:' } ) ) // Вывод пофайлового лога
 				.pipe( replace( '%pluginName%', params.pluginName ) )
 				.pipe( replace( '%classPrefix%', params.classPrefix ) )
 				.pipe( sass( { errLogToConsole: true } ) ) // Компилируем SCSS файлы
 				.pipe( postcss( [ autoprefixer( ) ] ) ) // Добавим префиксы
 				.pipe( gulpif( bundle.compress, cssmin( ) ) ) // Сжимаем
-				.pipe( rename( fileName ) ) // Переименовываем
-				.pipe( gulp.dest( path ) );	
+				.pipe( gulpif( Array.isArray( target ), concat( fileName + bundle.fileSuffix + '.css' ), rename( fileName + bundle.fileSuffix + '.css' ) ) ) // Переименовываем
+				.pipe( gulp.dest( buildPath ) );
+};
+
+// Создаем SASS/SCSS задание
+gulp.task( 'scss:theme:build', function( ) 
+{ 
+	var fileName = params.fileName,
+		themePath = paths.build + bundle.themePath;
+
+	// Собираем каркас
+	scssBuildFunc( paths.src.frame + 'main.scss', fileName + '.frame', themePath );
+		
+	// Собираем стили
+	for( var styleName in paths.src.styles )
+	{
+		scssBuildFunc( paths.src.style + paths.src.styles[ styleName ]  + 'main.scss', fileName + '.' + styleName, themePath );
+	}
+} );
+
+// Сборка общего файла с темой по умолчанию
+gulp.task( 'scss:theme:concat', function( )
+{
+	var fileName = params.fileName,
+		mainPath = paths.build + bundle.mainPath;
+		
+	// Собираем общий файл с темой по умолчанию
+	scssBuildFunc( [ paths.src.frame + 'main.scss',
+					paths.src.style + paths.src.styles[ 'default' ] + 'main.scss' ], 
+					fileName, mainPath );	
 } );
 
 // Задача по сборке
 gulp.task( 'build', function( ) 
 {
 	// Делаем обычную версию
-	gulp.start( 'js:build', 'scss:build' ); 
+	gulp.start( 'js:build', 'scss:theme:build', 'scss:theme:concat' ); 
 } );
 
 // Задача по сборке
@@ -158,7 +191,7 @@ gulp.task( 'build:min', function( )
 {
 	// Делаем минифицированную версию
 	bundle = bundles[ 'min' ];
-	gulp.start( 'js:build', 'scss:build' ); 
+	gulp.start( 'js:build', 'scss:theme:build', 'scss:theme:concat' ); 
 } );
 
 // Задача по умолчанию
@@ -171,6 +204,6 @@ gulp.task( 'default', function( )
 	 * Смотрители 
 	 * * * * * * * * * * * * * */
 
-	var wJS = gulp.watch( paths.src.script + '/*.js', [ 'js:build' ] ),
-		wSASS = gulp.watch( paths.src.style + '/*.scss', [ 'scss:build' ] );
+	gulp.watch( paths.src.script + '/*.js', [ 'js:build' ] ),
+	gulp.watch( paths.src.style + '/**/*.scss', [ 'scss:theme:build', 'scss:theme:concat' ] );
 } );

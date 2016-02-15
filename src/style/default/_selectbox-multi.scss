@@ -1,14 +1,11 @@
+
 .#{$prefix}select-multiple {
-	box-sizing: border-box;
-	padding: 1px;
 	border: 1px solid #CCC;
 	border-bottom-color: #B3B3B3;
 	border-radius: 4px;
 	background: #FFF;
 	box-shadow: inset 1px 1px #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
-	font: 14px/18px Arial, sans-serif;
 	color: #333;
-	cursor: default;
 }
 
 .#{$prefix}select-multiple.focused {
@@ -20,18 +17,6 @@
 	background: #F5F5F5;
 	box-shadow: none;
 	color: #888;
-}
-
-.#{$prefix}select-multiple ul {
-	margin: 0;
-	padding: 0;
-}
-
-.#{$prefix}select-multiple li {
-	padding: 3px 9px 4px;
-	list-style: none;
-	user-select: none;
-	white-space: nowrap;
 }
 
 .#{$prefix}select-multiple li:first-child {
@@ -55,12 +40,4 @@
 .#{$prefix}select-multiple li.selected.disabled {
 	background: #CCC;
 	color: #FFF;
-}
-
-.#{$prefix}select-multiple li.optgroup {
-	font-weight: bold;
-}
-
-.#{$prefix}select-multiple li.option {
-	padding-left: 25px;
 }

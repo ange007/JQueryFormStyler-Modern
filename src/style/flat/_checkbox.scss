@@ -1,0 +1,25 @@
+
+.#{$prefix}checkbox {
+	border: 1px solid #C3C3C3;
+	border-radius: 3px;
+	background: #F5F5F5;
+	box-shadow: 0 1px 1px rgba(0,0,0,.05), inset -1px -1px #FFF, inset 1px -1px #FFF;	
+}
+
+.#{$prefix}checkbox:not(.disabled):hover {
+	border-color: gray;
+}
+
+.#{$prefix}checkbox.checked .#{$prefix}checkbox__div {
+	border-radius: 2px;
+	background: #666;
+}
+
+.#{$prefix}checkbox.indeterminate .#{$prefix}checkbox__div {
+	border-radius: 2px;
+	background: #666;
+}
+
+.#{$prefix}checkbox.focused {
+	border: 1px solid gray;
+}

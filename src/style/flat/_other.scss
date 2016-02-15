@@ -1,0 +1,90 @@
+input[type='email'].#{$pluginName},
+input[type='password'].#{$pluginName},
+input[type='search'].#{$pluginName},
+input[type='tel'].#{$pluginName},
+input[type='text'].#{$pluginName},
+input[type='url'].#{$pluginName},
+textarea.#{$pluginName} {
+	padding: 8px 9px;
+	border: 1px solid #CCC;
+	border-bottom-color: #B3B3B3;
+	border-radius: 4px;
+	font: 14px Arial, sans-serif;
+	color: #333;
+}
+
+input[type='search'].#{$pluginName} {
+	-webkit-appearance: none;
+}
+
+textarea.#{$pluginName} {
+	overflow: auto;
+}
+
+input[type='email'].#{$pluginName}:hover,
+input[type='password'].#{$pluginName}:hover,
+input[type='search'].#{$pluginName}:hover,
+input[type='tel'].#{$pluginName}:hover,
+input[type='text'].#{$pluginName}:hover,
+input[type='url'].#{$pluginName}:hover,
+textarea.#{$pluginName}:hover {
+	border-color: #B3B3B3;
+}
+
+input[type='email'].#{$pluginName}:focus,
+input[type='password'].#{$pluginName}:focus,
+input[type='search'].#{$pluginName}:focus,
+input[type='tel'].#{$pluginName}:focus,
+input[type='text'].#{$pluginName}:focus,
+input[type='url'].#{$pluginName}:focus,
+textarea.#{$pluginName}:focus {
+	border-color: #CCC;
+	border-top-color: #B3B3B3;
+	outline: none;
+}
+
+button.#{$pluginName},
+input[type='button'].#{$pluginName},
+input[type='submit'].#{$pluginName},
+input[type='reset'].#{$pluginName} {
+	overflow: visible;
+	padding: 8px 11px;
+	border: 1px solid #CCC;
+	border-bottom-color: #B3B3B3;
+	border-radius: 4px;
+	outline: none;
+	background: #F5F5F5;
+	font: 14px Arial, sans-serif;
+	color: #333;
+	cursor: pointer;
+}
+
+button.#{$pluginName}::-moz-focus-inner,
+input[type='button'].#{$pluginName}::-moz-focus-inner,
+input[type='submit'].#{$pluginName}::-moz-focus-inner,
+input[type='reset'].#{$pluginName}::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+
+button.#{$pluginName}:not([disabled]):hover,
+input[type='button'].#{$pluginName}:not([disabled]):hover,
+input[type='submit'].#{$pluginName}:not([disabled]):hover,
+input[type='reset'].#{$pluginName}:hover {
+	background: #E6E6E6;
+}
+
+button.#{$pluginName}:not([disabled]):active,
+input[type='button'].#{$pluginName}:not([disabled]):active,
+input[type='submit'].#{$pluginName}:not([disabled]):active,
+input[type='reset'].#{$pluginName}:active {
+	background: #F5F5F5;
+}
+
+button.#{$pluginName}[disabled],
+input[type='button'].#{$pluginName}[disabled],
+input[type='submit'].#{$pluginName}[disabled] {
+	border-color: #CCC;
+	background: #F5F5F5;
+	color: #888;
+}
