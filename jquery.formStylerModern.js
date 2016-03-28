@@ -558,7 +558,8 @@
 						if( !$.isNumeric( value ) )
 						{
 							value = 0;
-							el.val( '0' ).change();
+							el.val( '0' )
+								.change( );
 						}
 						
 						if( spin.is( '.minus' ) )
@@ -583,26 +584,30 @@
 						{
 							if( newValue >= min && newValue <= max )
 							{
-								el.val( newValue ).change();
+								el.val( newValue )
+									.change( );
 							}
 						} 
 						else if( $.isNumeric( min ) && !$.isNumeric( max ) )
 						{
 							if( newValue >= min )
 							{
-								el.val( newValue ).change();
+								el.val( newValue )
+									.change( );
 							}
 						}
 						else if( !$.isNumeric( min ) && $.isNumeric( max ) )
 						{
 							if( newValue <= max )
 							{
-								el.val( newValue ).change();
+								el.val( newValue )
+									.change( );
 							}
 						} 
 						else
 						{
-							el.val( newValue ).change();
+							el.val( newValue )
+								.change( );
 						}
 					};
 				
