@@ -174,8 +174,8 @@ gulp.task( 'scss:theme:concat', function( )
 		mainPath = paths.build + bundle.mainPath;
 		
 	// Собираем общий файл с темой по умолчанию
-	scssBuildFunc( [ paths.src.frame + 'main.scss',
-					paths.src.style + paths.src.styles[ 'default' ] + 'main.scss' ], 
+	scssBuildFunc( [ paths.src.style + paths.src.styles[ 'default' ] + 'main.scss',
+					paths.src.frame + 'main.scss' ], 
 					fileName, mainPath );	
 } );
 

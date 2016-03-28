@@ -4,6 +4,11 @@
 	cursor: pointer;
 }
 
+.#{$prefix}selectbox__select {
+	height: 32px;
+	padding: 0 45px 0 10px;
+}
+
 .#{$prefix}selectbox__select-text {
 	display: block;
 	overflow: hidden;
