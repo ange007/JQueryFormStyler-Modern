@@ -1,15 +1,28 @@
 var numberOutput = function( )
 {
 	// Инициализируем переменные
-	var number = $( '<div class="' + classPrefix + 'number"><div class="' + classPrefix + 'number__spin minus"></div><div class="' + classPrefix + 'number__spin plus"></div></div>' ),
-		min,
+	var min,
 		max,
 		step,
 		timeout = null,
 		interval = null;
+
+	// Формируем компонент
+	var att = new Attributes( ),
+		number =
+			$( '<div class="jq-number">' +
+				'<div class="jq-number__spin minus"></div>' +
+				'<div class="jq-number__spin plus"></div>' +
+				'</div>' )
+			.attr( { id: att.id,
+					title: att.title } )
+			.addClass( att.classes )
+			.data( att.data );
+
 	
 	// Добавляем нужные блоки
-	el.after( number ).prependTo( number ).wrap( '<div class="' + classPrefix + 'number__field"></div>' );
+	el.after( number ).prependTo( number )
+						.wrap( '<div class="jq-number__field"></div>' );
 
 	// Обработка "неактивности"
 	if( el.is( ':disabled' ) )
@@ -51,22 +64,28 @@ var numberOutput = function( )
 		
 		if( spin.is( '.minus' ) )
 		{
-			newValue = parseInt( value, 10 ) - step;
-			
-			if( step > 0 )
-			{
-				newValue = Math.ceil( newValue / step ) * step;
-			}
+			newValue = Number(value) - step;
 		} 
 		else if( spin.is( '.plus' ) )
 		{
-			newValue = parseInt( value, 10 ) + step;
-			
-			if( step > 0 )
-			{
-				newValue = Math.floor( newValue / step ) * step;
-			}
+			newValue = Number(value) + step;
 		}
+		
+		// Определяем количество десятичных знаков после запятой в step
+		var decimals = ( step.toString().split( '.' )[1] || [ ] ).length.prototype,
+			multiplier = '1';
+			
+		if( decimals > 0 )
+		{
+			while( multiplier.length <= decimals )
+			{
+				multiplier = multiplier + '0';
+			}
+			
+			// Избегаем появления лишних знаков после запятой
+			newValue = Math.round( newValue * multiplier ) / multiplier;
+		}
+		
 		if( $.isNumeric( min ) && $.isNumeric( max ) )
 		{
 			if( newValue >= min && newValue <= max )
@@ -102,14 +121,14 @@ var numberOutput = function( )
 	if( !number.is( '.disabled' ) )
 	{
 		// Обработка клика на компонент
-		number.on( 'mousedown', 'div.' + classPrefix + 'number__spin', function( )
+		number.on( 'mousedown', 'div.jq-number__spin', function( )
 		{
 			var spin = $( this );
 			changeValue( spin );
 			
 			timeout = setTimeout( function( ) { interval = setInterval( function( ) { changeValue( spin ); }, 40 ); }, 350 );
 		} )
-		.on( 'mouseup mouseout', 'div.' + classPrefix + 'number__spin', function( )
+		.on( 'mouseup mouseout', 'div.jq-number__spin', function( )
 		{
 			clearTimeout( timeout );
 			clearInterval( interval );
@@ -138,7 +157,7 @@ el.on( 'refresh', function( )
 {
 	// Убираем стилизацию компонента
 	el.off( '.' + pluginName )
-		.closest( '.' + classPrefix + 'number' ).before( el ).remove( );
+		.closest( '.jq-number' ).before( el ).remove( );
 
 	// Стилизируем компонент снова
 	numberOutput( );

@@ -25,12 +25,13 @@ var selectboxOutput = function( )
 		} );
 	}
 
-	var option = $( 'option', el ),
-		list = '';
+	var option = $( 'option', el );
 	
 	// Формируем список селекта
 	function makeList( )
 	{
+		var list = '';
+		
 		for( var i = 0; i < option.length; i++ )
 		{
 			var op = option.eq( i ),
@@ -41,12 +42,12 @@ var selectboxOutput = function( )
 				title = '',
 				dataList = '',
 				optionClass = '',
-				optgroupClass = '',
+				optGroupClass = '',
 				dataJqfsClass = '',
 				disabled = 'disabled',
 				selDis = 'selected sel disabled';
 		
-			if( op.prop( 'selected' ) )
+			if( op.is( ':selected' ) )
 			{
 				liClass = 'selected sel';
 			}
@@ -93,23 +94,25 @@ var selectboxOutput = function( )
 			
 			li = '<li' + dataJqfsClass + dataList + liClasses + title + id + '>' + op.html( ) + '</li>';
 
-			// если есть optgroup
+			// Если есть optgroup
 			if( op.parent( ).is( 'optgroup' ) )
 			{
 				if( op.parent( ).attr( 'class' ) !== undefined )
 				{
-					optgroupClass = ' ' + op.parent( ).attr( 'class' );
+					optGroupClass = ' ' + op.parent( ).attr( 'class' );
 				}
 				
-				li = '<li' + dataJqfsClass + dataList + ' class="' + liClass + optionClass + ' option' + optgroupClass + '"' + title + id + '>' + op.html( ) + '</li>';
+				li = '<li' + dataJqfsClass + dataList + ' class="' + liClass + optionClass + ' option' + optGroupClass + '"' + title + id + '>' + op.html( ) + '</li>';
 				if( op.is( ':first-child' ) )
 				{
-					li = '<li class="optgroup' + optgroupClass + '">' + op.parent( ).attr( 'label' ) + '</li>' + li;
+					li = '<li class="optgroup' + optGroupClass + '">' + op.parent( ).attr( 'label' ) + '</li>' + li;
 				}
 			}
 
 			list += li;
 		}
+		
+		return list;
 	}
 
 	// Одиночный селект
@@ -160,39 +163,55 @@ var selectboxOutput = function( )
 			selectSmartPositioning = opt.selectSmartPositioning;
 		}
 
-		var selectbox = $( '<div' + att.id + ' class="' + classPrefix + 'selectbox jqselect' + att.classes + '" style="display: inline-block; position: relative; z-index:' + singleSelectzIndex + '">' +
-							'<div class="' + classPrefix + 'selectbox__select"' + att.title + ' style="position: relative">' +
-							'<div class="' + classPrefix + 'selectbox__select-text"></div>' +
-							'<div class="' + classPrefix + 'selectbox__trigger"><div class="' + classPrefix + 'selectbox__trigger-arrow"></div></div>' +
+		// Формируем компонент
+		var selectbox = $( '<div class="jq-selectbox jqselect">' +
+							'<div class="jq-selectbox__select" style="position: relative">' +
+							'<div class="jq-selectbox__select-text"></div>' +
+							'<div class="jq-selectbox__trigger">' +
+							'<div class="jq-selectbox__trigger-arrow"></div></div>' +
 							'</div>' +
-							'</div>' );
+							'</div>' )
+							.css( { display: 'inline-block',
+									position: 'relative',
+									zIndex: singleSelectzIndex } )
+							.attr( { id: att.id,
+									title: att.title } )
+							.addClass( att.classes )
+							.data( att.data );
 
+		//
 		el.css( { margin: 0, padding: 0 } )
 			.after( selectbox ).prependTo( selectbox );
 
-		var divSelect = $( 'div.' + classPrefix + 'selectbox__select', selectbox ),
-			divText = $( 'div.' + classPrefix + 'selectbox__select-text', selectbox ),
+		//
+		var divSelect = $( 'div.jq-selectbox__select', selectbox ),
+			divText = $( 'div.jq-selectbox__select-text', selectbox ),
 			optionSelected = option.filter( ':selected' );
 
-		makeList( );
+		// Формируем список
+		var list = makeList( );
 
+		//
 		if( selectSearch )
 		{
-			searchHTML = '<div class="' + classPrefix + 'selectbox__search"><input type="search" autocomplete="off" placeholder="' + selectSearchPlaceholder + '"></div>' +
-							'<div class="' + classPrefix + 'selectbox__not-found">' + selectSearchNotFound + '</div>';
+			searchHTML = '<div class="jq-selectbox__search"><input type="search" autocomplete="off" placeholder="' + selectSearchPlaceholder + '"></div>' +
+							'<div class="jq-selectbox__not-found">' + selectSearchNotFound + '</div>';
 		}
 		
-		var dropdown = $( '<div class="' + classPrefix + 'selectbox__dropdown" style="position: absolute">' +
+		//
+		var dropdown = $( '<div class="jq-selectbox__dropdown" style="position: absolute">' +
 							searchHTML +
 							'<ul style="position: relative; list-style: none; overflow: auto; overflow-x: hidden">' + list + '</ul>' +
 							'</div>' );
 		
+		//
 		selectbox.append( dropdown );
 		
+		//
 		var ul = $( 'ul', dropdown ),
 			li = $( 'li', dropdown ),
 			search = $( 'input', dropdown ),
-			notFound = $( 'div.' + classPrefix + 'selectbox__not-found', dropdown ).hide( );
+			notFound = $( 'div.jq-selectbox__not-found', dropdown ).hide( );
 	
 		if( li.length < selectSearchLimit )
 		{
@@ -258,13 +277,13 @@ var selectboxOutput = function( )
 			}
 		}
 
-		// подстраиваем ширину выпадающего списка в зависимости от самого широкого пункта
+		// Подстраиваем ширину выпадающего списка в зависимости от самого широкого пункта
 		if( liWidthInner > selectbox.width( ) )
 		{
 			dropdown.width( liWidthInner );
 		}
 
-		// прячем 1-ю пустую опцию, если она есть и если атрибут data-placeholder не пустой
+		// Прячем 1-ю пустую опцию, если она есть и если атрибут data-placeholder не пустой
 		// если все же нужно, чтобы первая пустая опция отображалась, то указываем у селекта: data-placeholder=""
 		if( option.first( ).text( ) === '' && el.data( 'placeholder' ) !== '' )
 		{
@@ -286,11 +305,6 @@ var selectboxOutput = function( )
 			isMaxHeight = ul.css( 'max-height' ),
 			liSelected = li.filter( '.selected' ),
 			position = dropdown.css( 'top' );
-	
-		if( liSelected.length < 1 )
-		{
-			li.first( ).addClass( 'selected sel' );
-		}
 		
 		if( li.data( 'li-height' ) === undefined )
 		{
@@ -335,9 +349,9 @@ var selectboxOutput = function( )
 		divSelect.click( function( )
 		{
 			// Колбек при закрытии селекта
-			if( $( 'div.' + classPrefix + 'selectbox' ).filter( '.opened' ).length )
+			if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 			{
-				opt.onSelectClosed.call( $( 'div.' + classPrefix + 'selectbox' ).filter( '.opened' ) );
+				opt.onSelectClosed.call( $( 'div.jq-selectbox' ).filter( '.opened' ) );
 			}
 
 			// Фокусируем
@@ -473,12 +487,14 @@ var selectboxOutput = function( )
 			// 
 			$( 'div.jqselect' ).css( { zIndex: ( singleSelectzIndex - 1 ) } )
 								.removeClass( 'opened' );
-						
+			
+			//
 			selectbox.css( { zIndex: singleSelectzIndex } );
 			
+			//
 			if( dropdown.is( ':hidden' ) )
 			{
-				$( 'div.' + classPrefix + 'selectbox__dropdown:visible' ).hide( );
+				$( 'div.jq-selectbox__dropdown:visible' ).hide( );
 				
 				// Отображаем список
 				dropdown.show( );
@@ -498,7 +514,7 @@ var selectboxOutput = function( )
 				selectbox.removeClass( 'opened dropup dropdown' );
 				
 				// Колбек при закрытии селекта
-				if( $( 'div.' + classPrefix + 'selectbox' ).filter( '.opened' ).length )
+				if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 				{
 					opt.onSelectClosed.call( selectbox );
 				}
@@ -655,7 +671,7 @@ var selectboxOutput = function( )
 			selectbox.addClass( 'focused' );
 			
 			$( 'div.jqselect' ).not( '.focused' ).removeClass( 'opened dropup dropdown' )
-								.find( 'div.' + classPrefix + 'selectbox__dropdown' ).hide( );
+								.find( 'div.jq-selectbox__dropdown' ).hide( );
 		} )
 		// Расфокусировка
 		.on( 'blur.' + pluginName, function( )
@@ -731,14 +747,20 @@ var selectboxOutput = function( )
 	function doMultipleSelect( )
 	{
 		var att = new Attributes( ),
-			selectbox = $( '<div' + att.id + ' class="' + classPrefix + 'select-multiple jqselect' + att.classes + '"' + att.title + ' style="display: inline-block; position: relative"></div>' );
+			selectbox = $( '<div class="jq-select-multiple jqselect"></div>' )
+						.css( {	display: 'inline-block',
+								position: 'relative' } )
+						.attr( { id: att.id,
+								title: att.title } )
+						.addClass( att.classes )
+						.data( att.data );
 
 		// Формируем псевдоблок
 		el.css( { margin: 0, padding: 0 } )
 			.after( selectbox );
 
 		// Формируем список
-		makeList( );
+		var list = makeList( );
 		
 		// Добавляем список
 		selectbox.append( '<ul>' + list + '</ul>' );
@@ -767,14 +789,14 @@ var selectboxOutput = function( )
 			ul.css( 'overflowY', 'scroll' );
 			preventScrolling( ul );
 			
-			// прокручиваем до выбранного пункта
+			// Прокручиваем до выбранного пункта
 			if( li.filter( '.selected' ).length )
 			{
 				ul.scrollTop( ul.scrollTop( ) + li.filter( '.selected' ).position( ).top );
 			}
 		}
 
-		// прячем оригинальный селект
+		// Прячем оригинальный селект
 		el.prependTo( selectbox ).css( {
 			position: 'absolute',
 			left: 0,
@@ -784,7 +806,7 @@ var selectboxOutput = function( )
 			opacity: 0
 		} );
 
-		// если селект неактивный
+		// Если селект неактивный
 		if( el.is( ':disabled' ) )
 		{
 			selectbox.addClass( 'disabled' );
@@ -796,12 +818,11 @@ var selectboxOutput = function( )
 					li.eq( $( this ).index( ) ).addClass( 'selected' );
 				}
 			} );
-
-			// если селект активный
 		}
+		// Если селект активный
 		else
 		{
-			// при клике на пункт списка
+			// При клике на пункт списка
 			li.filter( ':not(.disabled):not(.optgroup)' ).click( function( e )
 			{
 				el.focus( );
@@ -823,7 +844,7 @@ var selectboxOutput = function( )
 					clkd.siblings( ).removeClass( 'selected first' );
 				}
 
-				// выделение пунктов при зажатом Ctrl
+				// Выделение пунктов при зажатом Ctrl
 				if( e.ctrlKey || e.metaKey )
 				{
 					if( clkd.is( '.selected' ) )
@@ -838,7 +859,7 @@ var selectboxOutput = function( )
 					clkd.siblings( ).removeClass( 'first' );
 				}
 
-				// выделение пунктов при зажатом Shift
+				// Выделение пунктов при зажатом Shift
 				if( e.shiftKey )
 				{
 					var prev = false,
@@ -899,7 +920,7 @@ var selectboxOutput = function( )
 					}
 				}
 
-				// отмечаем выбранные мышью
+				// Отмечаем выбранные мышью
 				option.prop( 'selected', false );
 				
 				//
@@ -920,7 +941,7 @@ var selectboxOutput = function( )
 
 			} );
 
-			// отмечаем выбранные с клавиатуры
+			// Отмечаем выбранные с клавиатуры
 			option.each( function( i )
 			{
 				$( this ).data( 'optionIndex', i );

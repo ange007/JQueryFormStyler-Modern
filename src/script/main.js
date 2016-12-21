@@ -13,10 +13,9 @@
 
 	var pluginName = '%pluginName%',	/* Имя плагина. 
 										* Используется для вызова плагина, 
-										* а так-же в качестве класса для 
-										* стилизации без "псевдо-компонентов" */
+										*	а так-же в качестве класса для 
+										*	стилизации без "псевдо-компонентов" */
 		idSuffix = '-' + pluginName,	/* Суффикс - который подставляется к ID "псевдо-компонента" */
-		classPrefix = '%classPrefix%',	/* Преффикс -  */
 	
 		defaults = {
 			wrapper: 'form',
@@ -57,40 +56,14 @@
 
 			function Attributes( )
 			{
-				var id = '',
-					title = '',
-					classes = '',
-					dataList = '';
-			
-				if( el.attr( 'id' ) !== undefined && el.attr( 'id' ) !== '' )
+				if( el.attr( 'id' ) !== undefined && el.attr( 'id' ) !== '' ) 
 				{
-					id = ' id="' + el.attr( 'id' ) + idSuffix + '"';
+					this.id = el.attr( 'id' ) + idSuffix;
 				}
 				
-				if( el.attr( 'title' ) !== undefined && el.attr( 'title' ) !== '' )
-				{
-					title = ' title="' + el.attr( 'title' ) + '"';
-				}
-			
-				if( el.attr( 'class' ) !== undefined && el.attr( 'class' ) !== '' )
-				{
-					classes = ' ' + el.attr( 'class' );
-				}
-			
-				var data = el.data( );
-				
-				for( var i in data )
-				{
-					if( data[i] !== '' && ( i !== '_' + pluginName ) )
-					{
-						dataList += ' data-' + i + '="' + data[i] + '"';
-					}
-				}
-				
-				id += dataList;
-				this.id = id;
-				this.title = title;
-				this.classes = classes;
+				this.title = el.attr( 'title' );
+				this.classes = el.attr( 'class' );
+				this.data = el.data( );
 			}
 
 			// Чекбокс
@@ -164,7 +137,7 @@
 			else if( el.is( 'input[type="number"]' ) )
 			{
 				el.off( '.' + pluginName + ' refresh' )
-					.closest( '.' + classPrefix + 'number' ).before( el ).remove( );
+					.closest( '.jq-number' ).before( el ).remove( );
 			} 
 			//
 			else if( el.is( ':file' ) || el.is( 'select' ) )

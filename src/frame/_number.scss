@@ -1,16 +1,16 @@
 
-.#{$prefix}number {
+.jq-number {
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
 	padding: 0 36px 0 0;
 }
 
-.#{$prefix}number__field {
+.jq-number__field {
 	width: 100px;
 }
 
-.#{$prefix}number__field input {
+.jq-number__field input {
 	box-sizing: border-box;
 	width: 100%;
 	padding: 8px 9px;
@@ -22,13 +22,13 @@
 	-moz-appearance: textfield;
 }
 
-.#{$prefix}number__field input::-webkit-inner-spin-button,
-.#{$prefix}number__field input::-webkit-outer-spin-button {
+.jq-number__field input::-webkit-inner-spin-button,
+.jq-number__field input::-webkit-outer-spin-button {
 	margin: 0; /* в каких-то браузерах присутствует отступ */
 	-webkit-appearance: none;
 }
 
-.#{$prefix}number__spin {
+.jq-number__spin {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -38,12 +38,12 @@
 	cursor: pointer;
 }
 
-.#{$prefix}number__spin.minus {
+.jq-number__spin.minus {
 	top: auto;
 	bottom: 0;
 }
 
-.#{$prefix}number__spin:after {
+.jq-number__spin:after {
 	content: '';
 	position: absolute;
 	top: 4px;
@@ -52,6 +52,6 @@
 	height: 0;
 }
 
-.#{$prefix}number__spin.minus:after {
+.jq-number__spin.minus:after {
 	top: 5px;
 }

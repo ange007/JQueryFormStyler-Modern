@@ -1,15 +1,15 @@
 
-.#{$prefix}selectbox {
+.jq-selectbox {
 	vertical-align: middle;
 	cursor: pointer;
 }
 
-.#{$prefix}selectbox__select {
+.jq-selectbox__select {
 	height: 32px;
 	padding: 0 45px 0 10px;
 }
 
-.#{$prefix}selectbox__select-text {
+.jq-selectbox__select-text {
 	display: block;
 	overflow: hidden;
 	width: 100%;
@@ -17,7 +17,7 @@
 	text-overflow: ellipsis;
 }
 
-.#{$prefix}selectbox__trigger {
+.jq-selectbox__trigger {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -25,7 +25,7 @@
 	height: 100%;
 }
 
-.#{$prefix}selectbox__trigger-arrow {
+.jq-selectbox__trigger-arrow {
 	position: absolute;
 	top: 14px;
 	right: 12px;
@@ -33,18 +33,18 @@
 	height: 0;
 }
 
-.#{$prefix}selectbox__dropdown {
+.jq-selectbox__dropdown {
 	box-sizing: border-box;
 	width: 100%;
 	margin: 2px 0 0;
 	padding: 0;
 }
 
-.#{$prefix}selectbox__search {
+.jq-selectbox__search {
 	margin: 5px;
 }
 
-.#{$prefix}selectbox__search input {
+.jq-selectbox__search input {
 	box-sizing: border-box;
 	width: 100%;
 	margin: 0;
@@ -53,33 +53,33 @@
 	-webkit-appearance: textfield;
 }
 
-.#{$prefix}selectbox__search input::-webkit-search-cancel-button,
-.#{$prefix}selectbox__search input::-webkit-search-decoration {
+.jq-selectbox__search input::-webkit-search-cancel-button,
+.jq-selectbox__search input::-webkit-search-decoration {
 	-webkit-appearance: none;
 }
 
-.#{$prefix}selectbox__not-found {
+.jq-selectbox__not-found {
 	margin: 5px;
 	padding: 5px 8px 6px;
 	font-size: 13px;
 }
 
-.#{$prefix}selectbox ul {
+.jq-selectbox ul {
 	margin: 0;
 	padding: 0;
 }
 
-.#{$prefix}selectbox li {
+.jq-selectbox li {
 	min-height: 18px;
 	padding: 5px 10px 6px;
 	user-select: none;
 	white-space: nowrap;
 }
 
-.#{$prefix}selectbox li.optgroup:hover {
+.jq-selectbox li.optgroup:hover {
 	cursor: default;
 }
 
-.#{$prefix}selectbox li.option {
+.jq-selectbox li.option {
 	padding-left: 25px;
 }

@@ -1,7 +1,10 @@
 var radioOutput = function( )
 {
 	var att = new Attributes( ),
-		radio = $( '<div' + att.id + ' class="' + classPrefix + 'radio' + att.classes + '"' + att.title + '><div class="' + classPrefix + 'radio__div"></div></div>' );
+		radio = $( '<div class="jq-radio"><div class="jq-radio__div"></div></div>' )
+				.attr( { id: att.id, title: att.title } )
+				.addClass( att.classes )
+				.data( att.data );
 
 	// Прячем оригинальную радиокнопку
 	el.css( {

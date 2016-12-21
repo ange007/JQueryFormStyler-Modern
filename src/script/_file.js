@@ -3,11 +3,10 @@ el.css( {
 	position: 'absolute',
 	top: 0,
 	right: 0,
-	width: '100%',
-	height: '100%',
 	opacity: 0,
 	margin: 0,
-	padding: 0
+	padding: 0,
+	fontSize: '100px'
 } );
 
 var fileOutput = function( )
@@ -26,12 +25,23 @@ var fileOutput = function( )
 		browse = opt.fileBrowse;
 	}
 	
-	var file = $( '<div' + att.id + ' class="' + classPrefix + 'file' + att.classes + '"' + att.title + ' style="display: inline-block; position: relative; overflow: hidden"></div>' ),
-		name = $( '<div class="' + classPrefix + 'file__name">' + placeholder + '</div>' ).appendTo( file );
-
-	$( '<div class="' + classPrefix + 'file__browse">' + browse + '</div>' ).appendTo( file );
+	// Формируем блок
+	var file = $( '<div class="jq-file">' +
+					'<div class="jq-file__name">' + placeholder + '</div>' +
+					'<div class="jq-file__browse">' + browse + '</div>' +
+					'</div>' )
+				.css( { display: 'inline-block',
+						position: 'relative',
+						overflow: 'hidden' } )
+				.attr( { id: att.id,
+						title: att.title } )
+				.addClass( att.classes )
+				.data( att.data );
+				
+	// Добавляем блок 
 	el.after( file ).appendTo( file );
 
+	// 
 	if( el.is( ':disabled' ) )
 	{
 		file.addClass( 'disabled' );
@@ -40,7 +50,8 @@ var fileOutput = function( )
 	// Обработка "изменения" состояния
 	el.on( 'change.' + pluginName, function( )
 	{
-		var value = el.val( );
+		var value = el.val( ),
+			name = $('div.jq-file__name', file);
 		
 		if( el.is( '[multiple]' ) )
 		{

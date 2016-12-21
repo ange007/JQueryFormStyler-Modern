@@ -1,5 +1,5 @@
 
-.#{$prefix}selectbox__select {
+.jq-selectbox__select {
 	height: 32px;
 	padding: 0 45px 0 10px;
 	border: 1px solid #CCC;
@@ -10,39 +10,39 @@
 	color: #333;
 }
 
-.#{$prefix}selectbox__select:hover {
+.jq-selectbox__select:hover {
 	background: #E6E6E6;
 }
 
-.#{$prefix}selectbox__select:active {
+.jq-selectbox__select:active {
 	background: #F5F5F5;
 	box-shadow: inset 1px 1px 3px #DDD;
 }
 
-.#{$prefix}selectbox.focused .#{$prefix}selectbox__select {
+.jq-selectbox.focused .jq-selectbox__select {
 	border: 1px solid gray;
 }
 
-.#{$prefix}selectbox.disabled .#{$prefix}selectbox__select {
+.jq-selectbox.disabled .jq-selectbox__select {
 	border-color: #CCC;
 	background: #F5F5F5;
 	box-shadow: none;
 	color: #888;
 }
 
-.#{$prefix}selectbox .placeholder {
+.jq-selectbox .placeholder {
 	color: #888;
 }
 
-.#{$prefix}selectbox:hover .#{$prefix}selectbox__trigger-arrow {
+.jq-selectbox:hover .jq-selectbox__trigger-arrow {
 	border-top-color: #000;
 }
 
-.#{$prefix}selectbox.disabled .#{$prefix}selectbox__trigger-arrow {
+.jq-selectbox.disabled .jq-selectbox__trigger-arrow {
 	border-top-color: #AAA;
 }
 
-.#{$prefix}selectbox__dropdown {
+.jq-selectbox__dropdown {
 	border: 1px solid #CCC;
 	border-radius: 4px;
 	background: #FFF;
@@ -50,54 +50,54 @@
 	font: 14px/18px Arial, sans-serif;
 }
 
-.#{$prefix}selectbox__trigger {
+.jq-selectbox__trigger {
 	border-left: 1px solid #CCC;
 }
 
-.#{$prefix}selectbox__trigger-arrow {
+.jq-selectbox__trigger-arrow {
 	border-top: 5px solid #999;
 	border-right: 5px solid transparent;
 	border-left: 5px solid transparent;
 }
 
-.#{$prefix}selectbox__search input {
+.jq-selectbox__search input {
 	border: 1px solid #CCC;
 	border-radius: 3px;
 	box-shadow: inset 1px 1px #F1F1F1;
 	color: #333;
 }
 
-.#{$prefix}selectbox__not-found {
+.jq-selectbox__not-found {
 	background: #F0F0F0;
 }
 
-.#{$prefix}selectbox li {
+.jq-selectbox li {
 	color: #231F20;
 }
 
-.#{$prefix}selectbox li.selected {
+.jq-selectbox li.selected {
 	background-color: #A3ABB1;
 	color: #FFF;
 }
 
-.#{$prefix}selectbox li:hover {
+.jq-selectbox li:hover {
 	background-color: #08C;
 	color: #FFF;
 }
 
-.#{$prefix}selectbox li.disabled {
+.jq-selectbox li.disabled {
 	color: #AAA;
 }
 
-.#{$prefix}selectbox li.disabled:hover {
+.jq-selectbox li.disabled:hover {
 	background: none;
 }
 
-.#{$prefix}selectbox li.optgroup {
+.jq-selectbox li.optgroup {
 	font-weight: bold;
 }
 
-.#{$prefix}selectbox li.optgroup:hover {
+.jq-selectbox li.optgroup:hover {
 	background: none;
 	color: #231F20;
 	cursor: default;

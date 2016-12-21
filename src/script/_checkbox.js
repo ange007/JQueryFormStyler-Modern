@@ -1,7 +1,10 @@
 var checkboxOutput = function( )
 {
 	var att = new Attributes( ),
-		checkbox = $( '<div' + att.id + ' class="' + classPrefix + 'checkbox' + att.classes + '"' + att.title + '><div class="' + classPrefix + 'checkbox__div"></div></div>' );
+		checkbox = $('<div class="jq-checkbox"><div class="jq-checkbox__div"></div></div>')
+					.attr( { id: att.id, title: att.title } )
+					.addClass( att.classes )
+					.data( att.data );
 
 	// Прячем оригинальный чекбокс
 	el.css( {

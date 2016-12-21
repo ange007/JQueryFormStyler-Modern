@@ -1,16 +1,33 @@
+	// определяем общего родителя у радиокнопок с одинаковым name
+	// http://stackoverflow.com/a/27733847
+	$.fn.commonParents = function( )
+	{
+		var cachedThis = this;
+		
+		return cachedThis.first( ).parents( ).filter( function( )
+		{
+			return $( this ).find( cachedThis ).length === cachedThis.length;
+		} );
+	};
+	
+	$.fn.commonParent = function( )
+	{
+		return $( this ).commonParents( ).first( );
+	};
+
 	// Прячем выпадающий список при клике за пределами селекта
 	function onDocumentClick( e )
 	{
 		// e.target.nodeName != 'OPTION' - добавлено для обхода бага в Opera на движке Presto
 		// (при изменении селекта с клавиатуры срабатывает событие onclick)
-		if( !$( e.target ).parents( ).hasClass( '' + classPrefix + 'selectbox' ) && e.target.nodeName !== 'OPTION' )
+		if( !$( e.target ).parents( ).hasClass( 'jq-selectbox' ) && e.target.nodeName !== 'OPTION' )
 		{
-			if( $( 'div.' + classPrefix + 'selectbox.opened' ).length )
+			if( $( 'div.jq-selectbox.opened' ).length )
 			{
 				//
-				var selectbox = $( 'div.' + classPrefix + 'selectbox.opened' ),
-					search = $( 'div.' + classPrefix + 'selectbox__search input', selectbox ),
-					dropdown = $( 'div.' + classPrefix + 'selectbox__dropdown', selectbox ),
+				var selectbox = $( 'div.jq-selectbox.opened' ),
+					search = $( 'div.jq-selectbox__search input', selectbox ),
+					dropdown = $( 'div.jq-selectbox__dropdown', selectbox ),
 					opt = selectbox.find( 'select' ).data( '_' + pluginName ).options;
 
 				// колбек при закрытии селекта

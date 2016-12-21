@@ -29,7 +29,6 @@ var gulp = require( 'gulp' ),
 var params = 
 {
 	pluginName: 'styler',
-	classPrefix: 'jq-',
 	fileName: 'jquery.formStylerModern'
 };
 
@@ -129,7 +128,6 @@ gulp.task( 'js:build', function( )
     return gulp.src( paths.src.script + 'main.js')
 				.pipe( debug( { title: 'js:' } ) ) // Вывод пофайлового лога
 				.pipe( replace( '%pluginName%', params.pluginName ) )
-				.pipe( replace( '%classPrefix%', params.classPrefix ) )
 				.pipe( rigger( ) ) // Подстановка исходного кода файлов на место переменных
 				.pipe( header( banner, { pkg : pkg } ) ) // Установка хидера
 				.pipe( gulpif( bundle.compress, uglify( { mangle: true, compress: false } ) ) ) //
@@ -143,7 +141,6 @@ var scssBuildFunc = function( target, fileName, buildPath )
 	return gulp.src( target )
 				.pipe( debug( { title: 'scss:' } ) ) // Вывод пофайлового лога
 				.pipe( replace( '%pluginName%', params.pluginName ) )
-				.pipe( replace( '%classPrefix%', params.classPrefix ) )
 				.pipe( sass( { errLogToConsole: true } ) ) // Компилируем SCSS файлы
 				.pipe( postcss( [ autoprefixer( ) ] ) ) // Добавим префиксы
 				.pipe( gulpif( bundle.compress, cssmin( ) ) ) // Сжимаем

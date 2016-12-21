@@ -1,15 +1,15 @@
 
-.#{$prefix}file {
+.jq-file {
 	width: 270px;
 }
 
-.#{$prefix}file input {
+.jq-file input {
 	height: auto;
 	line-height: 1em;
 	cursor: pointer;
 }
 
-.#{$prefix}file__name {
+.jq-file__name {
 	overflow: hidden;
 	box-sizing: border-box;
 	width: 100%;
@@ -20,7 +20,7 @@
 	text-overflow: ellipsis;
 }
 
-.#{$prefix}file__browse {
+.jq-file__browse {
 	position: absolute;
 	top: 1px;
 	right: 1px;

@@ -1,5 +1,5 @@
 
-.#{$prefix}select-multiple {
+.jq-select-multiple {
 	border: 1px solid #CCC;
 	border-bottom-color: #B3B3B3;
 	border-radius: 4px;
@@ -8,36 +8,36 @@
 	color: #333;
 }
 
-.#{$prefix}select-multiple.focused {
+.jq-select-multiple.focused {
 	border: 1px solid #5794BF;
 }
 
-.#{$prefix}select-multiple.disabled {
+.jq-select-multiple.disabled {
 	border-color: #CCC;
 	background: #F5F5F5;
 	box-shadow: none;
 	color: #888;
 }
 
-.#{$prefix}select-multiple li:first-child {
+.jq-select-multiple li:first-child {
 	border-radius: 3px 3px 0 0;
 }
 
-.#{$prefix}select-multiple li:last-child {
+.jq-select-multiple li:last-child {
 	border-radius: 0 0 3px 3px;
 }
 
-.#{$prefix}select-multiple li.selected {
+.jq-select-multiple li.selected {
 	background: #08C;
 	color: #FFF;
 }
 
-.#{$prefix}select-multiple li.disabled {
+.jq-select-multiple li.disabled {
 	color: #AAA;
 }
 
-.#{$prefix}select-multiple.disabled li.selected,
-.#{$prefix}select-multiple li.selected.disabled {
+.jq-select-multiple.disabled li.selected,
+.jq-select-multiple li.selected.disabled {
 	background: #CCC;
 	color: #FFF;
 }
