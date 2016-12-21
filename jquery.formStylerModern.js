@@ -1,6 +1,6 @@
 /**
  * jquery-formstyler-modern - JQuery HTML form styling plugin
- * @version v1.1.9
+ * @version v1.2.0
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
  * @author Borisenko Vladimir ( original: Dimox <http://dimox.name/> )
@@ -21,10 +21,9 @@
 
 	var pluginName = 'styler',	/* Имя плагина. 
 										* Используется для вызова плагина, 
-										* а так-же в качестве класса для 
-										* стилизации без "псевдо-компонентов" */
+										*	а так-же в качестве класса для 
+										*	стилизации без "псевдо-компонентов" */
 		idSuffix = '-' + pluginName,	/* Суффикс - который подставляется к ID "псевдо-компонента" */
-		classPrefix = 'jq-',	/* Преффикс -  */
 	
 		defaults = {
 			wrapper: 'form',
@@ -65,40 +64,14 @@
 
 			function Attributes( )
 			{
-				var id = '',
-					title = '',
-					classes = '',
-					dataList = '';
-			
-				if( el.attr( 'id' ) !== undefined && el.attr( 'id' ) !== '' )
+				if( el.attr( 'id' ) !== undefined && el.attr( 'id' ) !== '' ) 
 				{
-					id = ' id="' + el.attr( 'id' ) + idSuffix + '"';
+					this.id = el.attr( 'id' ) + idSuffix;
 				}
 				
-				if( el.attr( 'title' ) !== undefined && el.attr( 'title' ) !== '' )
-				{
-					title = ' title="' + el.attr( 'title' ) + '"';
-				}
-			
-				if( el.attr( 'class' ) !== undefined && el.attr( 'class' ) !== '' )
-				{
-					classes = ' ' + el.attr( 'class' );
-				}
-			
-				var data = el.data( );
-				
-				for( var i in data )
-				{
-					if( data[i] !== '' && ( i !== '_' + pluginName ) )
-					{
-						dataList += ' data-' + i + '="' + data[i] + '"';
-					}
-				}
-				
-				id += dataList;
-				this.id = id;
-				this.title = title;
-				this.classes = classes;
+				this.title = el.attr( 'title' );
+				this.classes = el.attr( 'class' );
+				this.data = el.data( );
 			}
 
 			// Чекбокс
@@ -107,7 +80,10 @@
 				var checkboxOutput = function( )
 				{
 					var att = new Attributes( ),
-						checkbox = $( '<div' + att.id + ' class="' + classPrefix + 'checkbox' + att.classes + '"' + att.title + '><div class="' + classPrefix + 'checkbox__div"></div></div>' );
+						checkbox = $('<div class="jq-checkbox"><div class="jq-checkbox__div"></div></div>')
+									.attr( { id: att.id, title: att.title } )
+									.addClass( att.classes )
+									.data( att.data );
 				
 					// Прячем оригинальный чекбокс
 					el.css( {
@@ -264,7 +240,10 @@
 				var radioOutput = function( )
 				{
 					var att = new Attributes( ),
-						radio = $( '<div' + att.id + ' class="' + classPrefix + 'radio' + att.classes + '"' + att.title + '><div class="' + classPrefix + 'radio__div"></div></div>' );
+						radio = $( '<div class="jq-radio"><div class="jq-radio__div"></div></div>' )
+								.attr( { id: att.id, title: att.title } )
+								.addClass( att.classes )
+								.data( att.data );
 				
 					// Прячем оригинальную радиокнопку
 					el.css( {
@@ -406,11 +385,10 @@
 					position: 'absolute',
 					top: 0,
 					right: 0,
-					width: '100%',
-					height: '100%',
 					opacity: 0,
 					margin: 0,
-					padding: 0
+					padding: 0,
+					fontSize: '100px'
 				} );
 				
 				var fileOutput = function( )
@@ -429,12 +407,23 @@
 						browse = opt.fileBrowse;
 					}
 					
-					var file = $( '<div' + att.id + ' class="' + classPrefix + 'file' + att.classes + '"' + att.title + ' style="display: inline-block; position: relative; overflow: hidden"></div>' ),
-						name = $( '<div class="' + classPrefix + 'file__name">' + placeholder + '</div>' ).appendTo( file );
-				
-					$( '<div class="' + classPrefix + 'file__browse">' + browse + '</div>' ).appendTo( file );
+					// Формируем блок
+					var file = $( '<div class="jq-file">' +
+									'<div class="jq-file__name">' + placeholder + '</div>' +
+									'<div class="jq-file__browse">' + browse + '</div>' +
+									'</div>' )
+								.css( { display: 'inline-block',
+										position: 'relative',
+										overflow: 'hidden' } )
+								.attr( { id: att.id,
+										title: att.title } )
+								.addClass( att.classes )
+								.data( att.data );
+								
+					// Добавляем блок 
 					el.after( file ).appendTo( file );
 				
+					// 
 					if( el.is( ':disabled' ) )
 					{
 						file.addClass( 'disabled' );
@@ -443,7 +432,8 @@
 					// Обработка "изменения" состояния
 					el.on( 'change.' + pluginName, function( )
 					{
-						var value = el.val( );
+						var value = el.val( ),
+							name = $('div.jq-file__name', file);
 						
 						if( el.is( '[multiple]' ) )
 						{
@@ -514,15 +504,28 @@
 				var numberOutput = function( )
 				{
 					// Инициализируем переменные
-					var number = $( '<div class="' + classPrefix + 'number"><div class="' + classPrefix + 'number__spin minus"></div><div class="' + classPrefix + 'number__spin plus"></div></div>' ),
-						min,
+					var min,
 						max,
 						step,
 						timeout = null,
 						interval = null;
+				
+					// Формируем компонент
+					var att = new Attributes( ),
+						number =
+							$( '<div class="jq-number">' +
+								'<div class="jq-number__spin minus"></div>' +
+								'<div class="jq-number__spin plus"></div>' +
+								'</div>' )
+							.attr( { id: att.id,
+									title: att.title } )
+							.addClass( att.classes )
+							.data( att.data );
+				
 					
 					// Добавляем нужные блоки
-					el.after( number ).prependTo( number ).wrap( '<div class="' + classPrefix + 'number__field"></div>' );
+					el.after( number ).prependTo( number )
+										.wrap( '<div class="jq-number__field"></div>' );
 				
 					// Обработка "неактивности"
 					if( el.is( ':disabled' ) )
@@ -564,22 +567,28 @@
 						
 						if( spin.is( '.minus' ) )
 						{
-							newValue = parseInt( value, 10 ) - step;
-							
-							if( step > 0 )
-							{
-								newValue = Math.ceil( newValue / step ) * step;
-							}
+							newValue = Number(value) - step;
 						} 
 						else if( spin.is( '.plus' ) )
 						{
-							newValue = parseInt( value, 10 ) + step;
-							
-							if( step > 0 )
-							{
-								newValue = Math.floor( newValue / step ) * step;
-							}
+							newValue = Number(value) + step;
 						}
+						
+						// Определяем количество десятичных знаков после запятой в step
+						var decimals = ( step.toString().split( '.' )[1] || [ ] ).length.prototype,
+							multiplier = '1';
+							
+						if( decimals > 0 )
+						{
+							while( multiplier.length <= decimals )
+							{
+								multiplier = multiplier + '0';
+							}
+							
+							// Избегаем появления лишних знаков после запятой
+							newValue = Math.round( newValue * multiplier ) / multiplier;
+						}
+						
 						if( $.isNumeric( min ) && $.isNumeric( max ) )
 						{
 							if( newValue >= min && newValue <= max )
@@ -615,14 +624,14 @@
 					if( !number.is( '.disabled' ) )
 					{
 						// Обработка клика на компонент
-						number.on( 'mousedown', 'div.' + classPrefix + 'number__spin', function( )
+						number.on( 'mousedown', 'div.jq-number__spin', function( )
 						{
 							var spin = $( this );
 							changeValue( spin );
 							
 							timeout = setTimeout( function( ) { interval = setInterval( function( ) { changeValue( spin ); }, 40 ); }, 350 );
 						} )
-						.on( 'mouseup mouseout', 'div.' + classPrefix + 'number__spin', function( )
+						.on( 'mouseup mouseout', 'div.jq-number__spin', function( )
 						{
 							clearTimeout( timeout );
 							clearInterval( interval );
@@ -651,7 +660,7 @@
 				{
 					// Убираем стилизацию компонента
 					el.off( '.' + pluginName )
-						.closest( '.' + classPrefix + 'number' ).before( el ).remove( );
+						.closest( '.jq-number' ).before( el ).remove( );
 				
 					// Стилизируем компонент снова
 					numberOutput( );
@@ -687,12 +696,13 @@
 						} );
 					}
 				
-					var option = $( 'option', el ),
-						list = '';
+					var option = $( 'option', el );
 					
 					// Формируем список селекта
 					function makeList( )
 					{
+						var list = '';
+						
 						for( var i = 0; i < option.length; i++ )
 						{
 							var op = option.eq( i ),
@@ -703,12 +713,12 @@
 								title = '',
 								dataList = '',
 								optionClass = '',
-								optgroupClass = '',
+								optGroupClass = '',
 								dataJqfsClass = '',
 								disabled = 'disabled',
 								selDis = 'selected sel disabled';
 						
-							if( op.prop( 'selected' ) )
+							if( op.is( ':selected' ) )
 							{
 								liClass = 'selected sel';
 							}
@@ -755,23 +765,25 @@
 							
 							li = '<li' + dataJqfsClass + dataList + liClasses + title + id + '>' + op.html( ) + '</li>';
 				
-							// если есть optgroup
+							// Если есть optgroup
 							if( op.parent( ).is( 'optgroup' ) )
 							{
 								if( op.parent( ).attr( 'class' ) !== undefined )
 								{
-									optgroupClass = ' ' + op.parent( ).attr( 'class' );
+									optGroupClass = ' ' + op.parent( ).attr( 'class' );
 								}
 								
-								li = '<li' + dataJqfsClass + dataList + ' class="' + liClass + optionClass + ' option' + optgroupClass + '"' + title + id + '>' + op.html( ) + '</li>';
+								li = '<li' + dataJqfsClass + dataList + ' class="' + liClass + optionClass + ' option' + optGroupClass + '"' + title + id + '>' + op.html( ) + '</li>';
 								if( op.is( ':first-child' ) )
 								{
-									li = '<li class="optgroup' + optgroupClass + '">' + op.parent( ).attr( 'label' ) + '</li>' + li;
+									li = '<li class="optgroup' + optGroupClass + '">' + op.parent( ).attr( 'label' ) + '</li>' + li;
 								}
 							}
 				
 							list += li;
 						}
+						
+						return list;
 					}
 				
 					// Одиночный селект
@@ -822,39 +834,55 @@
 							selectSmartPositioning = opt.selectSmartPositioning;
 						}
 				
-						var selectbox = $( '<div' + att.id + ' class="' + classPrefix + 'selectbox jqselect' + att.classes + '" style="display: inline-block; position: relative; z-index:' + singleSelectzIndex + '">' +
-											'<div class="' + classPrefix + 'selectbox__select"' + att.title + ' style="position: relative">' +
-											'<div class="' + classPrefix + 'selectbox__select-text"></div>' +
-											'<div class="' + classPrefix + 'selectbox__trigger"><div class="' + classPrefix + 'selectbox__trigger-arrow"></div></div>' +
+						// Формируем компонент
+						var selectbox = $( '<div class="jq-selectbox jqselect">' +
+											'<div class="jq-selectbox__select" style="position: relative">' +
+											'<div class="jq-selectbox__select-text"></div>' +
+											'<div class="jq-selectbox__trigger">' +
+											'<div class="jq-selectbox__trigger-arrow"></div></div>' +
 											'</div>' +
-											'</div>' );
+											'</div>' )
+											.css( { display: 'inline-block',
+													position: 'relative',
+													zIndex: singleSelectzIndex } )
+											.attr( { id: att.id,
+													title: att.title } )
+											.addClass( att.classes )
+											.data( att.data );
 				
+						//
 						el.css( { margin: 0, padding: 0 } )
 							.after( selectbox ).prependTo( selectbox );
 				
-						var divSelect = $( 'div.' + classPrefix + 'selectbox__select', selectbox ),
-							divText = $( 'div.' + classPrefix + 'selectbox__select-text', selectbox ),
+						//
+						var divSelect = $( 'div.jq-selectbox__select', selectbox ),
+							divText = $( 'div.jq-selectbox__select-text', selectbox ),
 							optionSelected = option.filter( ':selected' );
 				
-						makeList( );
+						// Формируем список
+						var list = makeList( );
 				
+						//
 						if( selectSearch )
 						{
-							searchHTML = '<div class="' + classPrefix + 'selectbox__search"><input type="search" autocomplete="off" placeholder="' + selectSearchPlaceholder + '"></div>' +
-											'<div class="' + classPrefix + 'selectbox__not-found">' + selectSearchNotFound + '</div>';
+							searchHTML = '<div class="jq-selectbox__search"><input type="search" autocomplete="off" placeholder="' + selectSearchPlaceholder + '"></div>' +
+											'<div class="jq-selectbox__not-found">' + selectSearchNotFound + '</div>';
 						}
 						
-						var dropdown = $( '<div class="' + classPrefix + 'selectbox__dropdown" style="position: absolute">' +
+						//
+						var dropdown = $( '<div class="jq-selectbox__dropdown" style="position: absolute">' +
 											searchHTML +
 											'<ul style="position: relative; list-style: none; overflow: auto; overflow-x: hidden">' + list + '</ul>' +
 											'</div>' );
 						
+						//
 						selectbox.append( dropdown );
 						
+						//
 						var ul = $( 'ul', dropdown ),
 							li = $( 'li', dropdown ),
 							search = $( 'input', dropdown ),
-							notFound = $( 'div.' + classPrefix + 'selectbox__not-found', dropdown ).hide( );
+							notFound = $( 'div.jq-selectbox__not-found', dropdown ).hide( );
 					
 						if( li.length < selectSearchLimit )
 						{
@@ -920,13 +948,13 @@
 							}
 						}
 				
-						// подстраиваем ширину выпадающего списка в зависимости от самого широкого пункта
+						// Подстраиваем ширину выпадающего списка в зависимости от самого широкого пункта
 						if( liWidthInner > selectbox.width( ) )
 						{
 							dropdown.width( liWidthInner );
 						}
 				
-						// прячем 1-ю пустую опцию, если она есть и если атрибут data-placeholder не пустой
+						// Прячем 1-ю пустую опцию, если она есть и если атрибут data-placeholder не пустой
 						// если все же нужно, чтобы первая пустая опция отображалась, то указываем у селекта: data-placeholder=""
 						if( option.first( ).text( ) === '' && el.data( 'placeholder' ) !== '' )
 						{
@@ -948,11 +976,6 @@
 							isMaxHeight = ul.css( 'max-height' ),
 							liSelected = li.filter( '.selected' ),
 							position = dropdown.css( 'top' );
-					
-						if( liSelected.length < 1 )
-						{
-							li.first( ).addClass( 'selected sel' );
-						}
 						
 						if( li.data( 'li-height' ) === undefined )
 						{
@@ -997,9 +1020,9 @@
 						divSelect.click( function( )
 						{
 							// Колбек при закрытии селекта
-							if( $( 'div.' + classPrefix + 'selectbox' ).filter( '.opened' ).length )
+							if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 							{
-								opt.onSelectClosed.call( $( 'div.' + classPrefix + 'selectbox' ).filter( '.opened' ) );
+								opt.onSelectClosed.call( $( 'div.jq-selectbox' ).filter( '.opened' ) );
 							}
 				
 							// Фокусируем
@@ -1135,12 +1158,14 @@
 							// 
 							$( 'div.jqselect' ).css( { zIndex: ( singleSelectzIndex - 1 ) } )
 												.removeClass( 'opened' );
-										
+							
+							//
 							selectbox.css( { zIndex: singleSelectzIndex } );
 							
+							//
 							if( dropdown.is( ':hidden' ) )
 							{
-								$( 'div.' + classPrefix + 'selectbox__dropdown:visible' ).hide( );
+								$( 'div.jq-selectbox__dropdown:visible' ).hide( );
 								
 								// Отображаем список
 								dropdown.show( );
@@ -1160,7 +1185,7 @@
 								selectbox.removeClass( 'opened dropup dropdown' );
 								
 								// Колбек при закрытии селекта
-								if( $( 'div.' + classPrefix + 'selectbox' ).filter( '.opened' ).length )
+								if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 								{
 									opt.onSelectClosed.call( selectbox );
 								}
@@ -1317,7 +1342,7 @@
 							selectbox.addClass( 'focused' );
 							
 							$( 'div.jqselect' ).not( '.focused' ).removeClass( 'opened dropup dropdown' )
-												.find( 'div.' + classPrefix + 'selectbox__dropdown' ).hide( );
+												.find( 'div.jq-selectbox__dropdown' ).hide( );
 						} )
 						// Расфокусировка
 						.on( 'blur.' + pluginName, function( )
@@ -1393,14 +1418,20 @@
 					function doMultipleSelect( )
 					{
 						var att = new Attributes( ),
-							selectbox = $( '<div' + att.id + ' class="' + classPrefix + 'select-multiple jqselect' + att.classes + '"' + att.title + ' style="display: inline-block; position: relative"></div>' );
+							selectbox = $( '<div class="jq-select-multiple jqselect"></div>' )
+										.css( {	display: 'inline-block',
+												position: 'relative' } )
+										.attr( { id: att.id,
+												title: att.title } )
+										.addClass( att.classes )
+										.data( att.data );
 				
 						// Формируем псевдоблок
 						el.css( { margin: 0, padding: 0 } )
 							.after( selectbox );
 				
 						// Формируем список
-						makeList( );
+						var list = makeList( );
 						
 						// Добавляем список
 						selectbox.append( '<ul>' + list + '</ul>' );
@@ -1429,14 +1460,14 @@
 							ul.css( 'overflowY', 'scroll' );
 							preventScrolling( ul );
 							
-							// прокручиваем до выбранного пункта
+							// Прокручиваем до выбранного пункта
 							if( li.filter( '.selected' ).length )
 							{
 								ul.scrollTop( ul.scrollTop( ) + li.filter( '.selected' ).position( ).top );
 							}
 						}
 				
-						// прячем оригинальный селект
+						// Прячем оригинальный селект
 						el.prependTo( selectbox ).css( {
 							position: 'absolute',
 							left: 0,
@@ -1446,7 +1477,7 @@
 							opacity: 0
 						} );
 				
-						// если селект неактивный
+						// Если селект неактивный
 						if( el.is( ':disabled' ) )
 						{
 							selectbox.addClass( 'disabled' );
@@ -1458,12 +1489,11 @@
 									li.eq( $( this ).index( ) ).addClass( 'selected' );
 								}
 							} );
-				
-							// если селект активный
 						}
+						// Если селект активный
 						else
 						{
-							// при клике на пункт списка
+							// При клике на пункт списка
 							li.filter( ':not(.disabled):not(.optgroup)' ).click( function( e )
 							{
 								el.focus( );
@@ -1485,7 +1515,7 @@
 									clkd.siblings( ).removeClass( 'selected first' );
 								}
 				
-								// выделение пунктов при зажатом Ctrl
+								// Выделение пунктов при зажатом Ctrl
 								if( e.ctrlKey || e.metaKey )
 								{
 									if( clkd.is( '.selected' ) )
@@ -1500,7 +1530,7 @@
 									clkd.siblings( ).removeClass( 'first' );
 								}
 				
-								// выделение пунктов при зажатом Shift
+								// Выделение пунктов при зажатом Shift
 								if( e.shiftKey )
 								{
 									var prev = false,
@@ -1561,7 +1591,7 @@
 									}
 								}
 				
-								// отмечаем выбранные мышью
+								// Отмечаем выбранные мышью
 								option.prop( 'selected', false );
 								
 								//
@@ -1582,7 +1612,7 @@
 				
 							} );
 				
-							// отмечаем выбранные с клавиатуры
+							// Отмечаем выбранные с клавиатуры
 							option.each( function( i )
 							{
 								$( this ).data( 'optionIndex', i );
@@ -1716,7 +1746,7 @@
 			else if( el.is( 'input[type="number"]' ) )
 			{
 				el.off( '.' + pluginName + ' refresh' )
-					.closest( '.' + classPrefix + 'number' ).before( el ).remove( );
+					.closest( '.jq-number' ).before( el ).remove( );
 			} 
 			//
 			else if( el.is( ':file' ) || el.is( 'select' ) )
@@ -1792,19 +1822,36 @@
 		}
 	};
 	
+		// определяем общего родителя у радиокнопок с одинаковым name
+		// http://stackoverflow.com/a/27733847
+		$.fn.commonParents = function( )
+		{
+			var cachedThis = this;
+			
+			return cachedThis.first( ).parents( ).filter( function( )
+			{
+				return $( this ).find( cachedThis ).length === cachedThis.length;
+			} );
+		};
+		
+		$.fn.commonParent = function( )
+		{
+			return $( this ).commonParents( ).first( );
+		};
+	
 		// Прячем выпадающий список при клике за пределами селекта
 		function onDocumentClick( e )
 		{
 			// e.target.nodeName != 'OPTION' - добавлено для обхода бага в Opera на движке Presto
 			// (при изменении селекта с клавиатуры срабатывает событие onclick)
-			if( !$( e.target ).parents( ).hasClass( '' + classPrefix + 'selectbox' ) && e.target.nodeName !== 'OPTION' )
+			if( !$( e.target ).parents( ).hasClass( 'jq-selectbox' ) && e.target.nodeName !== 'OPTION' )
 			{
-				if( $( 'div.' + classPrefix + 'selectbox.opened' ).length )
+				if( $( 'div.jq-selectbox.opened' ).length )
 				{
 					//
-					var selectbox = $( 'div.' + classPrefix + 'selectbox.opened' ),
-						search = $( 'div.' + classPrefix + 'selectbox__search input', selectbox ),
-						dropdown = $( 'div.' + classPrefix + 'selectbox__dropdown', selectbox ),
+					var selectbox = $( 'div.jq-selectbox.opened' ),
+						search = $( 'div.jq-selectbox__search input', selectbox ),
+						dropdown = $( 'div.jq-selectbox__dropdown', selectbox ),
 						opt = selectbox.find( 'select' ).data( '_' + pluginName ).options;
 	
 					// колбек при закрытии селекта
