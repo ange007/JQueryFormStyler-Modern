@@ -1,30 +1,33 @@
 var selectboxOutput = function( )
 {
-	// запрещаем прокрутку страницы при прокрутке селекта
+	// Запрещаем прокрутку страницы при прокрутке селекта
 	function preventScrolling( selector )
 	{
-		selector.off( 'mousewheel DOMMouseScroll' ).on( 'mousewheel DOMMouseScroll', function( e )
+		var scrollDiff = selector.prop( 'scrollHeight' ) - selector.outerHeight( ),
+			wheelDelta = null,
+			scrollTop = null;
+
+		selector.off( 'mousewheel DOMMouseScroll' )
+				.on( 'mousewheel DOMMouseScroll', function (e)
 		{
-			var scrollTo = null;
+			/**
+            * нормализация направления прокрутки
+            * (firefox < 0 || chrome etc... > 0)
+            * (e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0)
+            */
 			
-			if( e.type === 'mousewheel' )
-			{
-				scrollTo = ( e.originalEvent.wheelDelta * -1 );
-			}
-			else if( e.type === 'DOMMouseScroll' )
-			{
-				scrollTo = 40 * e.originalEvent.detail;
-			}
-			
-			if( scrollTo )
+			wheelDelta = ( e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0 ) ? 1 : -1; // Направление прокрутки (-1 вниз, 1 вверх)
+			scrollTop = selector.scrollTop( ); // Позиция скролла
+
+			if( ( scrollTop >= scrollDiff && wheelDelta < 0 ) || ( scrollTop <= 0 && wheelDelta > 0 ) ) 
 			{
 				e.stopPropagation( );
 				e.preventDefault( );
-				$( this ).scrollTop( scrollTo + $( this ).scrollTop( ) );
 			}
+
 		} );
 	}
-
+ 
 	var option = $( 'option', el );
 	
 	// Формируем список селекта
@@ -162,20 +165,16 @@ var selectboxOutput = function( )
 		{
 			selectSmartPositioning = opt.selectSmartPositioning;
 		}
-
+	
 		// Формируем компонент
-		var selectbox = $( '<div class="jq-selectbox jqselect">' +
-							'<div class="jq-selectbox__select" style="position: relative">' +
-							'<div class="jq-selectbox__select-text"></div>' +
-							'<div class="jq-selectbox__trigger">' +
-							'<div class="jq-selectbox__trigger-arrow"></div></div>' +
-							'</div>' +
-							'</div>' )
-							.css( { display: 'inline-block',
-									position: 'relative',
-									zIndex: singleSelectzIndex } )
-							.attr( { id: att.id,
-									title: att.title } )
+		var selectbox = $( '<div class="jq-selectbox jqselect">'
+								+ '<div class="jq-selectbox__select">'
+									+ '<div class="jq-selectbox__select-text"></div>'
+									+ '<div class="jq-selectbox__trigger">'
+										+ '<div class="jq-selectbox__trigger-arrow"></div></div>'
+							+ '</div></div>' )
+							.css( {	zIndex: singleSelectzIndex } )
+							.attr( { 'id': att.id, 'title': att.title } )
 							.addClass( att.classes )
 							.data( att.data );
 
@@ -194,15 +193,15 @@ var selectboxOutput = function( )
 		//
 		if( selectSearch )
 		{
-			searchHTML = '<div class="jq-selectbox__search"><input type="search" autocomplete="off" placeholder="' + selectSearchPlaceholder + '"></div>' +
-							'<div class="jq-selectbox__not-found">' + selectSearchNotFound + '</div>';
+			searchHTML = '<div class="jq-selectbox__search"><input type="search" autocomplete="off" placeholder="' + selectSearchPlaceholder + '"></div>'
+						+ '<div class="jq-selectbox__not-found">' + selectSearchNotFound + '</div>';
 		}
 		
 		//
-		var dropdown = $( '<div class="jq-selectbox__dropdown" style="position: absolute">' +
-							searchHTML +
-							'<ul style="position: relative; list-style: none; overflow: auto; overflow-x: hidden">' + list + '</ul>' +
-							'</div>' );
+		var dropdown = $( '<div class="jq-selectbox__dropdown" style="position: absolute">'
+						+ searchHTML
+						+ '<ul>' + list + '</ul>'
+						+ '</div>' );
 		
 		//
 		selectbox.append( dropdown );
@@ -290,16 +289,10 @@ var selectboxOutput = function( )
 			li.first( ).hide( );
 		}
 
-		// прячем оригинальный селект
-		el.css( {
-			position: 'absolute',
-			left: 0,
-			top: 0,
-			width: '100%',
-			height: '100%',
-			opacity: 0
-		} );
+		// Прячем оригинальный селект
+		el.addClass( 'jq-hidden' );
 
+		//
 		var selectHeight = selectbox.outerHeight( true ),
 			searchHeight = search.parent( ).outerHeight( true ),
 			isMaxHeight = ul.css( 'max-height' ),
@@ -388,7 +381,7 @@ var selectboxOutput = function( )
 				newHeight = 'auto';
 			}
 			
-			//
+			// Выпадающее вверх меню
 			var dropDown = function( )
 			{			
 				//
@@ -420,7 +413,7 @@ var selectboxOutput = function( )
 				}
 			};
 
-			//
+			// Выпадающее вниз меню
 			var dropUp = function( )
 			{
 				//
@@ -457,23 +450,26 @@ var selectboxOutput = function( )
 				if( bottomOffset > ( minHeight + searchHeight + 20 ) )
 				{
 					dropDown( );
-					selectbox.removeClass( 'dropup' ).addClass( 'dropdown' );
+					selectbox.removeClass( 'dropup' )
+								.addClass( 'dropdown' );
 					
 				} 
 				// Раскрытие вверх
 				else
 				{
 					dropUp( );
-					selectbox.removeClass( 'dropdown' ).addClass( 'dropup' );
+					selectbox.removeClass( 'dropdown' )
+								.addClass( 'dropup' );
 				}
-			} 
+			}
 			else if( selectSmartPositioning === false || selectSmartPositioning === 0 )
 			{
 				// Раскрытие вниз
 				if( bottomOffset > ( minHeight + searchHeight + 20 ) )
 				{
 					dropDown( );
-					selectbox.removeClass( 'dropup' ).addClass( 'dropdown' );
+					selectbox.removeClass( 'dropup' )
+								.addClass( 'dropdown' );
 				}
 			}
 
@@ -614,8 +610,11 @@ var selectboxOutput = function( )
 				var index = t.index( );
 					index -= t.prevAll( '.optgroup' ).length;
 					
-				t.addClass( 'selected sel' ).siblings( ).removeClass( 'selected sel' );
-				option.prop( 'selected', false ).eq( index ).prop( 'selected', true );
+				t.addClass( 'selected sel' )
+					.siblings( ).removeClass( 'selected sel' );
+			
+				option.prop( 'selected', false )
+						.eq( index ).prop( 'selected', true );
 				
 				selectedText = liText;
 				divText.text( liText );
@@ -646,7 +645,7 @@ var selectboxOutput = function( )
 			$( 'li.sel', dropdown ).addClass( 'selected' );
 		} );
 
-		// Изменение селекта
+		// Реакция на смену пункта оригинального селекта
 		el.on( 'change.' + pluginName, function( )
 		{
 			divText.text( option.filter( ':selected' ).text( ) )
@@ -748,10 +747,7 @@ var selectboxOutput = function( )
 	{
 		var att = new Attributes( ),
 			selectbox = $( '<div class="jq-select-multiple jqselect"></div>' )
-						.css( {	display: 'inline-block',
-								position: 'relative' } )
-						.attr( { id: att.id,
-								title: att.title } )
+						.attr( { 'id': att.id, 'title': att.title } )
 						.addClass( att.classes )
 						.data( att.data );
 
@@ -765,11 +761,7 @@ var selectboxOutput = function( )
 		// Добавляем список
 		selectbox.append( '<ul>' + list + '</ul>' );
 		
-		var ul = $( 'ul', selectbox ).css( {
-				'position': 'relative',
-				'overflow-x': 'hidden',
-				'-webkit-overflow-scrolling': 'touch' 
-			} ),
+		var ul = $( 'ul', selectbox );
 			li = $( 'li', selectbox ).attr( 'unselectable', 'on' ),
 			size = el.attr( 'size' ),
 			ulHeight = ul.outerHeight( ),
@@ -797,14 +789,7 @@ var selectboxOutput = function( )
 		}
 
 		// Прячем оригинальный селект
-		el.prependTo( selectbox ).css( {
-			position: 'absolute',
-			left: 0,
-			top: 0,
-			width: '100%',
-			height: '100%',
-			opacity: 0
-		} );
+		el.addClass( 'jq-hidden' );
 
 		// Если селект неактивный
 		if( el.is( ':disabled' ) )
@@ -1023,6 +1008,7 @@ el.on( 'refresh', function( )
 {
 	// Убираем стилизацию компонента
 	el.off( '.' + pluginName )
+		.removeClass( 'jq-hidden' )
 		.parent( ).before( el ).remove( );
 
 	// Стилизируем компонент снова

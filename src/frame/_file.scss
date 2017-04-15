@@ -1,6 +1,9 @@
 
 .jq-file {
 	width: 270px;
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
 }
 
 .jq-file input {

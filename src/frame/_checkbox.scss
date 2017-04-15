@@ -6,6 +6,10 @@
 	height: 16px;
 	margin: 0 4px 0 0;
 	cursor: pointer;
+	user-select: none;
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
 }
 
 .jq-checkbox.checked .jq-checkbox__div {

@@ -1,6 +1,10 @@
 $pluginName: '%pluginName%';
 $prefix: '%classPrefix%';
 
+/* */
+
+@import '_extra';
+
 /* checkbox */
 
 @import '_checkbox';

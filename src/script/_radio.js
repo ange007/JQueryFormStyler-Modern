@@ -1,32 +1,14 @@
-var radioOutput = function( )
+var radioOutput = function( el )
 {
 	var att = new Attributes( ),
 		radio = $( '<div class="jq-radio"><div class="jq-radio__div"></div></div>' )
-				.attr( { id: att.id, title: att.title } )
+				.attr( { 'id': att.id, 'title': att.title, 'unselectable': 'on' } )
 				.addClass( att.classes )
 				.data( att.data );
 
 	// Прячем оригинальную радиокнопку
-	el.css( {
-		position: 'absolute',
-		zIndex: '-1',
-		opacity: 0,
-		margin: 0,
-		padding: 0
-	} )
-	.after( radio ).prependTo( radio );
-
-	//
-	radio.attr( 'unselectable', 'on' )
-		.css( {
-			'-webkit-user-select': 'none',
-			'-moz-user-select': 'none',
-			'-ms-user-select': 'none',
-			'-o-user-select': 'none',
-			'user-select': 'none',
-			display: 'inline-block',
-			position: 'relative'
-	} );
+	el.addClass( 'jq-hidden' )
+		.after( radio ).prependTo( radio );
 
 	// Установка изначального состояния псевдоблока
 	if( el.is( ':disabled' ) )
@@ -35,7 +17,7 @@ var radioOutput = function( )
 	} 
 	
 	// Клик по псевдоблоку
-	radio.click( function( e )
+	radio.on( 'click', function( e )
 	{
 		//
 		e.preventDefault( );
@@ -43,21 +25,24 @@ var radioOutput = function( )
 		// Обрабатываем только активную радиокнопку
 		if( !radio.is( '.disabled' ) )
 		{
+			//
+			var name = el.attr( 'name' );
+			
 			// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
 			var findElement = radio.closest( opt.wrapper )
-								.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
+								.find( 'input[name="' + name + '"]:radio' );
 
 			// ... если не нашли - ищем по родителям
 			if( findElement.length <= 0 )
 			{
-				findElement = radio.closest( '#' + el.attr( 'name' ) )
-								.find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
+				findElement = radio.closest( '#' + name )
+								.find( 'input[name="' + name + '"]:radio' );
 			}
 
 			// ... или же по всему документу
 			if( findElement.length <= 0 )
 			{
-				findElement = $( 'body' ).find( 'input[name="' + el.attr( 'name' ) + '"]:radio' );
+				findElement = $( 'body' ).find( 'input[name="' + name + '"]:radio' );
 			}
 
 			// Снимаем отметку с найденного блока
@@ -67,12 +52,18 @@ var radioOutput = function( )
 			// Передаём фокус и вызываем событие - изменения
 			el.prop( 'checked', true )
 				.focus( )
-				.change( );
+				.trigger( 'change' )
+				.trigger( 'click' );
 		}
 	} );
 		
 	// Переключение стрелками
-	el.on( 'change.' + pluginName, function( e )
+	el.on( 'click.' + pluginName, function( e )
+	{
+		e.stopPropagation( );
+		e.preventDefault( );
+	} )
+	.on( 'change.' + pluginName, function( e )
 	{
 		if( !el.is( ':disabled' ) )
 		{
@@ -120,7 +111,7 @@ var radioOutput = function( )
 };
 
 // Стилизируем компонент
-radioOutput( );
+radioOutput( el );
 
 // Обновление при динамическом изменении
 el.on( 'refresh', function( )
@@ -132,8 +123,9 @@ el.on( 'refresh', function( )
 
 	// Убираем стилизацию компонента
 	el.off( '.' + pluginName )
+		.removeClass( 'jq-hidden' )
 		.parent( ).before( el ).remove( );
 
 	// Стилизируем компонент снова
-	radioOutput( );
+	radioOutput( el );
 } );

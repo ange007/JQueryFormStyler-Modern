@@ -1,14 +1,7 @@
-// прячем оригинальное поле
-el.css( {
-	position: 'absolute',
-	top: 0,
-	right: 0,
-	opacity: 0,
-	margin: 0,
-	padding: 0,
-	fontSize: '100px'
-} );
+// Прячем оригинальное поле
+el.addClass( 'jq-hidden' );
 
+//
 var fileOutput = function( )
 {
 	var att = new Attributes( ), 
@@ -30,11 +23,7 @@ var fileOutput = function( )
 					'<div class="jq-file__name">' + placeholder + '</div>' +
 					'<div class="jq-file__browse">' + browse + '</div>' +
 					'</div>' )
-				.css( { display: 'inline-block',
-						position: 'relative',
-						overflow: 'hidden' } )
-				.attr( { id: att.id,
-						title: att.title } )
+				.attr( { 'id': att.id, 'title': att.title } )
 				.addClass( att.classes )
 				.data( att.data );
 				
@@ -110,6 +99,7 @@ el.on( 'refresh', function( )
 {
 	// Убираем стилизацию компонента
 	el.off( '.' + pluginName )
+		.removeClass( 'jq-hidden' )
 		.parent( ).before( el ).remove( );
 		
 	// Стилизируем компонент снова

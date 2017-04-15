@@ -10,8 +10,18 @@ textarea.#{$pluginName} {
 	border-bottom-color: #B3B3B3;
 	border-radius: 4px;
 	box-shadow: inset 1px 1px #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
-	font: 14px Arial, sans-serif;
 	color: #333;
+
+	&:hover {
+		border-color: #B3B3B3;
+	}
+
+	&:focus {
+		border-color: #CCC;
+		border-top-color: #B3B3B3;
+		outline: none;
+		box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+	}
 }
 
 input[type='search'].#{$pluginName} {
@@ -22,29 +32,7 @@ textarea.#{$pluginName} {
 	overflow: auto;
 }
 
-input[type='email'].#{$pluginName}:hover,
-input[type='password'].#{$pluginName}:hover,
-input[type='search'].#{$pluginName}:hover,
-input[type='tel'].#{$pluginName}:hover,
-input[type='text'].#{$pluginName}:hover,
-input[type='url'].#{$pluginName}:hover,
-textarea.#{$pluginName}:hover {
-	border-color: #B3B3B3;
-}
-
-input[type='email'].#{$pluginName}:focus,
-input[type='password'].#{$pluginName}:focus,
-input[type='search'].#{$pluginName}:focus,
-input[type='tel'].#{$pluginName}:focus,
-input[type='text'].#{$pluginName}:focus,
-input[type='url'].#{$pluginName}:focus,
-textarea.#{$pluginName}:focus {
-	border-color: #CCC;
-	border-top-color: #B3B3B3;
-	outline: none;
-	box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
-}
-
+a.button.#{$pluginName},
 button.#{$pluginName},
 input[type='button'].#{$pluginName},
 input[type='submit'].#{$pluginName},
@@ -58,41 +46,30 @@ input[type='reset'].#{$pluginName} {
 	background: #F5F5F5;
 	background: linear-gradient(#FFF, #E6E6E6);
 	box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
-	font: 14px Arial, sans-serif;
 	color: #333;
 	text-shadow: 1px 1px #FFF;
+	text-decoration: none;
 	cursor: pointer;
-}
 
-button.#{$pluginName}::-moz-focus-inner,
-input[type='button'].#{$pluginName}::-moz-focus-inner,
-input[type='submit'].#{$pluginName}::-moz-focus-inner,
-input[type='reset'].#{$pluginName}::-moz-focus-inner {
-	padding: 0;
-	border: 0;
-}
+	&::-moz-focus-inner {
+		padding: 0;
+		border: 0;
+	}
 
-button.#{$pluginName}:not([disabled]):hover,
-input[type='button'].#{$pluginName}:not([disabled]):hover,
-input[type='submit'].#{$pluginName}:not([disabled]):hover,
-input[type='reset'].#{$pluginName}:hover {
-	background: #E6E6E6;
-	background: linear-gradient(#F6F6F6, #E6E6E6);
-}
+	&:not([disabled]):hover {
+		background: #E6E6E6;
+		background: linear-gradient(#F6F6F6, #E6E6E6);
+	}
 
-button.#{$pluginName}:not([disabled]):active,
-input[type='button'].#{$pluginName}:not([disabled]):active,
-input[type='submit'].#{$pluginName}:not([disabled]):active,
-input[type='reset'].#{$pluginName}:active {
-	background: #F5F5F5;
-	box-shadow: inset 1px 1px 3px #DDD;
-}
+	&:not([disabled]):active {
+		background: #F5F5F5;
+		box-shadow: inset 1px 1px 3px #DDD;
+	}
 
-button.#{$pluginName}[disabled],
-input[type='button'].#{$pluginName}[disabled],
-input[type='submit'].#{$pluginName}[disabled] {
-	border-color: #CCC;
-	background: #F5F5F5;
-	box-shadow: none;
-	color: #888;
+	&[disabled] {
+		border-color: #CCC;
+		background: #F5F5F5;
+		box-shadow: none;
+		color: #888;
+	}
 }

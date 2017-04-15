@@ -7,6 +7,7 @@
 	// 
 	else { factory( jQuery ); }
 }
+
 ( function( $ )
 {
 	'use strict';
@@ -17,6 +18,7 @@
 										*	стилизации без "псевдо-компонентов" */
 		idSuffix = '-' + pluginName,	/* Суффикс - который подставляется к ID "псевдо-компонента" */
 	
+		// Параметры по умолчанию
 		defaults = {
 			wrapper: 'form',
 			filePlaceholder: 'Файл не выбран',
@@ -36,6 +38,7 @@
 			onFormStyled: function( ) { }
 		};
 
+	//
 	function Plugin( element, options )
 	{
 		this.element = element;
@@ -43,6 +46,7 @@
 		this.init( );
 	}
 
+	//
 	Plugin.prototype = 
 	{
 		// Инициализация
@@ -54,6 +58,7 @@
 			var iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ) ? true : false,
 				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ) ? true : false;
 
+			//
 			function Attributes( )
 			{
 				if( el.attr( 'id' ) !== undefined && el.attr( 'id' ) !== '' ) 
@@ -97,7 +102,8 @@
 				return false;
 			}
 			// Другие компоненты
-			else if( el.is( 'input' ) )
+			else if( el.is( 'input' ) || el.is( 'textarea' ) 
+					|| el.is( 'button' ) || el.is( 'a.button' ) )
 			{
 				el.addClass( pluginName );
 			}
@@ -106,7 +112,11 @@
 			{
 				el.on( 'click', function( )
 				{
-					setTimeout( function( ) { el.closest( opt.wrapper ).find( 'input, select' ).trigger( 'refresh' ); }, 1 );
+					setTimeout( function( ) 
+					{ 
+						el.closest( opt.wrapper ).children( )
+												.trigger( 'refresh' );
+					}, 1 );
 				} );
 			}
 		},
@@ -114,7 +124,7 @@
 		// Убрать стилизацию елемент(а/ов) 
 		destroy: function( reinitialize )
 		{
-			var el = $( this.element );
+			var el = $( this.element ).removeClass( 'jq-hidden' );
 			
 			// Если происходит уничтожение для переинициализации - data удалять не нужно
 			if( !reinitialize )
@@ -122,10 +132,10 @@
 				el.removeData( '_' + pluginName );
 			}
 
-			//
+			// Дополнительная пост-обработка checkbox и radio
 			if( el.is( ':checkbox' ) || el.is( ':radio' ) )
 			{
-				el.off( '.' + pluginName + ' refresh' )
+				el.off( '.' + pluginName + ', refresh' )
 					.removeAttr( 'style' )
 					.parent( ).before( el ).remove( );
 			
@@ -133,16 +143,16 @@
 					.add( 'label[for="' + el.attr( 'id' ) + '"]' )
 					.off( '.' + pluginName );
 			}
-			//
+			// Дополнительная пост-обработка number
 			else if( el.is( 'input[type="number"]' ) )
 			{
-				el.off( '.' + pluginName + ' refresh' )
+				el.off( '.' + pluginName + ', refresh' )
 					.closest( '.jq-number' ).before( el ).remove( );
 			} 
-			//
+			// Дополнительная пост-обработка file и select
 			else if( el.is( ':file' ) || el.is( 'select' ) )
 			{
-				el.off( '.' + pluginName + ' refresh' )
+				el.off( '.' + pluginName + ', refresh' )
 					.removeAttr( 'style' )
 					.parent( ).before( el ).remove( );
 			}
@@ -155,11 +165,8 @@
 			this.destroy( true ); 
 
 			// Перезаписываем настройки и снова инициализируем стилизацию
-			this.options = $.extend( { }, defaults, options );
+			this.options = $.extend( { }, this.options, options );
 			this.init( );
-			
-			// Вызываем событие
-			// this.change( );
 		}
 	};
 
@@ -177,6 +184,10 @@
 				if( !$.data( this, '_' + pluginName ) )
 				{
 					$.data( this, '_' + pluginName, new Plugin( this, options ) );
+				}
+				else
+				{
+					$( this ).styler( 'reinitialize' );
 				}
 			} )
 			// Ожидаем полного прохода

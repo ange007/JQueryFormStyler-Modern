@@ -14,8 +14,7 @@ var numberOutput = function( )
 				'<div class="jq-number__spin minus"></div>' +
 				'<div class="jq-number__spin plus"></div>' +
 				'</div>' )
-			.attr( { id: att.id,
-					title: att.title } )
+			.attr( { 'id': att.id, 'title': att.title } )
 			.addClass( att.classes )
 			.data( att.data );
 
@@ -58,6 +57,7 @@ var numberOutput = function( )
 		if( !$.isNumeric( value ) )
 		{
 			value = 0;
+			
 			el.val( '0' )
 				.change( );
 		}

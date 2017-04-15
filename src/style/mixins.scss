@@ -1,0 +1,50 @@
+@mixin button( $background, $color, $lighten ) {
+	color: $color;
+	background-color: $background;
+
+	@if( !$lighten ) {
+		border-color: darken( $background,5% );
+		&:hover {
+			color: darken( $color, 5%);
+			background-color: darken( $background,5% );
+			border-color: darken( $background,10% );
+		}
+		&:focus {
+			color: darken( $color, 5%);
+			background-color: darken( $background, 10% );
+			border-color: darken( $background, 10% );
+		}
+		&:active {
+			color: darken( $color, 5%);
+			background-color: darken( $background, 10% );
+			border-color: darken( $menu-active, 10% );
+		}
+	}
+	@else {
+		border-color: lighten($background,10%);
+		&:hover {
+			color: lighten( $color, 5% );
+			background-color: lighten( $background, 5% );
+			border-color: lighten( $background, 20% );
+		}
+		&:focus {
+			color: lighten( $color, 5% );
+			background-color: lighten( $background, 10% );
+			border-color: lighten( $background, 20% );
+		}
+		&:active {
+			color: $menu-active-text;
+			background-color: $menu-active;
+			border-color: lighten( $menu-active, 20% );
+		}
+	}
+}
+
+@mixin hi-light($background){
+	@if($style == light){
+		background-color: darken($background, 10%);
+	}
+	@else {
+		background-color: lighten($background, 5%);
+	}
+}

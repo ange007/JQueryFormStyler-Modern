@@ -1,14 +1,18 @@
 
 .jq-select-multiple {
+	display: inline-block;
+	position: relative;
 	box-sizing: border-box;
 	padding: 1px;
-	font: 14px/18px Arial, sans-serif;
 	cursor: default;
 }
 
 .jq-select-multiple ul {
+	position: relative;
 	margin: 0;
 	padding: 0;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
 }
 
 .jq-select-multiple li {
