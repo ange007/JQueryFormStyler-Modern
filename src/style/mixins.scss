@@ -1,41 +1,42 @@
-@mixin button( $background, $color, $lighten ) {
+@mixin button( $background, $color, $border, $lighten ) {
 	color: $color;
 	background-color: $background;
 
-	@if( !$lighten ) {
-		border-color: darken( $background,5% );
-		&:hover {
-			color: darken( $color, 5%);
-			background-color: darken( $background,5% );
-			border-color: darken( $background,10% );
-		}
-		&:focus {
-			color: darken( $color, 5%);
-			background-color: darken( $background, 10% );
-			border-color: darken( $background, 10% );
-		}
-		&:active {
-			color: darken( $color, 5%);
-			background-color: darken( $background, 10% );
-			border-color: darken( $menu-active, 10% );
-		}
-	}
-	@else {
-		border-color: lighten($background,10%);
+	@if( $lighten ) {
+		border-color: $border;
+		
 		&:hover {
 			color: lighten( $color, 5% );
 			background-color: lighten( $background, 5% );
-			border-color: lighten( $background, 20% );
+			border-color: lighten( $border, 20% );
 		}
 		&:focus {
 			color: lighten( $color, 5% );
 			background-color: lighten( $background, 10% );
-			border-color: lighten( $background, 20% );
+			border-color: lighten( $border, 20% );
 		}
 		&:active {
-			color: $menu-active-text;
-			background-color: $menu-active;
-			border-color: lighten( $menu-active, 20% );
+			color: lighten( $color, 5%);
+			background-color: lighten( $background, 10% );
+			border-color: lighten( $border, 20% );
+		}
+	}
+	@else {
+		border-color: darken( $background,5% );
+		&:hover {
+			color: darken( $color, 5%);
+			background-color: darken( $background,5% );
+			border-color: darken( $border,10% );
+		}
+		&:focus {
+			color: darken( $color, 5%);
+			background-color: darken( $background, 10% );
+			border-color: darken( $border, 10% );
+		}
+		&:active {
+			color: darken( $color, 5%);
+			background-color: darken( $background, 10% );
+			border-color: darken( $border, 10% );
 		}
 	}
 }
@@ -46,5 +47,19 @@
 	}
 	@else {
 		background-color: lighten($background, 5%);
+	}
+}
+
+@mixin arrow( $size, $color, $rounded ) {
+	@if( $rounded ) {
+		top: $select-arrow-size;
+		border: $size solid $color;
+		border-radius: 50%;	
+	}
+	@else {
+		top: $select-arrow-size - 1;
+		border-right: $size solid transparent;
+		border-left: $size solid transparent;
+		border-top: $size solid $color;
 	}
 }

@@ -3,7 +3,7 @@
 	// AMD
 	if( typeof define === 'function' && define.amd ) { define( [ 'jquery' ], factory ); } 
 	// CommonJS
-	else if( typeof exports === 'object' ) { module.exports = factory( require( 'jquery' ) ); } 
+	else if( typeof exports === 'object' ) { module.exports = factory( $ || require( 'jquery' ) ); } 
 	// 
 	else { factory( jQuery ); }
 }
@@ -17,120 +17,172 @@
 										*	а так-же в качестве класса для 
 										*	стилизации без "псевдо-компонентов" */
 		idSuffix = '-' + pluginName,	/* Суффикс - который подставляется к ID "псевдо-компонента" */
-	
+
 		// Параметры по умолчанию
 		defaults = {
 			wrapper: 'form',
-			filePlaceholder: 'Файл не выбран',
-			fileBrowse: 'Обзор...',
-			fileNumber: 'Выбрано файлов: %s',
-			selectPlaceholder: 'Выберите...',
+			selectTriggerHtml: '<div class="jq-selectbox__trigger-arrow"></div>',
 			selectSearch: false,
 			selectSearchLimit: 10,
-			selectSearchNotFound: 'Совпадений не найдено',
-			selectSearchPlaceholder: 'Поиск...',
 			selectVisibleOptions: 0,
 			singleSelectzIndex: '100',
 			selectSmartPositioning: true,
 			checkboxIndeterminate: false,
+			passwordSwitchHtml: '<button type="button" class="' + pluginName + '"></button>',
+			locale: 'ru',
+			locales: 
+			{
+				'ru': {
+					filePlaceholder: 'Файл не выбран',
+					fileBrowse: 'Обзор...',
+					fileNumber: 'Выбрано файлов: %s',
+					selectPlaceholder: 'Выберите...',
+					selectSearchNotFound: 'Совпадений не найдено',
+					selectSearchPlaceholder: 'Поиск...',
+					passwordShow: 'Показать',
+					passwordHide: 'Скрыть'
+				},
+				'en': {
+					filePlaceholder: 'No file selected',
+					fileBrowse: 'Browse...',
+					fileNumber: 'Selected files: %s',
+					selectPlaceholder: 'Select...',
+					selectSearchNotFound: 'No matches found',
+					selectSearchPlaceholder: 'Search...',
+					passwordShow: 'Show',
+					passwordHide: 'Hide'
+				},
+				'ua': {
+					filePlaceholder: 'Файл не обраний',
+					fileBrowse: 'Огляд...',
+					fileNumber: 'Обрано файлів: %s',
+					selectPlaceholder: 'Виберіть...',
+					selectSearchNotFound: 'Збігів не знайдено',
+					selectSearchPlaceholder: 'Пошук...',
+					passwordShow: 'Показати',
+					passwordHide: 'Сховати'
+				}
+			},
 			onSelectOpened: function( ) { },
 			onSelectClosed: function( ) { },
 			onFormStyled: function( ) { }
 		};
 
-	//
+	// Конструктор плагина
 	function Plugin( element, options )
 	{
 		this.element = element;
 		this.options = $.extend( { }, defaults, options );
+		
+		var locale = this.options.locale;
+		if( this.options.locales[ locale ] !== undefined )
+		{
+			$.extend( this.options, this.options.locales[ locale ] );
+		}
+		
 		this.init( );
 	}
 
-	//
+	// Атрибуты елемента
+	function Attributes( element )
+	{
+		if( element.attr( 'id' ) !== undefined && element.attr( 'id' ) !== '' ) 
+		{
+			this.id = element.attr( 'id' ) + idSuffix;
+		}
+
+		this.title = element.attr( 'title' );
+		this.classes = element.attr( 'class' );
+		this.data = element.data( );
+	}
+
+	// Расширение функционала плагина
 	Plugin.prototype = 
 	{
 		// Инициализация
 		init: function( )
 		{
-			var el = $( this.element ),
+			var context = this,
+				element = $( this.element ),
 				opt = this.options;
 
-			var iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ) ? true : false,
-				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ) ? true : false;
-
-			//
-			function Attributes( )
-			{
-				if( el.attr( 'id' ) !== undefined && el.attr( 'id' ) !== '' ) 
-				{
-					this.id = el.attr( 'id' ) + idSuffix;
-				}
-				
-				this.title = el.attr( 'title' );
-				this.classes = el.attr( 'class' );
-				this.data = el.data( );
-			}
+			var iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
+				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) );
 
 			// Чекбокс
-			if( el.is( ':checkbox' ) )
+			if( element.is( ':checkbox' ) )
 			{
 				//= _checkbox.js
 			}
 			// Радиокнопка
-			else if( el.is( ':radio' ) )
+			else if( element.is( ':radio' ) )
 			{
 				//= _radio.js
 			}
 			// Выбор файла
-			else if ( el.is( ':file' ) ) 
+			else if ( element.is( ':file' ) ) 
 			{
 				//= _file.js
 			}
 			// Номер
-			else if( el.is( 'input[type="number"]' ) )
+			else if( element.is( 'input[type="number"]' ) )
 			{
 				//= _number.js
 			} 
-			// Список
-			else if( el.is( 'select' ) )
+			// Пароль
+			else if( element.is('input[type="password"]' ) ) 
 			{
-				//= _select.js
+				//= _password.js
 			}
 			// Скрытое поле
-			else if( el.is( 'input[type="hidden"]' ) )
+			else if( element.is( 'input[type="hidden"]' ) )
 			{
 				return false;
 			}
-			// Другие компоненты
-			else if( el.is( 'input' ) || el.is( 'textarea' ) 
-					|| el.is( 'button' ) || el.is( 'a.button' ) )
+			// Список
+			else if( element.is( 'select' ) )
 			{
-				el.addClass( pluginName );
+				//= _selectbox.js
+			}
+			// Другие компоненты
+			else if( element.is( 'input' ) || element.is( 'textarea' ) 
+					|| element.is( 'button' ) || element.is( 'a.button' ) )
+			{
+				element.addClass( pluginName );
 			}
 			// Кнопка сброса
-			else if( el.is( ':reset' ) )
+			else if( element.is( ':reset' ) )
 			{
-				el.on( 'click', function( )
+				element.on( 'click', function( )
 				{
 					setTimeout( function( ) 
 					{ 
-						el.closest( opt.wrapper ).children( )
-												.trigger( 'refresh' );
+						element.closest( opt.wrapper ).children( )
+													.trigger( 'repaint' );
 					}, 1 );
 				} );
 			}
+			
+			// Переинициализация
+			element.on( 'refresh reinitialize', function( )
+			{
+				context.reinitialize( );
+			} );
 		},
 		
 		// Убрать стилизацию елемент(а/ов) 
 		destroy: function( reinitialize )
 		{
-			var el = $( this.element ).removeClass( 'jq-hidden' );
+			var el = $( this.element );
 			
 			// Если происходит уничтожение для переинициализации - data удалять не нужно
 			if( !reinitialize )
 			{
 				el.removeData( '_' + pluginName );
 			}
+			
+			// Убираем "невидимлсть" елемента
+			el.removeClass( 'jq-hidden' );
 
 			// Дополнительная пост-обработка checkbox и radio
 			if( el.is( ':checkbox' ) || el.is( ':radio' ) )
@@ -148,6 +200,12 @@
 			{
 				el.off( '.' + pluginName + ', refresh' )
 					.closest( '.jq-number' ).before( el ).remove( );
+			} 
+			// Дополнительная пост-обработка password
+			else if( el.is( 'input[type="password"]' ) )
+			{
+				el.off( '.' + pluginName + ', refresh' )
+					.closest( '.jq-password' ).before( el ).remove( );
 			} 
 			// Дополнительная пост-обработка file и select
 			else if( el.is( ':file' ) || el.is( 'select' ) )

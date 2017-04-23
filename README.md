@@ -18,7 +18,7 @@ jQuery-плагин для стилизации элементов HTML-форм
 Сам плагин подключаетс посредством файла `jquery.formStylerModern.js`.
 А подключение стилей на данный момент возможно в 2х вариантах:
 - Подключение `jquery.formStylerModern.css`- который в себе содержит каркас и тему по умолчанию *(default)*
-- Подлючение файлов из диретории `/themed/` - `jquery.formStylerModern.frame.css` *(каркас)* и одной из тем в той-же директории *(например `jquery.formStylerModern.flat.css`)*
+- Подключение файлов из директории `/theme/` - `jquery.formStylerModern.frame.css` *(каркас)* и одной из тем в той-же директории *(например `jquery.formStylerModern.flat.css`)*
 
 ## Структурные отличия от репозитория оригинала:
 - Разделение на **dev** и **master** ветки

@@ -41,7 +41,7 @@ var paths =
 		frame: './src/frame/',
 		style: './src/style/',
 		styles: {
-			default: 'default/',
+			default: '/',
 			flat: 'flat/'
 		}
 	},

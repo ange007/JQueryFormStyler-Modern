@@ -1,10 +1,7 @@
-// Прячем оригинальное поле
-el.addClass( 'jq-hidden' );
-
 //
-var fileOutput = function( )
+var fileOutput = function( el )
 {
-	var att = new Attributes( ), 
+	var att = new Attributes( el ), 
 		placeholder = el.data( 'placeholder' ),
 		browse = el.data( 'browse' );
 		
@@ -26,22 +23,18 @@ var fileOutput = function( )
 				.attr( { 'id': att.id, 'title': att.title } )
 				.addClass( att.classes )
 				.data( att.data );
-				
-	// Добавляем блок 
-	el.after( file ).appendTo( file );
+	
+	// Прячем оригинальное поле
+	el.addClass( 'jq-hidden' )
+		.after( file ).appendTo( file );
 
-	// 
-	if( el.is( ':disabled' ) )
-	{
-		file.addClass( 'disabled' );
-	}
-
-	// Обработка "изменения" состояния
-	el.on( 'change.' + pluginName, function( )
+	// Необходимо "перерисовать" контрол 
+	file.on( 'repaint', function( )
 	{
 		var value = el.val( ),
 			name = $('div.jq-file__name', file);
-		
+				
+		// 
 		if( el.is( '[multiple]' ) )
 		{
 			var files = el[0].files.length;
@@ -60,18 +53,21 @@ var fileOutput = function( )
 				value = number;
 			}
 		}
+				
+		// Выводим название файлов или примечание
+		name.text( value.replace( /.+[\\\/]/, '' ) || placeholder );
 		
-		name.text( value.replace( /.+[\\\/]/, '' ) );
+		// Активация/деактивация
+		file.toggleClass( 'changed', ( value !== '' ) );
 		
-		if( value === '' )
-		{
-			name.text( placeholder );
-			file.removeClass( 'changed' );
-		} 
-		else
-		{
-			file.addClass( 'changed' );
-		}
+		// Активация/деактивация
+		file.toggleClass( 'disabled', el.is( ':disabled' ) );
+	} );
+
+	// Обработка "изменения" состояния
+	el.on( 'change.' + pluginName, function( )
+	{
+		file.triggerHandler( 'repaint' );
 	} )
 	// Работа с "фокусировкой"
 	.on( 'focus.' + pluginName, function( )
@@ -88,20 +84,8 @@ var fileOutput = function( )
 	} );
 	
 	// Мы установили стиль, уведомляем об изменении
-	el.change( );
+	file.triggerHandler( 'repaint' );
 };
 
 // Стилизируем компонент
-fileOutput( );
-
-// Обновление при динамическом изменении
-el.on( 'refresh', function( )
-{
-	// Убираем стилизацию компонента
-	el.off( '.' + pluginName )
-		.removeClass( 'jq-hidden' )
-		.parent( ).before( el ).remove( );
-		
-	// Стилизируем компонент снова
-	fileOutput( );
-} );
+fileOutput( element );

@@ -8,8 +8,8 @@ $background: #FFF;
 $background-hover: #FFF;
 $background-active: #FFF;
 $background-disabled: #F5F5F5;
-$background-gradient: #F5F5F5;
-$background-gradient-hover: #E6E6E6;
+$background-gradient: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
+$background-gradient-hover: linear-gradient(#F6F6F6, #E6E6E6), #E6E6E6;
 $background-gradient-active: #F5F5F5;
 
 $border-radius: 4px;
@@ -37,36 +37,36 @@ $select-item-hover-color: #FFF;
 
 /* */
 
-@import '../mixins';
+@import 'mixins';
 
 /* checkbox */
 
-@import '../_checkbox';
+@import '_checkbox';
 
 /* radio */
 
-@import '../_radio';
+@import '_radio';
 
 /* file */
 
-@import '../_file';
+@import '_file';
 
 /* number */
 
-@import '../_number';
+@import '_number';
 
 /* password */
 
-@import '../_password';
+@import '_password';
 
 /* selectbox */
 
-@import '../_selectbox';
+@import '_selectbox';
 
 /* selectbox-multi */
 
-@import '../_selectbox-multi';
+@import '_selectbox-multi';
 
 /* other */
 
-@import '../_other';
+@import '_other';

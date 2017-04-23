@@ -1,6 +1,6 @@
 var radioOutput = function( el )
 {
-	var att = new Attributes( ),
+	var att = new Attributes( el ),
 		radio = $( '<div class="jq-radio"><div class="jq-radio__div"></div></div>' )
 				.attr( { 'id': att.id, 'title': att.title, 'unselectable': 'on' } )
 				.addClass( att.classes )
@@ -9,15 +9,18 @@ var radioOutput = function( el )
 	// Прячем оригинальную радиокнопку
 	el.addClass( 'jq-hidden' )
 		.after( radio ).prependTo( radio );
-
-	// Установка изначального состояния псевдоблока
-	if( el.is( ':disabled' ) )
-	{
-		radio.addClass( 'disabled' );
-	} 
 	
+	// Необходимо "перерисовать" контрол 
+	radio.on( 'repaint', function( )
+	{
+		// Отметка
+		el.parent( ).toggleClass( 'checked', el.is( ':checked' ) );
+
+		// Активация/деактивация
+		radio.toggleClass( 'disabled', el.is( ':disabled' ) );
+	} )
 	// Клик по псевдоблоку
-	radio.on( 'click', function( e )
+	.on( 'click', function( e )
 	{
 		//
 		e.preventDefault( );
@@ -30,13 +33,13 @@ var radioOutput = function( el )
 			
 			// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
 			var findElement = radio.closest( opt.wrapper )
-								.find( 'input[name="' + name + '"]:radio' );
+									.find( 'input[name="' + name + '"]:radio' );
 
 			// ... если не нашли - ищем по родителям
 			if( findElement.length <= 0 )
 			{
 				findElement = radio.closest( '#' + name )
-								.find( 'input[name="' + name + '"]:radio' );
+									.find( 'input[name="' + name + '"]:radio' );
 			}
 
 			// ... или же по всему документу
@@ -53,32 +56,23 @@ var radioOutput = function( el )
 			el.prop( 'checked', true )
 				.focus( )
 				.trigger( 'change' )
-				.trigger( 'click' );
+				.triggerHandler( 'click' );
 		}
 	} );
-		
-	// Переключение стрелками
-	el.on( 'click.' + pluginName, function( e )
+
+	// Обработка изменений
+	el.on( 'change.' + pluginName, function( e )
 	{
-		e.stopPropagation( );
-		e.preventDefault( );
+		radio.triggerHandler( 'repaint' );
 	} )
-	.on( 'change.' + pluginName, function( e )
+	// Обработка переключения при помощи клавиатуры
+	.on( 'keydown.' + pluginName, function( e )
 	{
-		if( !el.is( ':disabled' ) )
+		if( e.which === 32 )
 		{
-			if( $( this ).is(':checked') )
-			{
-				el.parent( )
-					.addClass( 'checked' );
-			}
-			else
-			{
-				el.parent( )
-					.removeClass( 'checked' );
-			}
+			e.preventDefault( );
+			radio.trigger( 'click' );
 		}
-		
 	} )
 	// Обработка наведения фокуса
 	.on( 'focus.' + pluginName, function( )
@@ -107,25 +101,8 @@ var radioOutput = function( el )
 	} );
 	
 	// Мы установили стиль, уведомляем об изменении
-	el.change( );
+	radio.triggerHandler( 'repaint' );
 };
 
 // Стилизируем компонент
-radioOutput( el );
-
-// Обновление при динамическом изменении
-el.on( 'refresh', function( )
-{
-	//
-	el.closest( 'label' )
-		.add( 'label[for="' + el.attr( 'id' ) + '"]' )
-		.off( '.' + pluginName );
-
-	// Убираем стилизацию компонента
-	el.off( '.' + pluginName )
-		.removeClass( 'jq-hidden' )
-		.parent( ).before( el ).remove( );
-
-	// Стилизируем компонент снова
-	radioOutput( el );
-} );
+radioOutput( element );

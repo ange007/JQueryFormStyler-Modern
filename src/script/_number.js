@@ -1,52 +1,25 @@
-var numberOutput = function( )
+var numberOutput = function( el )
 {
-	// Инициализируем переменные
-	var min,
-		max,
-		step,
-		timeout = null,
-		interval = null;
-
 	// Формируем компонент
-	var att = new Attributes( ),
-		number =
-			$( '<div class="jq-number">' +
-				'<div class="jq-number__spin minus"></div>' +
-				'<div class="jq-number__spin plus"></div>' +
-				'</div>' )
+	var att = new Attributes( el ),
+		number = $( '<div class="jq-number">'
+						+ '<div class="jq-number__spin minus"></div>'
+						+ '<div class="jq-number__spin plus"></div>'
+					+ '</div>' )
 			.attr( { 'id': att.id, 'title': att.title } )
 			.addClass( att.classes )
 			.data( att.data );
-
 	
 	// Добавляем нужные блоки
 	el.after( number ).prependTo( number )
 						.wrap( '<div class="jq-number__field"></div>' );
-
-	// Обработка "неактивности"
-	if( el.is( ':disabled' ) )
-	{
-		number.addClass( 'disabled' );
-	}
-
-	if( el.attr( 'min' ) !== undefined )
-	{
-		min = el.attr( 'min' );
-	}
 	
-	if( el.attr( 'max' ) !== undefined )
-	{
-		max = el.attr( 'max' );
-	}
-	
-	if( el.attr( 'step' ) !== undefined && $.isNumeric( el.attr( 'step' ) ) )
-	{
-		step = Number( el.attr( 'step' ) );
-	}
-	else
-	{
-		step = Number( 1 );
-	}
+	// Инициализируем переменные
+	var min = el.attr( 'min' ) || undefined,
+		max = el.attr( 'max' ) || undefined,
+		step = Number( el.attr( 'step' ) ) || 1,
+		timeout = null,
+		interval = null;
 
 	// Изменение значения
 	var changeValue = function( spin )
@@ -117,48 +90,51 @@ var numberOutput = function( )
 		}
 	};
 
-	// Обработчики в случае "активности" компонента
-	if( !number.is( '.disabled' ) )
+	// Необходимо "перерисовать" контрол
+	number.on( 'repaint', function( )
 	{
-		// Обработка клика на компонент
-		number.on( 'mousedown', 'div.jq-number__spin', function( )
+		// Активация/деактивация
+		number.toggleClass( 'disabled', el.is( ':disabled' ) );
+	} )
+	//
+	.on( 'mousedown', 'div.jq-number__spin', function( )
+	{
+		if( el.is( ':disabled' ) )
 		{
-			var spin = $( this );
-			changeValue( spin );
-			
-			timeout = setTimeout( function( ) { interval = setInterval( function( ) { changeValue( spin ); }, 40 ); }, 350 );
-		} )
-		.on( 'mouseup mouseout', 'div.jq-number__spin', function( )
-		{
-			clearTimeout( timeout );
-			clearInterval( interval );
-		} );
+			return;
+		}
 		
-		// Фокусировка
-		el.on( 'focus.' + pluginName, function( )
+		var spin = $( this );
+		changeValue( spin );
+
+		timeout = setTimeout( function( ) { interval = setInterval( function( ) { changeValue( spin ); }, 40 ); }, 350 );
+	} )
+	//
+	.on( 'mouseup mouseout', 'div.jq-number__spin', function( )
+	{
+		if( el.is( ':disabled' ) )
 		{
-			number.addClass( 'focused' );
-		} )
-		.on( 'blur.' + pluginName, function( )
-		{
-			number.removeClass( 'focused' );
-		} );
-	}
+			return;
+		}
+		
+		clearTimeout( timeout );
+		clearInterval( interval );
+	} );
+
+	// Фокусировка
+	el.on( 'focus.' + pluginName, function( )
+	{
+		number.addClass( 'focused' );
+	} )
+	// Расфокусировка
+	.on( 'blur.' + pluginName, function( )
+	{
+		number.removeClass( 'focused' );
+	} );
 	
 	// Мы установили стиль, уведомляем об изменении
-	el.change( );
+	number.triggerHandler( 'repaint' );
 }; 
 
 // Стилизируем компонент
-numberOutput( );
-
-// Обновление при динамическом изменении
-el.on( 'refresh', function( )
-{
-	// Убираем стилизацию компонента
-	el.off( '.' + pluginName )
-		.closest( '.jq-number' ).before( el ).remove( );
-
-	// Стилизируем компонент снова
-	numberOutput( );
-} );
+numberOutput( element );
