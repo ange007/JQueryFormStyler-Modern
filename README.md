@@ -1,4 +1,10 @@
-# jQuery FormStyler Modern  [![Build Status](https://travis-ci.org/ange007/JQueryFormStyler-Modern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStyler-Modern)
+# jQuery FormStyler Modern  
+===================
+
+[![Latest Stable Version](https://poser.pugx.org/ange007/JQueryFormStyler-Modern/v/stable)](https://packagist.org/packages/ange007/JQueryFormStyler-Modern)
+[![Total Downloads](https://poser.pugx.org/ange007/JQueryFormStyler-Modern/downloads)](https://packagist.org/packages/ange007/JQueryFormStyler-Modern)
+[![Build Status](https://travis-ci.org/ange007/JQueryFormStyler-Modern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStyler-Modern)
+
 >Ответвление от плагина **jQueryFormStyler** 
 *( оригинальный плагин: https://github.com/Dimox/jQueryFormStyler )*
 
@@ -12,6 +18,7 @@ jQuery-плагин для стилизации элементов HTML-форм
 - `<input type="radio">`
 - `<input type="file">`
 - `<input type="number">`
+- `<input type="password">`
 - `<select>`
 
 ## Подключение плагина
@@ -20,12 +27,31 @@ jQuery-плагин для стилизации элементов HTML-форм
 - Подключение `jquery.formStylerModern.css`- который в себе содержит каркас и тему по умолчанию *(default)*
 - Подключение файлов из директории `/theme/` - `jquery.formStylerModern.frame.css` *(каркас)* и одной из тем в той-же директории *(например `jquery.formStylerModern.flat.css`)*
 
-## Структурные отличия от репозитория оригинала:
-- Разделение на **dev** и **master** ветки
-- Разбивка плагина на части
-- Разделение каркаса и стилей плагина
-- Cборка проекта при помощи **Gulp**
-- Автоматизация сборки через **Travis-CI**
+## Работа с плагином
+Стилизация компонентов
+```javascript
+	$( 'input, select, button' ).styler( {
+		selectSearch: true,
+		locale: 'ru',
+		onFormStyled: function( ) 
+		{ 
+			...
+		}
+	} );
+```
 
-## Ссылки
-- [Оригинальный плагин](https://github.com/Dimox/jQueryFormStyler/)
+Перезагрузка элементов с определёнными настройками
+```javascript
+	$( '#checkbox-indeterminate-change' ).styler( 'reinitialize', { checkboxIndeterminate: true } );
+```
+
+Убрать стилизацию
+```javascript
+	$( 'input, select, button' ).styler( 'destroy' );
+```
+
+Перерисовка компонента после "ручного" изменения состояния
+```javascript
+	$( this ).prop( 'disabled', true )
+			.trigger( 'repaint' ); }
+```
