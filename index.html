@@ -6,7 +6,7 @@
 		<title>Примеры для плагина jQuery Form Styler</title>
 		
 		<link href="demo.css" rel="stylesheet" />
-		<link href="./build/jquery.formStylerModern.css" rel="stylesheet" />
+		<link href="./build/theme/jquery.formStylerModern.frame.css" rel="stylesheet" />
 		
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="./build/jquery.formStylerModern.js"></script>
@@ -19,22 +19,32 @@
 		    <ul class="buttons">
 				<li class="download"><a href="https://github.com/ange007/JQueryFormStyler-Modern/zipball/master">Скачать ZIP</a></li>
 				<li class="download"><a href="https://github.com/ange007/JQueryFormStyler-Modern/tarball/master">Скачать TAR</a></li>
-				<li><a class="github" href="https://github.com/ange007/JQueryFormStyler-Modern">Просмотреть на GitHub</a></li>
+				<li><a class="github" href="https://github.com/ange007/JQueryFormStyler-Modern">Перейти в репозиторий</a></li>
 			  </ul>
 		</div>
 
 		<form method="post">
-			<div class="wrapper">
-
-				<ul class="menu">
-					<li class="current" data-hash="checkbox">Чекбоксы</li>
-					<li data-hash="radio">Радиокнопки</li>
-					<li data-hash="file">Поле для выбора файла</li>
-					<li data-hash="number">Поле для ввода чисел</li>
-					<li data-hash="select">Одиночные селекты</li>
-					<li data-hash="multiselect">Мультиселекты</li>
-					<li data-hash="css">Прочие элементы форм (только CSS)</li>
-				</ul>
+			<div class="wrapper">				
+				<div class="left">
+					<div class="style-menu">
+						Стиль:
+						<select id="style">
+							<option value="jquery.formStylerModern.default.css">По умолчанию</option>
+							<option value="jquery.formStylerModern.flat.css">Плоский</option>
+						</select>
+					</div>
+					
+					<ul class="menu">
+						<li class="current" data-hash="checkbox">Чекбоксы</li>
+						<li data-hash="radio">Радиокнопки</li>
+						<li data-hash="file">Поле для выбора файла</li>
+						<li data-hash="number">Поле для ввода чисел</li>
+						<li data-hash="password">Поле ввода пароля</li>
+						<li data-hash="select">Одиночные селекты</li>
+						<li data-hash="multiselect">Мультиселекты</li>
+						<li data-hash="css">Прочие элементы форм (только CSS)</li>
+					</ul>
+				</div>
 
 				<div class="content">
 
@@ -92,25 +102,48 @@
 								<button type="submit" class="button  disable-input">Переключить активность</button>
 							</div>
 							<p>Поле без атрибутов.</p>
-							<input type="number" />
+							<input type="number" id="num-1" />
 						</div><!-- .section -->
 
 						<div class="section">
 							<p>Поле с атрибутами <code>min="0" max="100" step="5"</code>.</p>
-							<input type="number" min="0" max="100" step="5" />
+							<input type="number" id="num-2" min="0" max="100" step="5" />
 						</div><!-- .section -->
 
-						<div class="section  number-plus-minus">
-							<p>Другой вид переключателей.</p>
-							<input type="number" />
+						<div class="section">
+							<p>Горизонтальные переключатели: <code>class="horizontal"</code></p>
+							<input type="number" id="num-3" class="horizontal" />
 						</div><!-- .section -->
 					</div><!-- .box -->
 
 					<div class="box">
+						<h2>Поле ввода пароля</h2>
 
+						<div class="section">
+							<div class="buttons">
+								<button type="submit" class="button  add-password">Добавить поле</button>
+								<button type="submit" class="button  disable-input">Переключить активность</button>
+							</div>
+							
+							<input type="password" id="p-1" size="60" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" value="Пароль">
+						</div>
+
+						<div class="section">
+							<p>Без <code>button</code>.</p>
+							<input type="password" id="p-2" size="60" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" value="Пароль">
+						</div><!-- .section -->
+						
+						<div class="section">
+							<p>Со своим текстом.</p>
+							<input type="password" id="p-3" size="60" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" value="Пароль">
+						</div><!-- .section -->
+						
+					</div><!-- .box -->
+					
+					<div class="box">
 						<h2>Одиночные селекты</h2>
 
-						<p style="color: #43C617">По умолчанию ширина селекта на этой странице установлена 250 пикселей.</p>
+						<p style="color: #EE6D5B;">По умолчанию ширина селекта на этой странице установлена 250 пикселей.</p>
 
 						<div class="section">
 							<div class="buttons">
@@ -120,7 +153,7 @@
 								<button type="submit" class="button  disable-options">Переключить активность пунктов</button>
 							</div>
 							<p><strong>Простой селект</strong> с несколькими пунктами, <br />один из них неактивный.</p>
-							<select>
+							<select id="s-1">
 								<option>-- Выберите --</option>
 								<option>Пункт 1</option>
 								<option>Пункт 2</option>
@@ -133,7 +166,7 @@
 						<div class="section">
 
 							<p>Селект <strong>без заданной ширины</strong>, имеющий пункт <strong>с длинным текстом</strong>.</p>
-							<select class="width-auto">
+							<select id="s-2" class="width-auto">
 								<option>-- Выберите --</option>
 								<option>Пункт 1</option>
 								<option>Пункт 2</option>
@@ -145,7 +178,7 @@
 							<br /><br />
 
 							<p>Селект <strong>с шириной 200 пикселей</strong>, имеющий пункт <strong>с длинным текстом</strong>.</p>
-							<select class="width-200">
+							<select id="s-3" class="width-200">
 								<option>-- Выберите --</option>
 								<option>Пункт 1</option>
 								<option>Пункт 2</option>
@@ -160,7 +193,7 @@
 
 							<div class="sec maxheight">
 								<p>Выпадающий список этого селекта <br /><strong>органичен по высоте</strong>.</p>
-								<select>
+								<select id="s-4">
 									<option>-- Выберите --</option>
 									<option>Пункт 1</option>
 									<option>Пункт 2</option>
@@ -197,7 +230,7 @@
 
 							<div class="sec">
 								<p>Селект <strong>с длинным списком</strong>, не ограниченным максимальной высотой.</p>
-								<select>
+								<select id="s-5">
 									<option>-- Выберите --</option>
 									<option>Пункт 1</option>
 									<option>Пункт 2</option>
@@ -308,7 +341,7 @@
 
 							<div class="sec">
 								<p>Проверяем, правильное ли значение передается при изменении. У оригинального селекта прописано: <code>onchange="alert(this.value)"</code>.</p>
-								<select onchange="alert( this.value )">
+								<select id="s-6" onchange="alert( this.value )">
 									<option>-- Выберите --</option>
 									<option>Пункт 1</option>
 									<option>Пункт 2</option>
@@ -320,7 +353,7 @@
 
 							<div class="sec">
 								<p>Селект <strong>с замещающим текстом</strong> (placeholder). Текст "-- Выберите --" задан не через тег <code>option</code>, а через атрибут <code>data-placeholder</code>.</p>
-								<select data-placeholder="-- Выберите --">
+								<select id="s-7" data-placeholder="-- Выберите --">
 									<option label="-"></option>
 									<option>Пункт 1</option>
 									<option>Пункт 2</option>
@@ -336,7 +369,7 @@
 
 							<div class="sec">
 								<p>Селект <strong>с группировкой пунктов</strong> <br />(используется тег <code>optgroup</code>), один из них неактивный.</p>
-								<select>
+								<select id="s-8">
 									<option>-- Выберите --</option>
 									<optgroup label="Группа 1">
 										<option>Пункт 1.1</option>
@@ -353,7 +386,7 @@
 
 							<div class="sec">
 								<p>Селект с выделением групп <strong>разными цветами</strong> (указаны классы <code>.color1</code> и <code>.color2</code> для <code>optgroup</code>).</p>
-								<select>
+								<select id="s-9">
 									<option>-- Выберите --</option>
 									<optgroup label="Группа 1" class="color1">
 										<option>Пункт 1.1</option>
@@ -374,7 +407,7 @@
 
 							<div class="sec showChanged">
 								<p>Показываем, что селект изменен, используя класс <code>.changed</code> (появляется зеленая обводка).</p>
-								<select>
+								<select id="s-10">
 									<option>-- Выберите --</option>
 									<option>Пункт 1</option>
 									<option>Пункт 2</option>
@@ -386,7 +419,7 @@
 
 							<div class="sec lang">
 								<p>Класс, указаннный для <code>option</code>, передается свернутом селекту, благодаря чему мы в нем видим флаг.</p>
-								<select>
+								<select id="s-11">
 									<option>-- Выберите язык --</option>
 									<option class="lang-ua">Украинский</option>
 									<option class="lang-ru">Русский</option>
@@ -397,6 +430,32 @@
 							</div><!-- .sec -->
 
 						</div><!-- .section -->
+						
+						<div class="section">
+							<div class="sec">
+								<p>Селект <strong>с параметром</strong> <code>size</code> <strong>равным</strong> <code>6</code> и <strong>с заданной шириной</strong> (400 пикселей).</p>
+								<select id="s-12" size="6" class="width-400">
+									<option>-- Выберите --</option>
+									<option>Пункт 1</option>
+									<option>Пункт 2</option>
+									<option disabled>Пункт 3</option>
+									<option>Пункт 4</option>
+									<option>Пункт 5</option>
+								</select>
+							</div>
+							
+							<div class="sec">
+								<p>Селект <strong>с параметром</strong> <code>size</code> <strong>равным</strong> <code>4</code> и <strong>без заданной ширины</strong></p>
+								<select id="s-13" size="4">
+									<option>-- Выберите --</option>
+									<option>Пункт 1</option>
+									<option>Пункт 2</option>
+									<option disabled>Пункт 3</option>
+									<option>Пункт 4</option>
+									<option>Пункт 5</option>
+								</select>
+							</div>
+						</div>
 
 						<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
@@ -414,7 +473,7 @@
 								<button type="submit" class="button  disable-options">Переключить активность пунктов</button>
 							</div>
 							<p><strong>Мультиселект</strong>, один из пунктов неактивный, <br />параметр <code>size</code> не указан.</p>
-							<select multiple>
+							<select id="sm-1" multiple>
 								<option>-- Выберите --</option>
 								<option>Пункт 1</option>
 								<option>Пункт 2</option>
@@ -426,7 +485,7 @@
 
 						<div class="section">
 							<p>Мультиселект <strong>с параметром</strong> <code>size</code> <strong>равным</strong> <code>6</code> и <strong>с заданной шириной</strong> (400 пикселей).</p>
-							<select multiple size="6" class="width-400">
+							<select id="sm-2" multiple size="6" class="width-400">
 								<option>-- Выберите один или несколько пунктов --</option>
 								<option>Пункт 1</option>
 								<option>Пункт 2</option>
@@ -440,7 +499,7 @@
 
 							<div class="sec">
 								<p>Мультиселект <strong>с группировкой пунктов</strong> (используется тег <code>optgroup</code>), один из них неактивный.</p>
-								<select multiple size="9">
+								<select id="sm-3"  multiple size="9">
 									<option>-- Выберите --</option>
 									<optgroup label="Группа 1">
 										<option>Пункт 1.1</option>
@@ -457,7 +516,7 @@
 
 							<div class="sec">
 								<p>Мультиселект с выделением групп <strong>разными цветами</strong> (указаны классы <code>.color1</code> и <code>.color2</code> для <code>optgroup</code>).</p>
-								<select multiple size="9">
+								<select id="sm-4" multiple size="9">
 									<option>-- Выберите --</option>
 									<optgroup label="Группа 1" class="color1">
 										<option>Пункт 1.1</option>
@@ -484,8 +543,6 @@
 							<p>Стилизация данных элементов <strong>не требует наличия плагина</strong>.</p>
 
 							<input class="styler" type="text" size="60" placeholder="Однострочное текстовое поле..." /> <code>&lt;input type="text"></code>
-
-							<input class="styler" type="password" size="60" placeholder="Поле для ввода пароля..." /> <code>&lt;input type="password"></code>
 
 							<textarea class="styler" cols="60" rows="5" placeholder="Многострочное текстовое поле..."></textarea> <code>&lt;textarea>&lt;/textarea></code><br />
 
