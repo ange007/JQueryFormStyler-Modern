@@ -1,8 +1,7 @@
 # jQuery FormStyler Modern  
-===================
-
-[![Latest Stable Version](https://poser.pugx.org/ange007/JQueryFormStyler-Modern/v/stable)](https://packagist.org/packages/ange007/JQueryFormStyler-Modern)
-[![Total Downloads](https://poser.pugx.org/ange007/JQueryFormStyler-Modern/downloads)](https://packagist.org/packages/ange007/JQueryFormStyler-Modern)
+[![Latest Stable Version](https://poser.pugx.org/ange007/jquery-formstyler-modern/v/stable)](https://packagist.org/packages/ange007/jquery-formstyler-modern)
+[![Total Downloads](https://poser.pugx.org/ange007/jquery-formstyler-modern/downloads)](https://packagist.org/packages/ange007/jquery-formstyler-modern)
+[![License](https://poser.pugx.org/ange007/jquery-formstyler-modern/license)](https://packagist.org/packages/ange007/jquery-formstyler-modern)
 [![Build Status](https://travis-ci.org/ange007/JQueryFormStyler-Modern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStyler-Modern)
 
 >Ответвление от плагина **jQueryFormStyler** 
