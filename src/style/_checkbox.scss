@@ -1,0 +1,24 @@
+
+.jq-checkbox {
+	border: $border;
+	border-radius: $checkbox-radius;
+	background: $background-gradient;
+	box-shadow: 0 1px 1px rgba(0,0,0,.05), 
+				inset -1px -1px #FFF, 
+				inset 1px -1px #FFF;	
+
+	&:not(.disabled):hover {
+		border-color: $border-color-hover;
+	}
+
+	&.checked .jq-checkbox__div,
+	&.indeterminate .jq-checkbox__div {
+		border-radius: $checkbox-radius-checked;
+		background: $radio-checkbox-checked-bg;
+		box-shadow: inset 0 -3px 6px #AAA;
+	}
+
+	&.focused {
+		border-color: $border-color-focus;
+	}
+}

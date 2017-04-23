@@ -3,139 +3,171 @@
 	// AMD
 	if( typeof define === 'function' && define.amd ) { define( [ 'jquery' ], factory ); } 
 	// CommonJS
-	else if( typeof exports === 'object' ) { module.exports = factory( require( 'jquery' ) ); } 
+	else if( typeof exports === 'object' ) { module.exports = factory( $ || require( 'jquery' ) ); } 
 	// 
 	else { factory( jQuery ); }
 }
+
 ( function( $ )
 {
 	'use strict';
 
 	var pluginName = '%pluginName%',	/* Имя плагина. 
 										* Используется для вызова плагина, 
-										* а так-же в качестве класса для 
-										* стилизации без "псевдо-компонентов" */
+										*	а так-же в качестве класса для 
+										*	стилизации без "псевдо-компонентов" */
 		idSuffix = '-' + pluginName,	/* Суффикс - который подставляется к ID "псевдо-компонента" */
-		classPrefix = '%classPrefix%',	/* Преффикс -  */
-	
+
+		// Параметры по умолчанию
 		defaults = {
 			wrapper: 'form',
-			filePlaceholder: 'Файл не выбран',
-			fileBrowse: 'Обзор...',
-			fileNumber: 'Выбрано файлов: %s',
-			selectPlaceholder: 'Выберите...',
+			selectTriggerHtml: '<div class="jq-selectbox__trigger-arrow"></div>',
 			selectSearch: false,
 			selectSearchLimit: 10,
-			selectSearchNotFound: 'Совпадений не найдено',
-			selectSearchPlaceholder: 'Поиск...',
 			selectVisibleOptions: 0,
 			singleSelectzIndex: '100',
 			selectSmartPositioning: true,
 			checkboxIndeterminate: false,
+			passwordSwitchHtml: '<button type="button" class="' + pluginName + '"></button>',
+			locale: 'ru',
+			locales: 
+			{
+				'ru': {
+					filePlaceholder: 'Файл не выбран',
+					fileBrowse: 'Обзор...',
+					fileNumber: 'Выбрано файлов: %s',
+					selectPlaceholder: 'Выберите...',
+					selectSearchNotFound: 'Совпадений не найдено',
+					selectSearchPlaceholder: 'Поиск...',
+					passwordShow: 'Показать',
+					passwordHide: 'Скрыть'
+				},
+				'en': {
+					filePlaceholder: 'No file selected',
+					fileBrowse: 'Browse...',
+					fileNumber: 'Selected files: %s',
+					selectPlaceholder: 'Select...',
+					selectSearchNotFound: 'No matches found',
+					selectSearchPlaceholder: 'Search...',
+					passwordShow: 'Show',
+					passwordHide: 'Hide'
+				},
+				'ua': {
+					filePlaceholder: 'Файл не обраний',
+					fileBrowse: 'Огляд...',
+					fileNumber: 'Обрано файлів: %s',
+					selectPlaceholder: 'Виберіть...',
+					selectSearchNotFound: 'Збігів не знайдено',
+					selectSearchPlaceholder: 'Пошук...',
+					passwordShow: 'Показати',
+					passwordHide: 'Сховати'
+				}
+			},
 			onSelectOpened: function( ) { },
 			onSelectClosed: function( ) { },
 			onFormStyled: function( ) { }
 		};
 
+	// Конструктор плагина
 	function Plugin( element, options )
 	{
 		this.element = element;
 		this.options = $.extend( { }, defaults, options );
+		
+		var locale = this.options.locale;
+		if( this.options.locales[ locale ] !== undefined )
+		{
+			$.extend( this.options, this.options.locales[ locale ] );
+		}
+		
 		this.init( );
 	}
 
+	// Атрибуты елемента
+	function Attributes( element )
+	{
+		if( element.attr( 'id' ) !== undefined && element.attr( 'id' ) !== '' ) 
+		{
+			this.id = element.attr( 'id' ) + idSuffix;
+		}
+
+		this.title = element.attr( 'title' );
+		this.classes = element.attr( 'class' );
+		this.data = element.data( );
+	}
+
+	// Расширение функционала плагина
 	Plugin.prototype = 
 	{
 		// Инициализация
 		init: function( )
 		{
-			var el = $( this.element ),
+			var context = this,
+				element = $( this.element ),
 				opt = this.options;
 
-			var iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ) ? true : false,
-				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ) ? true : false;
-
-			function Attributes( )
-			{
-				var id = '',
-					title = '',
-					classes = '',
-					dataList = '';
-			
-				if( el.attr( 'id' ) !== undefined && el.attr( 'id' ) !== '' )
-				{
-					id = ' id="' + el.attr( 'id' ) + idSuffix + '"';
-				}
-				
-				if( el.attr( 'title' ) !== undefined && el.attr( 'title' ) !== '' )
-				{
-					title = ' title="' + el.attr( 'title' ) + '"';
-				}
-			
-				if( el.attr( 'class' ) !== undefined && el.attr( 'class' ) !== '' )
-				{
-					classes = ' ' + el.attr( 'class' );
-				}
-			
-				var data = el.data( );
-				
-				for( var i in data )
-				{
-					if( data[i] !== '' && ( i !== '_' + pluginName ) )
-					{
-						dataList += ' data-' + i + '="' + data[i] + '"';
-					}
-				}
-				
-				id += dataList;
-				this.id = id;
-				this.title = title;
-				this.classes = classes;
-			}
+			var iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
+				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) );
 
 			// Чекбокс
-			if( el.is( ':checkbox' ) )
+			if( element.is( ':checkbox' ) )
 			{
 				//= _checkbox.js
 			}
 			// Радиокнопка
-			else if( el.is( ':radio' ) )
+			else if( element.is( ':radio' ) )
 			{
 				//= _radio.js
 			}
 			// Выбор файла
-			else if ( el.is( ':file' ) ) 
+			else if ( element.is( ':file' ) ) 
 			{
 				//= _file.js
 			}
 			// Номер
-			else if( el.is( 'input[type="number"]' ) )
+			else if( element.is( 'input[type="number"]' ) )
 			{
 				//= _number.js
 			} 
-			// Список
-			else if( el.is( 'select' ) )
+			// Пароль
+			else if( element.is('input[type="password"]' ) ) 
 			{
-				//= _select.js
+				//= _password.js
 			}
 			// Скрытое поле
-			else if( el.is( 'input[type="hidden"]' ) )
+			else if( element.is( 'input[type="hidden"]' ) )
 			{
 				return false;
 			}
-			// Другие компоненты
-			else if( el.is( 'input' ) )
+			// Список
+			else if( element.is( 'select' ) )
 			{
-				el.addClass( pluginName );
+				//= _selectbox.js
+			}
+			// Другие компоненты
+			else if( element.is( 'input' ) || element.is( 'textarea' ) 
+					|| element.is( 'button' ) || element.is( 'a.button' ) )
+			{
+				element.addClass( pluginName );
 			}
 			// Кнопка сброса
-			else if( el.is( ':reset' ) )
+			else if( element.is( ':reset' ) )
 			{
-				el.on( 'click', function( )
+				element.on( 'click', function( )
 				{
-					setTimeout( function( ) { el.closest( opt.wrapper ).find( 'input, select' ).trigger( 'refresh' ); }, 1 );
+					setTimeout( function( ) 
+					{ 
+						element.closest( opt.wrapper ).children( )
+													.trigger( 'repaint' );
+					}, 1 );
 				} );
 			}
+			
+			// Переинициализация
+			element.on( 'refresh reinitialize', function( )
+			{
+				context.reinitialize( );
+			} );
 		},
 		
 		// Убрать стилизацию елемент(а/ов) 
@@ -148,11 +180,14 @@
 			{
 				el.removeData( '_' + pluginName );
 			}
+			
+			// Убираем "невидимлсть" елемента
+			el.removeClass( 'jq-hidden' );
 
-			//
+			// Дополнительная пост-обработка checkbox и radio
 			if( el.is( ':checkbox' ) || el.is( ':radio' ) )
 			{
-				el.off( '.' + pluginName + ' refresh' )
+				el.off( '.' + pluginName + ', refresh' )
 					.removeAttr( 'style' )
 					.parent( ).before( el ).remove( );
 			
@@ -160,16 +195,22 @@
 					.add( 'label[for="' + el.attr( 'id' ) + '"]' )
 					.off( '.' + pluginName );
 			}
-			//
+			// Дополнительная пост-обработка number
 			else if( el.is( 'input[type="number"]' ) )
 			{
-				el.off( '.' + pluginName + ' refresh' )
-					.closest( '.' + classPrefix + 'number' ).before( el ).remove( );
+				el.off( '.' + pluginName + ', refresh' )
+					.closest( '.jq-number' ).before( el ).remove( );
 			} 
-			//
+			// Дополнительная пост-обработка password
+			else if( el.is( 'input[type="password"]' ) )
+			{
+				el.off( '.' + pluginName + ', refresh' )
+					.closest( '.jq-password' ).before( el ).remove( );
+			} 
+			// Дополнительная пост-обработка file и select
 			else if( el.is( ':file' ) || el.is( 'select' ) )
 			{
-				el.off( '.' + pluginName + ' refresh' )
+				el.off( '.' + pluginName + ', refresh' )
 					.removeAttr( 'style' )
 					.parent( ).before( el ).remove( );
 			}
@@ -182,11 +223,8 @@
 			this.destroy( true ); 
 
 			// Перезаписываем настройки и снова инициализируем стилизацию
-			this.options = $.extend( { }, defaults, options );
+			this.options = $.extend( { }, this.options, options );
 			this.init( );
-			
-			// Вызываем событие
-			// this.change( );
 		}
 	};
 
@@ -204,6 +242,10 @@
 				if( !$.data( this, '_' + pluginName ) )
 				{
 					$.data( this, '_' + pluginName, new Plugin( this, options ) );
+				}
+				else
+				{
+					$( this ).styler( 'reinitialize' );
 				}
 			} )
 			// Ожидаем полного прохода

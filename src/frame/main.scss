@@ -1,6 +1,10 @@
 $pluginName: '%pluginName%';
 $prefix: '%classPrefix%';
 
+/* */
+
+@import '_extra';
+
 /* checkbox */
 
 @import '_checkbox';
@@ -16,6 +20,10 @@ $prefix: '%classPrefix%';
 /* number */
 
 @import '_number';
+
+/* password */
+
+@import '_password';
 
 /* selectbox */
 

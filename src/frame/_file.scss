@@ -1,29 +1,33 @@
 
-.#{$prefix}file {
+.jq-file {
 	width: 270px;
-}
-
-.#{$prefix}file input {
-	height: auto;
-	line-height: 1em;
-	cursor: pointer;
-}
-
-.#{$prefix}file__name {
+	display: inline-block;
+	position: relative;
 	overflow: hidden;
-	box-sizing: border-box;
-	width: 100%;
-	height: 34px;
-	padding: 0 80px 0 10px;
-	font: 14px/32px Arial, sans-serif;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
+	cursor: pointer;
 
-.#{$prefix}file__browse {
-	position: absolute;
-	top: 1px;
-	right: 1px;
-	padding: 0 10px;
-	font: 14px/32px Arial, sans-serif;
+	.jq-file input {
+		height: auto;
+		line-height: 1em;
+		cursor: pointer;
+	}
+
+	.jq-file__name {
+		overflow: hidden;
+		box-sizing: border-box;
+		width: 100%;
+		/*height: 34px;*/
+		padding: 0 80px 0 10px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		padding: 8px 9px;
+	}
+
+	.jq-file__browse {
+		position: absolute;
+		top: 1px;
+		right: 1px;
+		padding: 8px 10px;
+		/*font: 14px/32px Arial, sans-serif;*/
+	}
 }

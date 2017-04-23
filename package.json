@@ -1,16 +1,14 @@
 {
-  "name": "jquery-formstyler-modern",
-  "version": "1.1.9",
-  "author": "Borisenko Vladimir ( original: Dimox <http://dimox.name/> )",
+  "name": "jquery.formstyler-modern",
+  "version": "1.5.0",
+  "author": "Borisenko Vladimir",
   "description": "JQuery HTML form styling plugin",
   "license": "MIT",
   "homepage": "https://github.com/ange007/JQueryFormStyler-Modern",
   "contributors": [
-    { 
-      "name": "Borisenko Vladimir",
-	  "email": "ange007@users.noreply.github.com",
-	  "url" : "https://github.com/ange007/JQueryFormStyler-Modern/"
-    } 
+	"Dimox <http://dimox.name/>",
+	"Yunus Gaziev <https://github.com/yunusga>",
+	"Evgen <https://github.com/osben>"
   ],
   "keywords": [
     "javascript",
@@ -35,7 +33,7 @@
   "engine": {
     "node": ">= 0.12"
   },
-  "main": "gulpfile.js",
+  "main": "min/jquery.formStylerModern.min.js",
   "devDependencies": {
     "gulp": "^3.9.0",
     "rimraf": "^2.4.2",

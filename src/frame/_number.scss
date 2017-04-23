@@ -1,57 +1,98 @@
 
-.#{$prefix}number {
+.jq-number {
 	position: relative;
 	display: inline-block;
 	vertical-align: middle;
 	padding: 0 36px 0 0;
-}
 
-.#{$prefix}number__field {
-	width: 100px;
-}
+	.jq-number__field {
+		width: 100px;
 
-.#{$prefix}number__field input {
-	box-sizing: border-box;
-	width: 100%;
-	padding: 8px 9px;
-	border: none;
-	outline: none;
-	background: none;
-	font: 14px Arial, sans-serif;
-	text-align: left; /* для Opera Presto */
-	-moz-appearance: textfield;
-}
+		input {
+			box-sizing: border-box;
+			width: 100%;
+			padding: 8px 9px;
+			border: none;
+			outline: none;
+			background: none;
+			text-align: left; /* для Opera Presto */
+			-moz-appearance: textfield;
+		}
 
-.#{$prefix}number__field input::-webkit-inner-spin-button,
-.#{$prefix}number__field input::-webkit-outer-spin-button {
-	margin: 0; /* в каких-то браузерах присутствует отступ */
-	-webkit-appearance: none;
-}
+		input::-webkit-inner-spin-button,
+		input::-webkit-outer-spin-button {
+			margin: 0; /* в каких-то браузерах присутствует отступ */
+			-webkit-appearance: none;
+		}
+	}
 
-.#{$prefix}number__spin {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 32px;
-	height: 14px;
-	user-select: none;
-	cursor: pointer;
-}
+	.jq-number__spin {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 32px;
+		height: 14px;
+		user-select: none;
+		cursor: pointer;
 
-.#{$prefix}number__spin.minus {
-	top: auto;
-	bottom: 0;
-}
+		&:after {
+			content: '';
+			position: absolute;
+			top: 4px;
+			left: 11px;
+			width: 0;
+			height: 0;
+		}
 
-.#{$prefix}number__spin:after {
-	content: '';
-	position: absolute;
-	top: 4px;
-	left: 11px;
-	width: 0;
-	height: 0;
-}
+		&.minus {
+			top: auto;
+			bottom: 0;
+		}
+		
+		&.minus:after {
+			top: 5px;
+		}	
+	}
+	
+	&.horizontal {
+		padding: 0 38px;
 
-.#{$prefix}number__spin.minus:after {
-	top: 5px;
+		.jq-number__field {
+			width: 60px;
+		}
+		.jq-number__field input {
+			text-align: center;
+		}
+		.jq-number__spin {
+			left: 0;
+			height: 32px;
+		}
+		.jq-number__spin.plus {
+			right: 0;
+			left: auto;
+		}
+		.jq-number__spin:before {
+			content: '';
+			position: absolute;
+			top: 15px;
+			left: 10px;
+			width: 12px;
+			height: 2px;
+			border: none;
+		}
+		.jq-number__spin.minus:after {
+			display: none;
+		}
+		.jq-number__spin.plus:after {
+			top: 10px;
+			left: 15px;
+			width: 2px;
+			height: 12px;
+			border: none;
+		}
+		.jq-number__spin:hover:before,
+		.jq-number__spin.plus:hover:after {
+			background: #000;
+		}
+	}
 }

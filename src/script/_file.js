@@ -1,18 +1,7 @@
-// прячем оригинальное поле
-el.css( {
-	position: 'absolute',
-	top: 0,
-	right: 0,
-	width: '100%',
-	height: '100%',
-	opacity: 0,
-	margin: 0,
-	padding: 0
-} );
-
-var fileOutput = function( )
+//
+var fileOutput = function( el )
 {
-	var att = new Attributes( ), 
+	var att = new Attributes( el ), 
 		placeholder = el.data( 'placeholder' ),
 		browse = el.data( 'browse' );
 		
@@ -26,22 +15,26 @@ var fileOutput = function( )
 		browse = opt.fileBrowse;
 	}
 	
-	var file = $( '<div' + att.id + ' class="' + classPrefix + 'file' + att.classes + '"' + att.title + ' style="display: inline-block; position: relative; overflow: hidden"></div>' ),
-		name = $( '<div class="' + classPrefix + 'file__name">' + placeholder + '</div>' ).appendTo( file );
+	// Формируем блок
+	var file = $( '<div class="jq-file">' +
+					'<div class="jq-file__name">' + placeholder + '</div>' +
+					'<div class="jq-file__browse">' + browse + '</div>' +
+					'</div>' )
+				.attr( { 'id': att.id, 'title': att.title } )
+				.addClass( att.classes )
+				.data( att.data );
+	
+	// Прячем оригинальное поле
+	el.addClass( 'jq-hidden' )
+		.after( file ).appendTo( file );
 
-	$( '<div class="' + classPrefix + 'file__browse">' + browse + '</div>' ).appendTo( file );
-	el.after( file ).appendTo( file );
-
-	if( el.is( ':disabled' ) )
+	// Необходимо "перерисовать" контрол 
+	file.on( 'repaint', function( )
 	{
-		file.addClass( 'disabled' );
-	}
-
-	// Обработка "изменения" состояния
-	el.on( 'change.' + pluginName, function( )
-	{
-		var value = el.val( );
-		
+		var value = el.val( ),
+			name = $('div.jq-file__name', file);
+				
+		// 
 		if( el.is( '[multiple]' ) )
 		{
 			var files = el[0].files.length;
@@ -60,18 +53,21 @@ var fileOutput = function( )
 				value = number;
 			}
 		}
+				
+		// Выводим название файлов или примечание
+		name.text( value.replace( /.+[\\\/]/, '' ) || placeholder );
 		
-		name.text( value.replace( /.+[\\\/]/, '' ) );
+		// Активация/деактивация
+		file.toggleClass( 'changed', ( value !== '' ) );
 		
-		if( value === '' )
-		{
-			name.text( placeholder );
-			file.removeClass( 'changed' );
-		} 
-		else
-		{
-			file.addClass( 'changed' );
-		}
+		// Активация/деактивация
+		file.toggleClass( 'disabled', el.is( ':disabled' ) );
+	} );
+
+	// Обработка "изменения" состояния
+	el.on( 'change.' + pluginName, function( )
+	{
+		file.triggerHandler( 'repaint' );
 	} )
 	// Работа с "фокусировкой"
 	.on( 'focus.' + pluginName, function( )
@@ -88,19 +84,8 @@ var fileOutput = function( )
 	} );
 	
 	// Мы установили стиль, уведомляем об изменении
-	el.change( );
+	file.triggerHandler( 'repaint' );
 };
 
 // Стилизируем компонент
-fileOutput( );
-
-// Обновление при динамическом изменении
-el.on( 'refresh', function( )
-{
-	// Убираем стилизацию компонента
-	el.off( '.' + pluginName )
-		.parent( ).before( el ).remove( );
-		
-	// Стилизируем компонент снова
-	fileOutput( );
-} );
+fileOutput( element );

@@ -1,0 +1,79 @@
+
+.jq-number {
+	.jq-number__field {
+		border: $border;
+		border-bottom: $border-bottom;
+		border-radius: $border-radius;
+		box-shadow: inset 1px 1px #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
+
+		&:hover {
+			border-color: $border-color-hover;
+		}
+
+		& input {
+			color: #333;
+		}
+	}
+
+	.jq-number__spin {
+		border: $border;
+		border-bottom: $border-bottom;
+		border-radius: $border-radius;
+		background: $background-gradient;
+		box-shadow: 0 1px 2px rgba(0,0,0,.1);
+		box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
+		text-shadow: 1px 1px #FFF;
+
+		&:hover {
+			background: $background-gradient-hover;
+		}
+
+		&:active {
+			background: $background-gradient-active;
+			box-shadow: inset 1px 1px 3px #DDD;
+		}
+
+		&:after {
+			border-right: 5px solid transparent;
+			border-bottom: 5px solid #999;
+			border-left: 5px solid transparent;
+		}
+
+		&.minus:after {
+			border-top: 5px solid #999;
+			border-right: 5px solid transparent;
+			border-bottom: none;
+			border-left: 5px solid transparent;
+		}
+
+		&.minus:hover:after {
+			border-top-color: #000;
+		}
+
+		&.plus:hover:after {
+			border-bottom-color: #000;
+		}
+	}
+
+	&.focused .jq-number__field {
+		border-color: $border-color-focus;
+	}
+
+	&.disabled {
+		.jq-number__field,
+		.jq-number__spin {
+			border-color: $border-color-disabled;
+			background: $background-disabled;
+			box-shadow: none;
+			color: $color-disabled;
+		}
+
+		.jq-number__spin.plus:after {
+			border-bottom-color: #AAA;
+		}
+
+		.jq-number__spin.minus:after {
+			border-top-color: #AAA;
+		}
+	}
+}

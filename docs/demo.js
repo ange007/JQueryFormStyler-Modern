@@ -2,6 +2,8 @@
 {
 	$( function( )
 	{
+		var activeStyle = undefined;
+		
 		// Проверка состояния
 		var checkState = function( )
 		{
@@ -35,26 +37,70 @@
 			}
 		};
 		
+		// Переключить активность
+		$.fn.toggleDisabled = function( repaint )
+		{
+			return this.each( function( )
+			{
+				$( this ).prop( 'disabled', !$( this ).is( ':disabled' ) );
+				
+				if( repaint !== false )	{ $( this ).trigger( 'repaint' ); }
+			} );
+		};
+
+		// Переключить "отмеченность"
+		$.fn.toggleChecked = function( repaint )
+		{
+			return this.each( function( )
+			{
+				$( this ).prop( 'checked', !$( this ).is( ':checked' ) );
+			
+				if( repaint !== false )	{ $( this ).trigger( 'repaint' ); }
+			} );
+		};
+		
 		// Стилизируем имеющиеся елементы
-		$( 'input, select' ).styler( {
+		$( 'input, select:not(#style)' ).styler( {
 			selectSearch: true,
 			onFormStyled: function( ) 
 			{ 
 				$( 'body' ).find( 'input, select' )
-					.each( function( ) { checkState.call( this ); } );
+							.each( function( ) { checkState.call( this, [ ] ); } );
 			}
 		} );
 		
+		// Смена стиля оформления
+		$( '#style' ).on( 'change', function( )
+		{
+			if( activeStyle !== undefined )
+			{
+				activeStyle.remove( );
+			}
+			
+			//
+			var style = '../build/theme/' + $( this ).val( );
+
+			//
+            activeStyle = $( "<link rel='stylesheet' href='" + style + "' type='text/css' media='screen' />" ).appendTo( $( 'head' ) );
+		} );
+				
 		// Обработка "изменения" елемента
 		$( 'input, select' ).on( 'change', checkState );
 				
 		// Состояние "неопределено" по умолчанию
 		$( '#checkbox-indeterminate' ).prop( 'indeterminate', 'true' )
-									.trigger( 'refresh' );
+										.trigger( 'refresh' );
 		
 		// input:checkbox с постоянными 3 состояниями
 		$( '#checkbox-indeterminate-change' ).prop( 'indeterminate', 'true' )
 											.styler( 'reinitialize', { checkboxIndeterminate: true } );
+			
+		// input:password без <button>
+		$( '#p-2' ).styler( 'reinitialize', { passwordSwitchHtml: '' } );		
+		
+		// input:password со своим текстом
+		$( '#p-3' ).styler( 'reinitialize', { passwordShow: '&#10687;', 
+												passwordHide: '&#10686;' } );	
 				
 		//
 		$( 'ul.menu' ).on( 'click', 'li:not(.current)', function( )
@@ -66,40 +112,15 @@
 			window.location.hash = $( this ).data( 'hash' );
 			$( 'input' ).blur( );
 		} );
-		
-		hash = window.location.hash.replace( /#(.+)/, '$1' );
-		
-		if( hash !== '' )
-		{
-			$( 'ul.menu li[data-hash=' + hash + ']' ).click( );
-		}
-
-		// Переключить активность
-		$.fn.toggleDisabled = function( )
-		{
-			return this.each( function( )
-			{
-				this.disabled = !this.disabled;
-			} );
-		};
-
-		// Переключить "отмеченность"
-		$.fn.toggleChecked = function( )
-		{
-			return this.each( function( )
-			{
-				this.checked = !this.checked;
-			} );
-		};
-		
-		// 
-		$( 'button' ).click( function( e )
+				
+		// Игнорируем действие по умолчанию для кнопок
+		$( 'button' ).on( 'click', function( e )
 		{
 			e.preventDefault( );
 		} );
 
 		// Добавить input:checkbox
-		$( 'button.add-checkbox' ).click( function( )
+		$( 'button.add-checkbox' ).on( 'click', function( )
 		{
 			var inputs = '';
 			for( var i = 1; i <= 5; i++ )
@@ -113,7 +134,7 @@
 		} );
 
 		// Добавить input:radio
-		$( 'button.add-radio' ).click( function( )
+		$( 'button.add-radio' ).on( 'click', function( )
 		{
 			var inputs = '';
 			for( var i = 1; i <= 5; i++ )
@@ -127,8 +148,8 @@
 			$( 'input:radio' ).styler( );
 		} );
 
-		//
-		$( 'button.add-file' ).click( function( )
+		// Добавить input:file
+		$( 'button.add-file' ).on( 'click', function( )
 		{
 			var file = $( '<input type="file" name="" />' );
 			
@@ -138,8 +159,8 @@
 			file.wrap( '<div></div>' ).styler( );
 		} );
 
-		//
-		$( 'button.add-number' ).click( function( )
+		// Добавить input:number
+		$( 'button.add-number' ).on( 'click', function( )
 		{
 			var number = $( '<input type="number" />' );
 			
@@ -148,9 +169,20 @@
 			
 			number.before( '<br /><br />' ).styler( );
 		} );
+		
+		// Добавить input:password
+		$( 'button.add-password' ).on( 'click', function( )
+		{
+			var password = $( '<input type="password" />' );
+			
+			$( this ).closest( 'div.section' )
+					.append( password );
+			
+			password.before( '<br /><br />' ).styler( );
+		} );
 
-		//
-		$( 'button.add-select' ).click( function( )
+		// Добавить select
+		$( 'button.add-select' ).on( 'click', function( )
 		{
 			var multiple = '',
 				select = $( '<select' + multiple + '><option>-- Выберите --</option><option>Пункт 1</option><option>Пункт 2</option><option>Пункт 3</option><option>Пункт 4</option><option>Пункт 5</option></select>' );
@@ -167,7 +199,7 @@
 		} );
 
 		//
-		$( 'button.add-options' ).click( function( )
+		$( 'button.add-options' ).on( 'click', function( )
 		{
 			var options = '';
 			for( i = 1; i <= 5; i++ )
@@ -177,48 +209,44 @@
 			
 			$( this ).closest( 'div.section' )
 					.find( 'select' )
-					.each( function( ) { $( this ).append( options ); } )
-					.trigger( 'refresh' );
+					.each( function( ) { $( this ).append( options ); } );
 		} );
 
 		//
-		$( 'button.check' ).click( function( )
+		$( 'button.check' ).on( 'click', function( )
 		{
 			$( this ).closest( 'div.section' )
 					.find( 'input' )
-					.toggleChecked( )
-					.trigger( 'refresh' );
+					.toggleChecked( );
 		} );
 
 		//
-		$( 'button.disable-input' ).click( function( )
+		$( 'button.disable-input' ).on( 'click', function( )
 		{
 			$( this ).closest( 'div.section' )
 					.find( 'input' )
-					.toggleDisabled( )
-					.trigger( 'refresh' );
+					.toggleDisabled( );
 		} );
 
 		//
-		$( 'button.disable-select' ).click( function( )
+		$( 'button.disable-select' ).on( 'click', function( )
 		{
 			$( this ).closest( 'div.section' )
 					.find( 'select' )
-					.toggleDisabled( )
-					.trigger( 'refresh' );
+					.toggleDisabled( );
 		} );
 
 		//
-		$( 'button.disable-options' ).click( function( )
+		$( 'button.disable-options' ).on( 'click', function( )
 		{
 			$( this ).closest( 'div.section' )
 					.find( 'option' )
-					.toggleDisabled( )
-					.trigger( 'refresh' );
+					.toggleDisabled( false )
+					.trigger( 'repaint' );
 		} );
 		
 		// Проверка состояния
-		$( 'button.check-state' ).click( function( )
+		$( 'button.check-state' ).on( 'click', function( )
 		{
 			var section = $( this ).closest( 'div.section' );
 			
@@ -249,5 +277,12 @@
 					} );
 		} );
 
+
+		//
+		hash = window.location.hash.replace( /#(.+)/, '$1' );
+		if( hash !== '' ) {	$( 'ul.menu>li[data-hash=' + hash + ']' ).trigger( 'click' ); }
+		
+		//
+		$( '#style' ).trigger( 'change' );
 	} );
 } )( jQuery );

@@ -1,27 +1,31 @@
 
-.#{$prefix}select-multiple {
+.jq-select-multiple {
+	display: inline-block;
+	position: relative;
 	box-sizing: border-box;
 	padding: 1px;
-	font: 14px/18px Arial, sans-serif;
 	cursor: default;
-}
 
-.#{$prefix}select-multiple ul {
-	margin: 0;
-	padding: 0;
-}
+	ul {
+		position: relative;
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		-webkit-overflow-scrolling: touch;
+	}
 
-.#{$prefix}select-multiple li {
-	padding: 3px 9px 4px;
-	list-style: none;
-	user-select: none;
-	white-space: nowrap;
-}
+	li {
+		padding: 3px 9px 4px;
+		list-style: none;
+		user-select: none;
+		white-space: nowrap;
+	}
 
-.#{$prefix}select-multiple li.optgroup {
-	font-weight: bold;
-}
+	li.optgroup {
+		font-weight: bold;
+	}
 
-.#{$prefix}select-multiple li.option {
-	padding-left: 25px;
+	li.option {
+		padding-left: 25px;
+	}
 }

@@ -1,6 +1,6 @@
 {
-  "name": "jquery-formstyler-modern",
-  "version": "1.1.9",
+  "name": "jquery.formstyler-modern",
+  "version": "1.5.0",
   "description": "JQuery HTML form styling plugin",
   "license": "MIT",
   "authors": [
@@ -23,8 +23,8 @@
     "file"
   ],
   "main": [
-    "jquery.formStylerModern.js",
-    "jquery.formStylerModern.css"
+    "min/jquery.formStylerModern.min.js",
+    "min/jquery.formStylerModern.min.css"
   ],
   "ignore": [
     "**/.*",
