@@ -1,6 +1,6 @@
 {
   "name": "ange007/jquery-formstyler-modern",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "JQuery HTML form styling plugin",
   "homepage": "https://github.com/ange007/JQueryFormStyler-Modern",
   "license": "MIT",
@@ -12,16 +12,19 @@
     }
   ],
   "keywords": [
+	"jquery-plugin",
     "javascript",
     "jquery",
     "formstyler",
     "form",
     "styler",
-    "modern",
+	"style",
+	"input",
     "select",
     "checkbox",
     "radio",
-    "file"
+    "file",
+	"password"
   ],
   "type": "library",
   "support": {

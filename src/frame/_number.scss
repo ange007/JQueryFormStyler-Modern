@@ -59,40 +59,20 @@
 
 		.jq-number__field {
 			width: 60px;
+			
+			input {
+				text-align: center;
+			}
 		}
-		.jq-number__field input {
-			text-align: center;
-		}
+		
 		.jq-number__spin {
 			left: 0;
 			height: 32px;
-		}
-		.jq-number__spin.plus {
-			right: 0;
-			left: auto;
-		}
-		.jq-number__spin:before {
-			content: '';
-			position: absolute;
-			top: 15px;
-			left: 10px;
-			width: 12px;
-			height: 2px;
-			border: none;
-		}
-		.jq-number__spin.minus:after {
-			display: none;
-		}
-		.jq-number__spin.plus:after {
-			top: 10px;
-			left: 15px;
-			width: 2px;
-			height: 12px;
-			border: none;
-		}
-		.jq-number__spin:hover:before,
-		.jq-number__spin.plus:hover:after {
-			background: #000;
+		
+			&.plus {
+				right: 0;
+				left: auto;
+			}
 		}
 	}
 }
