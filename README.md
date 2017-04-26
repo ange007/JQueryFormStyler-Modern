@@ -8,7 +8,7 @@
 *(оригинальный плагин: https://github.com/Dimox/jQueryFormStyler)*
 
 - [Страница с примерами](http://ange007.github.io/JQueryFormStyler-Modern/)
-- [Список изменений](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGES.md)
+- [Список изменений](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGELOG.md)
 - [Скачать](https://github.com/ange007/JQueryFormStyler-Modern/releases)
 
 ## Описание
