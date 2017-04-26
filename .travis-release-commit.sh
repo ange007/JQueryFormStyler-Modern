@@ -14,6 +14,8 @@ cp -rp ${TRAVIS_BUILD_DIR}/package.json ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/composer.json ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/bower.json ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/README.md ${DIST_PATH};
+cp -rp ${TRAVIS_BUILD_DIR}/CHANGELOG.md ${DIST_PATH};
+cp -rp ${TRAVIS_BUILD_DIR}/LICENSE ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/build/* ${DIST_PATH};
 # переходим в директорию добавляе коммит
 cd ${DIST_PATH} && git add -A && git commit -am "Автоматическая сборка (${TRAVIS_BUILD_NUMBER})";
