@@ -1,6 +1,6 @@
 /**
  * jquery.formstyler-modern - JQuery HTML form styling plugin
- * @version v1.5.1
+ * @version v1.5.2
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
  * @author Borisenko Vladimir
