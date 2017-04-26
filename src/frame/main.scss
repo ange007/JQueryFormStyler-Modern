@@ -1,0 +1,34 @@
+$pluginName: '%pluginName%';
+$prefix: '%classPrefix%';
+
+/* */
+
+@import '_extra';
+
+/* checkbox */
+
+@import '_checkbox';
+
+/* radio */
+
+@import '_radio';
+
+/* file */
+
+@import '_file';
+
+/* number */
+
+@import '_number';
+
+/* password */
+
+@import '_password';
+
+/* selectbox */
+
+@import '_selectbox';
+
+/* selectbox-multi */
+
+@import '_selectbox-multi';

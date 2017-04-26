@@ -1,0 +1,78 @@
+
+.jq-number {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	padding: 0 36px 0 0;
+
+	.jq-number__field {
+		width: 100px;
+
+		input {
+			box-sizing: border-box;
+			width: 100%;
+			padding: 8px 9px;
+			border: none;
+			outline: none;
+			background: none;
+			text-align: left; /* для Opera Presto */
+			-moz-appearance: textfield;
+		}
+
+		input::-webkit-inner-spin-button,
+		input::-webkit-outer-spin-button {
+			margin: 0; /* в каких-то браузерах присутствует отступ */
+			-webkit-appearance: none;
+		}
+	}
+
+	.jq-number__spin {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 32px;
+		height: 14px;
+		user-select: none;
+		cursor: pointer;
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 4px;
+			left: 11px;
+			width: 0;
+			height: 0;
+		}
+
+		&.minus {
+			top: auto;
+			bottom: 0;
+		}
+		
+		&.minus:after {
+			top: 5px;
+		}	
+	}
+	
+	&.horizontal {
+		padding: 0 38px;
+
+		.jq-number__field {
+			width: 60px;
+			
+			input {
+				text-align: center;
+			}
+		}
+		
+		.jq-number__spin {
+			left: 0;
+			height: 32px;
+		
+			&.plus {
+				right: 0;
+				left: auto;
+			}
+		}
+	}
+}
