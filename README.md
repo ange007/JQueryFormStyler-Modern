@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/ange007/JQueryFormStyler-Modern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStyler-Modern)
 
 >Ответвление от плагина **jQueryFormStyler** 
-*( оригинальный плагин: https://github.com/Dimox/jQueryFormStyler )*
+*(оригинальный плагин: https://github.com/Dimox/jQueryFormStyler)*
 
 - [Страница с примерами](http://ange007.github.io/JQueryFormStyler-Modern/)
 - [Список изменений](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGES.md)
@@ -52,5 +52,5 @@ jQuery-плагин для стилизации элементов HTML-форм
 Перерисовка компонента после "ручного" изменения состояния
 ```javascript
 	$( this ).prop( 'disabled', true )
-			.trigger( 'repaint' ); }
+			.trigger( 'repaint' );
 ```

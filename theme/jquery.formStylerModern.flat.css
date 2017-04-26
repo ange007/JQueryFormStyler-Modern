@@ -118,6 +118,31 @@
 .jq-number.disabled .jq-number__spin.minus:after {
   border-top-color: #AAA; }
 
+.jq-number.horizontal .jq-number__spin:before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  width: 12px;
+  height: 2px;
+  border: none; }
+
+.jq-number.horizontal .jq-number__spin.minus:after {
+  display: none; }
+
+.jq-number.horizontal .jq-number__spin.plus:after {
+  top: 10px;
+  left: 15px;
+  width: 2px;
+  height: 12px;
+  border: none; }
+
+.jq-number.horizontal .jq-number__spin:before, .jq-number.horizontal .jq-number__spin.plus:after {
+  background: #999; }
+
+.jq-number.horizontal .jq-number__spin:hover:before, .jq-number.horizontal .jq-number__spin.plus:hover:after {
+  background: #000; }
+
 /* password */
 .jq-password {
   border: 1px solid #C3C3C3;
