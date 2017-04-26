@@ -11,6 +11,9 @@ cd ${DIST_PATH} && git checkout gh-pages && rm -rf *;
 # перемещаем файлы
 cp -rp ${TRAVIS_BUILD_DIR}/docs/* ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/build/ ${DIST_PATH};
+# заменяем пути к скриптам/css в исходниках
+sed -i -e "s/\.\.\//\.\//g" ${DIST_PATH}/index.html
+sed -i -e "s/\.\.\//\.\//g" ${DIST_PATH}/demo.js
 # переходим в директорию добавляе коммит
 cd ${DIST_PATH} && git add -A && git commit -am "Автоматическая сборка (${TRAVIS_BUILD_NUMBER})";
 # отправляем коммит
