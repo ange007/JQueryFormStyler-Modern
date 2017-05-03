@@ -1,6 +1,6 @@
 /**
  * jquery.formstyler-modern - JQuery HTML form styling plugin
- * @version v1.5.2
+ * @version v1.5.3
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
  * @author Borisenko Vladimir
@@ -684,6 +684,43 @@
 					//
 					var optionList = $( 'option', el );
 					
+					// Прячем выпадающий список при клике за пределами селекта
+					function onDocumentClick( e )
+					{
+						// e.target.nodeName != 'OPTION' - добавлено для обхода бага в Opera на движке Presto
+						// (при изменении селекта с клавиатуры срабатывает событие onclick)
+						if( !$( e.target ).parents( ).hasClass( 'jq-selectbox' ) && e.target.nodeName !== 'OPTION' )
+						{
+							if( $( 'div.jq-selectbox.opened' ).length > 0 )
+							{
+								//
+								var selectbox = $( 'div.jq-selectbox.opened' ),
+									search = $( 'div.jq-selectbox__search input', selectbox ),
+									dropdown = $( 'div.jq-selectbox__dropdown', selectbox ),
+									opt = selectbox.find( 'select' ).data( '_' + pluginName ).options;
+				
+								// Колбек при закрытии селекта
+								opt.onSelectClosed.call( selectbox );
+				
+								//
+								if( search.length > 0 )
+								{
+									search.val( '' ).keyup( );
+								}
+								
+								//
+								dropdown.hide( )
+										.find( 'li.sel' ).addClass( 'selected' );
+								
+								//
+								selectbox.removeClass( 'focused opened dropup dropdown' );
+							}
+						}
+					}
+					
+					//
+					onDocumentClick.registered = false;
+					
 					// Запрещаем прокрутку страницы при прокрутке селекта
 					function preventScrolling( selector )
 					{
@@ -993,11 +1030,41 @@
 								return;
 							}
 							
+							//
+							if( !dropdown.is( ':hidden' ) )
+							{
+								// Скрываем список
+								dropdown.hide( );
+								
+								// Удаляем классы
+								selectbox.removeClass( 'opened dropup dropdown' );
+								
+								// Колбек при закрытии селекта
+								if( $( 'div.jq-selectbox' ).filter( '.opened' ).length > 0 )
+								{
+									opt.onSelectClosed.call( selectbox );
+								}
+								
+								return;
+							}
+							
+							//
+							// $( 'div.jq-selectbox__dropdown:visible' ).hide( );
+				
+							// Отображаем список
+							dropdown.show( );
+				
+							// Добавляем классы
+							selectbox.addClass( 'opened focused' );
+				
+							// Колбек при открытии селекта
+							opt.onSelectOpened.call( selectbox );
+							
 							// Колбек при закрытии селекта
-							if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
+							/*if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 							{
 								opt.onSelectClosed.call( $( 'div.jq-selectbox' ).filter( '.opened' ) );
-							}
+							}*/
 				
 							// Фокусируем
 							el.focus( );
@@ -1104,42 +1171,13 @@
 								dropdown.css( { left: 'auto', right: 0 } );
 							}
 				
-							// 
-							$( 'div.jqselect' ).css( { zIndex: ( singleSelectzIndex - 1 ) } )
-												.removeClass( 'opened' );
+							// Видимые селекты "отбрасываем" за z-index открывающегося select
+							$( 'div.jqselect' ).css( { zIndex: ( singleSelectzIndex - 1 ) } )/*
+												.removeClass( 'opened' )*/;
 							
 							//
 							selectbox.css( { zIndex: singleSelectzIndex } );
 							
-							//
-							if( dropdown.is( ':hidden' ) )
-							{
-								$( 'div.jq-selectbox__dropdown:visible' ).hide( );
-								
-								// Отображаем список
-								dropdown.show( );
-								
-								// Добавляем классы
-								selectbox.addClass( 'opened focused' );
-								
-								// Колбек при открытии селекта
-								opt.onSelectOpened.call( selectbox );
-							}
-							else
-							{
-								// Скрываем список
-								dropdown.hide( );
-								
-								// Удаляем классы
-								selectbox.removeClass( 'opened dropup dropdown' );
-								
-								// Колбек при закрытии селекта
-								if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
-								{
-									opt.onSelectClosed.call( selectbox );
-								}
-							}
-				
 							// Поисковое поле
 							if( search.length )
 							{
@@ -1155,17 +1193,12 @@
 								{
 									var query = $( this ).val( );
 									
-									// Проходим по содержимому
+									// Проходим по содержимому и ищем нужные элементы
 									li.each( function( )
 									{
-										if( !$( this ).html( ).match( new RegExp( '.*?' + query + '.*?', 'i' ) ) )
-										{
-											$( this ).hide( );
-										} 
-										else
-										{
-											$( this ).show( );
-										}
+										var find = !$( this ).html( ).match( new RegExp( '.*?' + query + '.*?', 'i' ) );
+										
+										$( this ).toggle( !find );
 									} );
 									
 									// Прячем 1-ю пустую опцию
@@ -1174,14 +1207,8 @@
 										li.first( ).hide( );
 									}
 									
-									if( li.filter( ':visible' ).length < 1 )
-									{
-										notFound.show( );
-									}
-									else
-									{
-										notFound.hide( );
-									}
+									// Показать "не найдено"
+									notFound.toggle( ( li.filter( ':visible' ).length < 1 ) );
 								} );
 							}
 				
@@ -1713,40 +1740,4 @@
 		{
 			return $( this ).commonParents( ).first( );
 		};
-	
-		// Прячем выпадающий список при клике за пределами селекта
-		function onDocumentClick( e )
-		{
-			// e.target.nodeName != 'OPTION' - добавлено для обхода бага в Opera на движке Presto
-			// (при изменении селекта с клавиатуры срабатывает событие onclick)
-			if( !$( e.target ).parents( ).hasClass( 'jq-selectbox' ) && e.target.nodeName !== 'OPTION' )
-			{
-				if( $( 'div.jq-selectbox.opened' ).length )
-				{
-					//
-					var selectbox = $( 'div.jq-selectbox.opened' ),
-						search = $( 'div.jq-selectbox__search input', selectbox ),
-						dropdown = $( 'div.jq-selectbox__dropdown', selectbox ),
-						opt = selectbox.find( 'select' ).data( '_' + pluginName ).options;
-	
-					// колбек при закрытии селекта
-					opt.onSelectClosed.call( selectbox );
-	
-					//
-					if( search.length )
-					{
-						search.val( '' ).keyup( );
-					}
-					
-					//
-					dropdown.hide( )
-							.find( 'li.sel' ).addClass( 'selected' );
-					
-					//
-					selectbox.removeClass( 'focused opened dropup dropdown' );
-				}
-			}
-		}
-		
-		onDocumentClick.registered = false;
 } ) );
