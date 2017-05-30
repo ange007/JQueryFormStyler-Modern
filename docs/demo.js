@@ -80,10 +80,7 @@
 			}
 			
 			//
-			var style = '../build/theme/' + $( this ).val( );
-
-			//
-            activeStyle = $( "<link rel='stylesheet' href='" + style + "' type='text/css' media='screen' />" ).appendTo( $( 'head' ) );
+            activeStyle = $( "<link rel='stylesheet' href='../build/style/" + $( this ).val( ) + "' type='text/css' media='screen' />" ).appendTo( $( 'head' ) );
 		} );
 				
 		// Обработка "изменения" елемента
