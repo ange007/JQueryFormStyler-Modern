@@ -226,6 +226,7 @@ input[type="file"].jq-hidden {
       position: relative;
       display: inline-block; }
   .jq-selectbox .jq-selectbox__dropdown {
+    z-index: 1;
     position: relative;
     box-sizing: border-box;
     width: 100%;

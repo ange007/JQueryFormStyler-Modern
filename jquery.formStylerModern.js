@@ -28,12 +28,10 @@
 
 		// Параметры по умолчанию
 		defaults = {
-			wrapper: 'form',
 			selectTriggerHtml: '<div class="jq-selectbox__trigger-arrow"></div>',
 			selectSearch: false,
 			selectSearchLimit: 10,
 			selectVisibleOptions: 0,
-			singleSelectzIndex: '100',
 			selectSmartPositioning: true,
 			checkboxIndeterminate: false,
 			passwordSwitchHtml: '<button type="button" class="' + pluginName + '"></button>',
@@ -47,8 +45,8 @@
 					selectPlaceholder: 'Выберите...',
 					selectSearchNotFound: 'Совпадений не найдено',
 					selectSearchPlaceholder: 'Поиск...',
-					passwordShow: 'Показать',
-					passwordHide: 'Скрыть'
+					passwordShow: '&#10687;',
+					passwordHide: '&#10686;'
 				},
 				'en': {
 					filePlaceholder: 'No file selected',
@@ -57,8 +55,8 @@
 					selectPlaceholder: 'Select...',
 					selectSearchNotFound: 'No matches found',
 					selectSearchPlaceholder: 'Search...',
-					passwordShow: 'Show',
-					passwordHide: 'Hide'
+					passwordShow: '&#10687;',
+					passwordHide: '&#10686;'
 				},
 				'ua': {
 					filePlaceholder: 'Файл не обраний',
@@ -67,8 +65,8 @@
 					selectPlaceholder: 'Виберіть...',
 					selectSearchNotFound: 'Збігів не знайдено',
 					selectSearchPlaceholder: 'Пошук...',
-					passwordShow: 'Показати',
-					passwordHide: 'Сховати'
+					passwordShow: '&#10687;',
+					passwordHide: '&#10686;'
 				}
 			},
 			onSelectOpened: function( ) { },
@@ -284,16 +282,9 @@
 							//
 							var name = el.attr( 'name' );
 							
-							// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
-							var findElement = radio.closest( opt.wrapper )
+							// Ищем нужный нам елемент в блоке который указан в настройках
+							var findElement = radio.closest( '#' + name )
 													.find( 'input[name="' + name + '"]:radio' );
-				
-							// ... если не нашли - ищем по родителям
-							if( findElement.length <= 0 )
-							{
-								findElement = radio.closest( '#' + name )
-													.find( 'input[name="' + name + '"]:radio' );
-							}
 				
 							// ... или же по всему документу
 							if( findElement.length <= 0 )
@@ -363,23 +354,12 @@
 			// Выбор файла
 			else if ( element.is( ':file' ) ) 
 			{
-				//
 				var fileOutput = function( el )
 				{
 					var att = new Attributes( el ), 
-						placeholder = el.data( 'placeholder' ),
-						browse = el.data( 'browse' );
-						
-					if( placeholder === undefined )
-					{
-						placeholder = opt.filePlaceholder;
-					}
+						placeholder = el.data( 'placeholder' ) || opt.filePlaceholder,
+						browse = el.data( 'browse' ) || opt.fileBrowse;
 				
-					if( browse === undefined || browse === '' )
-					{
-						browse = opt.fileBrowse;
-					}
-					
 					// Формируем блок
 					var file = $( '<div class="jq-file">' +
 									'<div class="jq-file__name">' + placeholder + '</div>' +
@@ -407,13 +387,8 @@
 							
 							if( files > 0 )
 							{
-								var number = el.data( 'number' );
-								
-								if( number === undefined )
-								{
-									number = opt.fileNumber;
-								}
-								
+								var number = el.data( 'number' ) || opt.fileNumber;
+				
 								number = number.replace( '%s', files );
 								value = number;
 							}
@@ -505,7 +480,7 @@
 						}
 						
 						// Определяем количество десятичных знаков после запятой в step
-						var decimals = ( step.toString().split( '.' )[1] || [ ] ).length.prototype,
+						var decimals = ( step.toString( ).split( '.' )[1] || [ ] ).length.prototype,
 							multiplier = '1';
 							
 						if( decimals > 0 )
@@ -604,6 +579,14 @@
 			{
 				var passwordOutput = function( el )
 				{
+					// Если не нужно оставлять кнопку - не оставляем
+					if( opt.passwordSwitchHtml === undefined || opt.passwordSwitchHtml === 'none' )
+					{
+						el.addClass( pluginName );
+						
+						return;
+					}
+					
 					//
 					var button = $( '<div class="jq-password__switch">' + opt.passwordSwitchHtml + '</div>' ),
 						password = $( '<div class="jq-password">' ).append( button ),
@@ -683,43 +666,6 @@
 				{
 					//
 					var optionList = $( 'option', el );
-					
-					// Прячем выпадающий список при клике за пределами селекта
-					function onDocumentClick( e )
-					{
-						// e.target.nodeName != 'OPTION' - добавлено для обхода бага в Opera на движке Presto
-						// (при изменении селекта с клавиатуры срабатывает событие onclick)
-						if( !$( e.target ).parents( ).hasClass( 'jq-selectbox' ) && e.target.nodeName !== 'OPTION' )
-						{
-							if( $( 'div.jq-selectbox.opened' ).length > 0 )
-							{
-								//
-								var selectbox = $( 'div.jq-selectbox.opened' ),
-									search = $( 'div.jq-selectbox__search input', selectbox ),
-									dropdown = $( 'div.jq-selectbox__dropdown', selectbox ),
-									opt = selectbox.find( 'select' ).data( '_' + pluginName ).options;
-				
-								// Колбек при закрытии селекта
-								opt.onSelectClosed.call( selectbox );
-				
-								//
-								if( search.length > 0 )
-								{
-									search.val( '' ).keyup( );
-								}
-								
-								//
-								dropdown.hide( )
-										.find( 'li.sel' ).addClass( 'selected' );
-								
-								//
-								selectbox.removeClass( 'focused opened dropup dropdown' );
-							}
-						}
-					}
-					
-					//
-					onDocumentClick.registered = false;
 					
 					// Запрещаем прокрутку страницы при прокрутке селекта
 					function preventScrolling( selector )
@@ -828,7 +774,6 @@
 							selectSearchLimit = el.data( 'search-limit' ) || opt.selectSearchLimit,
 							selectSearchNotFound = el.data( 'search-not-found' ) || opt.selectSearchNotFound,
 							selectSearchPlaceholder = el.data( 'search-placeholder' ) || opt.selectSearchPlaceholder,
-							singleSelectzIndex = el.data( 'z-index' ) || opt.singleSelectzIndex,
 							selectSmartPositioning = el.data( 'smart-positioning' ) || opt.selectSmartPositioning;
 						
 						// Блок поиска
@@ -849,10 +794,9 @@
 												+ '<div class="jq-selectbox__select">'
 													+ '<div class="jq-selectbox__select-text"></div>'
 													+ '<div class="jq-selectbox__trigger">'
-														+ opt.selectTriggerHtml
+														+ opt.selectTriggerHtml || ''
 													+ '</div>'
 											+ '</div></div>' )
-											.css( {	zIndex: singleSelectzIndex } )
 											.attr( { 'id': att.id, 'title': att.title } )
 											.data( att.data )
 											.addClass( att.classes )
@@ -1030,41 +974,11 @@
 								return;
 							}
 							
-							//
-							if( !dropdown.is( ':hidden' ) )
-							{
-								// Скрываем список
-								dropdown.hide( );
-								
-								// Удаляем классы
-								selectbox.removeClass( 'opened dropup dropdown' );
-								
-								// Колбек при закрытии селекта
-								if( $( 'div.jq-selectbox' ).filter( '.opened' ).length > 0 )
-								{
-									opt.onSelectClosed.call( selectbox );
-								}
-								
-								return;
-							}
-							
-							//
-							// $( 'div.jq-selectbox__dropdown:visible' ).hide( );
-				
-							// Отображаем список
-							dropdown.show( );
-				
-							// Добавляем классы
-							selectbox.addClass( 'opened focused' );
-				
-							// Колбек при открытии селекта
-							opt.onSelectOpened.call( selectbox );
-							
 							// Колбек при закрытии селекта
-							/*if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
+							if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 							{
 								opt.onSelectClosed.call( $( 'div.jq-selectbox' ).filter( '.opened' ) );
-							}*/
+							}
 				
 							// Фокусируем
 							el.focus( );
@@ -1171,18 +1085,44 @@
 								dropdown.css( { left: 'auto', right: 0 } );
 							}
 				
-							// Видимые селекты "отбрасываем" за z-index открывающегося select
-							$( 'div.jqselect' ).css( { zIndex: ( singleSelectzIndex - 1 ) } )/*
-												.removeClass( 'opened' )*/;
-							
+							// 
+							$( 'div.jqselect' ).removeClass( 'opened' );
+				
 							//
-							selectbox.css( { zIndex: singleSelectzIndex } );
-							
+							if( dropdown.is( ':hidden' ) )
+							{
+								$( 'div.jq-selectbox__dropdown:visible' ).hide( );
+								
+								// Отображаем список
+								dropdown.show( );
+								
+								// Добавляем классы
+								selectbox.addClass( 'opened focused' );
+								
+								// Колбек при открытии селекта
+								opt.onSelectOpened.call( selectbox );
+							}
+							else
+							{
+								// Скрываем список
+								dropdown.hide( );
+								
+								// Удаляем классы
+								selectbox.removeClass( 'opened dropup dropdown' );
+								
+								// Колбек при закрытии селекта
+								if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
+								{
+									opt.onSelectClosed.call( selectbox );
+								}
+							}
+				
 							// Поисковое поле
 							if( search.length )
 							{
 								// Сбрасываем значение и начинаем поиск
 								search.val( '' )
+										.focus( )
 										.keyup( );
 								
 								// Прячем блок "не найдено"
@@ -1193,12 +1133,14 @@
 								{
 									var query = $( this ).val( );
 									
-									// Проходим по содержимому и ищем нужные элементы
+									// Проходим по содержимому
 									li.each( function( )
 									{
-										var find = !$( this ).html( ).match( new RegExp( '.*?' + query + '.*?', 'i' ) );
-										
-										$( this ).toggle( !find );
+										var find = $( this ).html( )
+															.match( new RegExp( '.*?' + query + '.*?', 'i' ) );
+											
+										//
+										$( this ).toggle( find ? true : false );
 									} );
 									
 									// Прячем 1-ю пустую опцию
@@ -1207,8 +1149,8 @@
 										li.first( ).hide( );
 									}
 									
-									// Показать "не найдено"
-									notFound.toggle( ( li.filter( ':visible' ).length < 1 ) );
+									// Видимость блока "не найдено"
+									notFound.toggle( li.filter( ':visible' ).length < 1 );
 								} );
 							}
 				
@@ -1740,4 +1682,40 @@
 		{
 			return $( this ).commonParents( ).first( );
 		};
+	
+		// Прячем выпадающий список при клике за пределами селекта
+		function onDocumentClick( e )
+		{
+			// e.target.nodeName != 'OPTION' - добавлено для обхода бага в Opera на движке Presto
+			// (при изменении селекта с клавиатуры срабатывает событие onclick)
+			if( !$( e.target ).parents( ).hasClass( 'jq-selectbox' ) && e.target.nodeName !== 'OPTION' )
+			{
+				if( $( 'div.jq-selectbox.opened' ).length )
+				{
+					//
+					var selectbox = $( 'div.jq-selectbox.opened' ),
+						search = $( 'div.jq-selectbox__search input', selectbox ),
+						dropdown = $( 'div.jq-selectbox__dropdown', selectbox ),
+						opt = selectbox.find( 'select' ).data( '_' + pluginName ).options;
+	
+					// колбек при закрытии селекта
+					opt.onSelectClosed.call( selectbox );
+	
+					//
+					if( search.length )
+					{
+						search.val( '' ).keyup( );
+					}
+					
+					//
+					dropdown.hide( )
+							.find( 'li.sel' ).addClass( 'selected' );
+					
+					//
+					selectbox.removeClass( 'focused opened dropup dropdown' );
+				}
+			}
+		}
+		
+		onDocumentClick.registered = false;
 } ) );

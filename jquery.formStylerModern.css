@@ -286,6 +286,7 @@ input[type='email'].styler,
 input[type='tel'].styler,
 input[type='text'].styler,
 input[type='url'].styler,
+:not(.jq-password) > input[type='password'].styler,
 textarea.styler {
   padding: 8px 9px;
   border: 1px solid #C3C3C3;
@@ -297,12 +298,14 @@ textarea.styler {
   input[type='tel'].styler:not([disabled]):hover,
   input[type='text'].styler:not([disabled]):hover,
   input[type='url'].styler:not([disabled]):hover,
+  :not(.jq-password) > input[type='password'].styler:not([disabled]):hover,
   textarea.styler:not([disabled]):hover {
     border-color: gray; }
   input[type='email'].styler:not([disabled]):focus,
   input[type='tel'].styler:not([disabled]):focus,
   input[type='text'].styler:not([disabled]):focus,
   input[type='url'].styler:not([disabled]):focus,
+  :not(.jq-password) > input[type='password'].styler:not([disabled]):focus,
   textarea.styler:not([disabled]):focus {
     border-color: #08C;
     outline: none;
@@ -596,6 +599,7 @@ input[type="file"].jq-hidden {
       position: relative;
       display: inline-block; }
   .jq-selectbox .jq-selectbox__dropdown {
+    z-index: 1;
     position: relative;
     box-sizing: border-box;
     width: 100%;
