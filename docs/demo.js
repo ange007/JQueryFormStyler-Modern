@@ -99,8 +99,8 @@
 		$( '#p-2' ).styler( 'reinitialize', { passwordSwitchHtml: '' } );		
 		
 		// input:password со своим текстом
-		$( '#p-3' ).styler( 'reinitialize', { passwordShow: '&#10687;', 
-												passwordHide: '&#10686;' } );	
+		$( '#p-3' ).styler( 'reinitialize', { passwordShow: 'Показать', 
+												passwordHide: 'Скрыть' } );	
 				
 		//
 		$( 'ul.menu' ).on( 'click', 'li:not(.current)', function( )

@@ -1,20 +1,9 @@
-//
 var fileOutput = function( el )
 {
 	var att = new Attributes( el ), 
-		placeholder = el.data( 'placeholder' ),
-		browse = el.data( 'browse' );
-		
-	if( placeholder === undefined )
-	{
-		placeholder = opt.filePlaceholder;
-	}
+		placeholder = el.data( 'placeholder' ) || opt.filePlaceholder,
+		browse = el.data( 'browse' ) || opt.fileBrowse;
 
-	if( browse === undefined || browse === '' )
-	{
-		browse = opt.fileBrowse;
-	}
-	
 	// Формируем блок
 	var file = $( '<div class="jq-file">' +
 					'<div class="jq-file__name">' + placeholder + '</div>' +
@@ -42,13 +31,8 @@ var fileOutput = function( el )
 			
 			if( files > 0 )
 			{
-				var number = el.data( 'number' );
-				
-				if( number === undefined )
-				{
-					number = opt.fileNumber;
-				}
-				
+				var number = el.data( 'number' ) || opt.fileNumber;
+
 				number = number.replace( '%s', files );
 				value = number;
 			}

@@ -1,5 +1,13 @@
 var passwordOutput = function( el )
 {
+	// Если не нужно оставлять кнопку - не оставляем
+	if( opt.passwordSwitchHtml === undefined || opt.passwordSwitchHtml === 'none' )
+	{
+		el.addClass( pluginName );
+		
+		return;
+	}
+	
 	//
 	var button = $( '<div class="jq-password__switch">' + opt.passwordSwitchHtml + '</div>' ),
 		password = $( '<div class="jq-password">' ).append( button ),

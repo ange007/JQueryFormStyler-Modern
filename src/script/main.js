@@ -20,12 +20,10 @@
 
 		// Параметры по умолчанию
 		defaults = {
-			wrapper: 'form',
 			selectTriggerHtml: '<div class="jq-selectbox__trigger-arrow"></div>',
 			selectSearch: false,
 			selectSearchLimit: 10,
 			selectVisibleOptions: 0,
-			singleSelectzIndex: '100',
 			selectSmartPositioning: true,
 			checkboxIndeterminate: false,
 			passwordSwitchHtml: '<button type="button" class="' + pluginName + '"></button>',
@@ -39,8 +37,8 @@
 					selectPlaceholder: 'Выберите...',
 					selectSearchNotFound: 'Совпадений не найдено',
 					selectSearchPlaceholder: 'Поиск...',
-					passwordShow: 'Показать',
-					passwordHide: 'Скрыть'
+					passwordShow: '&#10687;',
+					passwordHide: '&#10686;'
 				},
 				'en': {
 					filePlaceholder: 'No file selected',
@@ -49,8 +47,8 @@
 					selectPlaceholder: 'Select...',
 					selectSearchNotFound: 'No matches found',
 					selectSearchPlaceholder: 'Search...',
-					passwordShow: 'Show',
-					passwordHide: 'Hide'
+					passwordShow: '&#10687;',
+					passwordHide: '&#10686;'
 				},
 				'ua': {
 					filePlaceholder: 'Файл не обраний',
@@ -59,8 +57,8 @@
 					selectPlaceholder: 'Виберіть...',
 					selectSearchNotFound: 'Збігів не знайдено',
 					selectSearchPlaceholder: 'Пошук...',
-					passwordShow: 'Показати',
-					passwordHide: 'Сховати'
+					passwordShow: '&#10687;',
+					passwordHide: '&#10686;'
 				}
 			},
 			onSelectOpened: function( ) { },

@@ -31,16 +31,9 @@ var radioOutput = function( el )
 			//
 			var name = el.attr( 'name' );
 			
-			// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
-			var findElement = radio.closest( opt.wrapper )
+			// Ищем нужный нам елемент в блоке который указан в настройках
+			var findElement = radio.closest( '#' + name )
 									.find( 'input[name="' + name + '"]:radio' );
-
-			// ... если не нашли - ищем по родителям
-			if( findElement.length <= 0 )
-			{
-				findElement = radio.closest( '#' + name )
-									.find( 'input[name="' + name + '"]:radio' );
-			}
 
 			// ... или же по всему документу
 			if( findElement.length <= 0 )

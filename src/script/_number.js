@@ -45,7 +45,7 @@ var numberOutput = function( el )
 		}
 		
 		// Определяем количество десятичных знаков после запятой в step
-		var decimals = ( step.toString().split( '.' )[1] || [ ] ).length.prototype,
+		var decimals = ( step.toString( ).split( '.' )[1] || [ ] ).length.prototype,
 			multiplier = '1';
 			
 		if( decimals > 0 )

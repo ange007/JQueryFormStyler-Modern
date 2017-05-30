@@ -110,7 +110,6 @@ var selectboxOutput = function( el )
 			selectSearchLimit = el.data( 'search-limit' ) || opt.selectSearchLimit,
 			selectSearchNotFound = el.data( 'search-not-found' ) || opt.selectSearchNotFound,
 			selectSearchPlaceholder = el.data( 'search-placeholder' ) || opt.selectSearchPlaceholder,
-			singleSelectzIndex = el.data( 'z-index' ) || opt.singleSelectzIndex,
 			selectSmartPositioning = el.data( 'smart-positioning' ) || opt.selectSmartPositioning;
 		
 		// Блок поиска
@@ -131,10 +130,9 @@ var selectboxOutput = function( el )
 								+ '<div class="jq-selectbox__select">'
 									+ '<div class="jq-selectbox__select-text"></div>'
 									+ '<div class="jq-selectbox__trigger">'
-										+ opt.selectTriggerHtml
+										+ opt.selectTriggerHtml || ''
 									+ '</div>'
 							+ '</div></div>' )
-							.css( {	zIndex: singleSelectzIndex } )
 							.attr( { 'id': att.id, 'title': att.title } )
 							.data( att.data )
 							.addClass( att.classes )
@@ -424,12 +422,8 @@ var selectboxOutput = function( el )
 			}
 
 			// 
-			$( 'div.jqselect' ).css( { zIndex: ( singleSelectzIndex - 1 ) } )
-								.removeClass( 'opened' );
-			
-			//
-			selectbox.css( { zIndex: singleSelectzIndex } );
-			
+			$( 'div.jqselect' ).removeClass( 'opened' );
+
 			//
 			if( dropdown.is( ':hidden' ) )
 			{
@@ -464,6 +458,7 @@ var selectboxOutput = function( el )
 			{
 				// Сбрасываем значение и начинаем поиск
 				search.val( '' )
+						.focus( )
 						.keyup( );
 				
 				// Прячем блок "не найдено"
@@ -477,14 +472,11 @@ var selectboxOutput = function( el )
 					// Проходим по содержимому
 					li.each( function( )
 					{
-						if( !$( this ).html( ).match( new RegExp( '.*?' + query + '.*?', 'i' ) ) )
-						{
-							$( this ).hide( );
-						} 
-						else
-						{
-							$( this ).show( );
-						}
+						var find = $( this ).html( )
+											.match( new RegExp( '.*?' + query + '.*?', 'i' ) );
+							
+						//
+						$( this ).toggle( find ? true : false );
 					} );
 					
 					// Прячем 1-ю пустую опцию
@@ -493,14 +485,8 @@ var selectboxOutput = function( el )
 						li.first( ).hide( );
 					}
 					
-					if( li.filter( ':visible' ).length < 1 )
-					{
-						notFound.show( );
-					}
-					else
-					{
-						notFound.hide( );
-					}
+					// Видимость блока "не найдено"
+					notFound.toggle( li.filter( ':visible' ).length < 1 );
 				} );
 			}
 
