@@ -27,10 +27,12 @@
 				search: {
 					limit: 10,
 			
-					ajax: { // JQuery Ajax параметры
+					/* @todo: Заготовка будущего функционала
+					ajax: {
 						delay: 250,
 						onSuccess: function( ) { }
 					}
+					*/
 				},
 				triggerHTML: '<div class="jq-selectbox__trigger-arrow"></div>',
 				visibleOptions: 0,
