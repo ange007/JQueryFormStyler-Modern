@@ -20,13 +20,5 @@ cp -rp ${TRAVIS_BUILD_DIR}/build/* ${DIST_PATH};
 # переходим в директорию добавляе коммит
 cd ${DIST_PATH} && git add -A && git commit -am "Автоматическая сборка (${TRAVIS_BUILD_NUMBER})";
 # создаём тег и отправляем коммит
-if [ "$TRAVIS_BRANCH" == "1.x" ] 
-then 
-	git tag -a "v${VERS}" -m "Релиз версии ${VERS}"; 
-	git push ${REPO_URL} 1.x---release --tags;
-fi
-# или просто отправляем коммит
-if [ "$TRAVIS_BRANCH" != "1.x" ]
-then 
-	git push ${REPO_URL} 1.x---release;
-fi
+git tag -a "v${VERS}" -m "Релиз версии ${VERS}"; 
+git push ${REPO_URL} 1.x---release --tags;
