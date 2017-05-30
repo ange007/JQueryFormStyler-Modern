@@ -8,7 +8,7 @@ cd ${TRAVIS_BUILD_DIR};
 # копируем в неё репозиторий
 git clone ${REPO_URL} actual-release;
 # переходим в скопированный директорию репозитория, переключаемся в нужную ветку и чистим файлы
-cd ${DIST_PATH} && git checkout release && rm -rf *;
+cd ${DIST_PATH} && git checkout 1.x---release && rm -rf *;
 # перемещаем файлы
 cp -rp ${TRAVIS_BUILD_DIR}/package.json ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/composer.json ${DIST_PATH};
@@ -20,13 +20,13 @@ cp -rp ${TRAVIS_BUILD_DIR}/build/* ${DIST_PATH};
 # переходим в директорию добавляе коммит
 cd ${DIST_PATH} && git add -A && git commit -am "Автоматическая сборка (${TRAVIS_BUILD_NUMBER})";
 # создаём тег и отправляем коммит
-if [ "$TRAVIS_BRANCH" == "master" ] 
+if [ "$TRAVIS_BRANCH" == "1.x" ] 
 then 
 	git tag -a "v${VERS}" -m "Релиз версии ${VERS}"; 
-	git push ${REPO_URL} release --tags;
+	git push ${REPO_URL} 1.x---release --tags;
 fi
 # или просто отправляем коммит
-if [ "$TRAVIS_BRANCH" != "master" ]
+if [ "$TRAVIS_BRANCH" != "1.x" ]
 then 
-	git push ${REPO_URL} release;
+	git push ${REPO_URL} 1.x---release;
 fi
