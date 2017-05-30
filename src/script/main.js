@@ -13,73 +13,117 @@
 	'use strict';
 
 	var pluginName = '%pluginName%',	/* Имя плагина. 
-										* Используется для вызова плагина, 
-										*	а так-же в качестве класса для 
-										*	стилизации без "псевдо-компонентов" */
+										 * Используется для вызова плагина, 
+										 * а так-же в качестве класса для 
+										 * стилизации без "псевдо-компонентов" */
+										  
 		idSuffix = '-' + pluginName,	/* Суффикс - который подставляется к ID "псевдо-компонента" */
 
 		// Параметры по умолчанию
 		defaults = {
-			wrapper: 'form',
-			selectTriggerHtml: '<div class="jq-selectbox__trigger-arrow"></div>',
-			selectSearch: false,
-			selectSearchLimit: 10,
-			selectVisibleOptions: 0,
-			singleSelectzIndex: '100',
-			selectSmartPositioning: true,
-			checkboxIndeterminate: false,
-			passwordSwitchHtml: '<button type="button" class="' + pluginName + '"></button>',
-			locale: 'ru',
-			locales: 
-			{
-				'ru': {
-					filePlaceholder: 'Файл не выбран',
-					fileBrowse: 'Обзор...',
-					fileNumber: 'Выбрано файлов: %s',
-					selectPlaceholder: 'Выберите...',
-					selectSearchNotFound: 'Совпадений не найдено',
-					selectSearchPlaceholder: 'Поиск...',
-					passwordShow: 'Показать',
-					passwordHide: 'Скрыть'
+			locale: navigator.browserLanguage || navigator.language || navigator.userLanguage || 'en-US',
+			
+			select: {
+				search: {
+					limit: 10,
+			
+					ajax: { // JQuery Ajax параметры
+						delay: 250,
+						onSuccess: function( ) { }
+					}
 				},
-				'en': {
-					filePlaceholder: 'No file selected',
-					fileBrowse: 'Browse...',
-					fileNumber: 'Selected files: %s',
-					selectPlaceholder: 'Select...',
-					selectSearchNotFound: 'No matches found',
-					selectSearchPlaceholder: 'Search...',
-					passwordShow: 'Show',
-					passwordHide: 'Hide'
+				triggerHTML: '<div class="jq-selectbox__trigger-arrow"></div>',
+				visibleOptions: 0,
+				smartPosition: 0,
+				onOpened: function( ) { },
+				onClosed: function( ) { }
+			},
+			checkbox: {
+				indeterminate: false
+			},
+			password: {
+				switchHTML: '<button type="button" class="' + pluginName + '"></button>'
+			},
+			
+			onFormStyled: function( ) { },
+		},
+		
+		// Локализация
+		locales = {
+			// English
+			'en-US': {
+				file: {
+					placeholder: 'No file selected',
+					browse: 'Browse...',
+					counter: 'Selected files: %s'
 				},
-				'ua': {
-					filePlaceholder: 'Файл не обраний',
-					fileBrowse: 'Огляд...',
-					fileNumber: 'Обрано файлів: %s',
-					selectPlaceholder: 'Виберіть...',
-					selectSearchNotFound: 'Збігів не знайдено',
-					selectSearchPlaceholder: 'Пошук...',
-					passwordShow: 'Показати',
-					passwordHide: 'Сховати'
+				select: {
+					placeholder: 'Select...',
+					search: {
+						notFound: 'No matches found',
+						placeholder: 'Search...'
+					}
+				},
+				password: {
+					show: '&#10687;',
+					hide: '&#10686;'
 				}
 			},
-			onSelectOpened: function( ) { },
-			onSelectClosed: function( ) { },
-			onFormStyled: function( ) { }
+						
+			// Русский
+			'ru-RU': {
+				file: {
+					placeholder: 'Файл не выбран',
+					browse: 'Обзор...',
+					counter: 'Выбрано файлов: %s'
+				},
+				select: {
+					placeholder: 'Выберите...',
+					search: {
+						notFound: 'Совпадений не найдено',
+						placeholder: 'Поиск...'
+					}
+				}
+			},
+			
+			// Українська
+			'uk-UA': {
+				file: {
+					placeholder: 'Файл не обрано',
+					browse: 'Огляд...',
+					counter: 'Обрано файлів: %s'
+				},
+				select: {
+					placeholder: 'Виберіть...',
+					search: {
+						notFound: 'Збігів не знайдено',
+						placeholder: 'Пошук...'
+					}
+				}
+			}
 		};
+		
+	// Добавляем синонимы языковых кодов
+	locales[ 'en' ] = locales[ 'en-US' ];
+	locales[ 'ru' ] = locales[ 'ru-RU' ];
+	locales[ 'ua' ] = locales[ 'uk-UA' ];
 
 	// Конструктор плагина
 	function Plugin( element, options )
 	{
+		// Запоминаем єлемент
 		this.element = element;
-		this.options = $.extend( { }, defaults, options );
 		
-		var locale = this.options.locale;
-		if( this.options.locales[ locale ] !== undefined )
-		{
-			$.extend( this.options, this.options.locales[ locale ] );
-		}
+		// Настройки
+		this.options = $.extend( true, { }, defaults, options );
 		
+		// Расширяем английскую локализацию - выборанной локализацией из параметров
+		var mainLocale = $.extend( true, { }, locales[ 'en-US' ], locales[ this.options.locale ] );
+
+		// Расширяем полученный словарь словами переданными через настройки
+		this.locales = $.extend( true, { }, mainLocale, this.options.locales );
+		
+		// Инициаплизация
 		this.init( );
 	}
 
@@ -102,10 +146,11 @@
 		// Инициализация
 		init: function( )
 		{
+			//
 			var context = this,
-				element = $( this.element ),
-				opt = this.options;
+				element = $( this.element );
 
+			//
 			var iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
 				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) );
 
@@ -157,8 +202,8 @@
 				{
 					setTimeout( function( ) 
 					{ 
-						element.closest( opt.wrapper ).children( )
-													.trigger( 'repaint' );
+						element.closest( 'form' ).children( )
+												.trigger( 'repaint' );
 					}, 1 );
 				} );
 			}
@@ -222,8 +267,13 @@
 			// Убираем стилизацию елементов
 			this.destroy( true ); 
 
-			// Перезаписываем настройки и снова инициализируем стилизацию
-			this.options = $.extend( { }, this.options, options );
+			// Перезаписываем настройки
+			$.extend( this.options, options );
+			
+			// Расширяем текущий словарь словами переданными через настройки
+			$.extend( this.locales, this.options.locales );
+
+			// Снова инициализируем стилизацию
 			this.init( );
 		}
 	};

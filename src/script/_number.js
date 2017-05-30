@@ -1,5 +1,9 @@
 var numberOutput = function( el )
 {
+	// Параметры
+	var params = this.options.number || { },
+		locale = this.locales.number || { };
+	
 	// Формируем компонент
 	var att = new Attributes( el ),
 		number = $( '<div class="jq-number">'
@@ -45,7 +49,7 @@ var numberOutput = function( el )
 		}
 		
 		// Определяем количество десятичных знаков после запятой в step
-		var decimals = ( step.toString().split( '.' )[1] || [ ] ).length.prototype,
+		var decimals = ( step.toString( ).split( '.' )[1] || [ ] ).length.prototype,
 			multiplier = '1';
 			
 		if( decimals > 0 )
@@ -137,4 +141,4 @@ var numberOutput = function( el )
 }; 
 
 // Стилизируем компонент
-numberOutput( element );
+numberOutput.call( this, element );

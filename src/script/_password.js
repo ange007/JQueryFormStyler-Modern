@@ -1,14 +1,26 @@
 var passwordOutput = function( el )
 {
+	// Параметры
+	var params = this.options.password || { },
+		locale = this.locales.password || { };
+	
+	// Если не нужно оставлять кнопку - не оставляем
+	if( params.switchHTML === undefined || params.switchHTML === 'none' )
+	{
+		el.addClass( pluginName );
+		
+		return;
+	}
+	
 	//
-	var button = $( '<div class="jq-password__switch">' + opt.passwordSwitchHtml + '</div>' ),
+	var button = $( '<div class="jq-password__switch">' + ( params.switchHTML || '' ) + '</div>' ),
 		password = $( '<div class="jq-password">' ).append( button ),
-		customButton = ( button.children( 'button' ).length > 0 ?  button.children( 'button' ) : button );
+		customButton = ( button.children( 'button' ).length > 0 ? button.children( 'button' ) : button );
 	
 	// Есть ли текст в блоке, и нужно ли его ставить
-	if( customButton.html( ) === '' && opt.passwordShow !== '' )
+	if( customButton.html( ) === '' && locale[ 'show' ] !== '' )
 	{
-		customButton.html( opt.passwordShow );
+		customButton.html( locale[ 'show' ] );
 					
 		// Если был вставлен только текст
 		if( button.children( 'button' ).length <= 0 )
@@ -40,9 +52,9 @@ var passwordOutput = function( el )
 		wrapper.toggleClass( 'jq-password_seen', !seen );
 
 		// Меняем текст
-		if( opt.passwordShow !== '' && opt.passwordHide !== '' )
+		if( locale[ 'show' ] !== '' && locale[ 'hide' ] !== '' )
 		{
-			customButton.html( seen ? opt.passwordShow : opt.passwordHide );
+			customButton.html( seen ? locale[ 'show' ] : locale[ 'hide' ] );
 		}
 		
 		//
@@ -65,4 +77,4 @@ var passwordOutput = function( el )
 }; 
 
 // Стилизируем компонент
-passwordOutput( element );
+passwordOutput.call( this, element );

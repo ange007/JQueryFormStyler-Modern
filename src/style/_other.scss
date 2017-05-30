@@ -1,10 +1,10 @@
 
 input[type='email'].#{$pluginName},
-/*input[type='password'].#{$pluginName},
-input[type='search'].#{$pluginName},*/
+input[type='search'].#{$pluginName},
 input[type='tel'].#{$pluginName},
 input[type='text'].#{$pluginName},
 input[type='url'].#{$pluginName},
+:not(.jq-password)>input[type='password'].#{$pluginName},
 textarea.#{$pluginName} {
 	padding: 8px 9px;
 	border: $border;

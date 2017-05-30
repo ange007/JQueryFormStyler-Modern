@@ -28,10 +28,10 @@
 				var selectbox = $( 'div.jq-selectbox.opened' ),
 					search = $( 'div.jq-selectbox__search input', selectbox ),
 					dropdown = $( 'div.jq-selectbox__dropdown', selectbox ),
-					opt = selectbox.find( 'select' ).data( '_' + pluginName ).options;
+					opt = selectbox.find( 'select' ).data( '_' + pluginName ).options.select || {};
 
 				// колбек при закрытии селекта
-				opt.onSelectClosed.call( selectbox );
+				opt.onClosed.call( selectbox );
 
 				//
 				if( search.length )

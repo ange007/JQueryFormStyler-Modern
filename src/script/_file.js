@@ -1,20 +1,14 @@
-//
 var fileOutput = function( el )
 {
-	var att = new Attributes( el ), 
-		placeholder = el.data( 'placeholder' ),
-		browse = el.data( 'browse' );
-		
-	if( placeholder === undefined )
-	{
-		placeholder = opt.filePlaceholder;
-	}
-
-	if( browse === undefined || browse === '' )
-	{
-		browse = opt.fileBrowse;
-	}
+	// Параметры
+	var params = this.options.file || { },
+		locale = this.locales.file || { };
 	
+	// Формируем компонент
+	var att = new Attributes( el ), 
+		placeholder = el.data( 'placeholder' ) || locale[ 'placeholder' ],
+		browse = el.data( 'browse' ) || locale[ 'browse' ];
+		
 	// Формируем блок
 	var file = $( '<div class="jq-file">' +
 					'<div class="jq-file__name">' + placeholder + '</div>' +
@@ -42,13 +36,8 @@ var fileOutput = function( el )
 			
 			if( files > 0 )
 			{
-				var number = el.data( 'number' );
-				
-				if( number === undefined )
-				{
-					number = opt.fileNumber;
-				}
-				
+				var number = el.data( 'number' ) || params.counter;
+
 				number = number.replace( '%s', files );
 				value = number;
 			}
@@ -88,4 +77,4 @@ var fileOutput = function( el )
 };
 
 // Стилизируем компонент
-fileOutput( element );
+fileOutput.call( this, element );

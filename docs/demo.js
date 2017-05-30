@@ -60,8 +60,10 @@
 		};
 		
 		// Стилизируем имеющиеся елементы
-		$( 'input, select:not(#style)' ).styler( {
-			selectSearch: true,
+		$( 'input, select:not(#style)' ).styler( 
+		{
+			select: { search: { } },
+			
 			onFormStyled: function( ) 
 			{ 
 				$( 'body' ).find( 'input, select' )
@@ -89,18 +91,25 @@
 				
 		// Состояние "неопределено" по умолчанию
 		$( '#checkbox-indeterminate' ).prop( 'indeterminate', 'true' )
-										.trigger( 'refresh' );
+										.trigger( 'repaint' );
 		
 		// input:checkbox с постоянными 3 состояниями
 		$( '#checkbox-indeterminate-change' ).prop( 'indeterminate', 'true' )
-											.styler( 'reinitialize', { checkboxIndeterminate: true } );
+											.styler( 'reinitialize', { checkbox: { indeterminate: true } } );
 			
 		// input:password без <button>
-		$( '#p-2' ).styler( 'reinitialize', { passwordSwitchHtml: '' } );		
+		$( '#p-2' ).styler( 'reinitialize', { password: { switchHTML: '' } } );		
 		
 		// input:password со своим текстом
-		$( '#p-3' ).styler( 'reinitialize', { passwordShow: '&#10687;', 
-												passwordHide: '&#10686;' } );	
+		$( '#p-3' ).styler( 'reinitialize', { locales: { 
+													password: { 
+														show: 'Показать', 
+														hide: 'Скрыть' 
+													} 
+											} } );	
+											
+		// input:password без кнопки
+		$( '#p-4' ).styler( 'reinitialize', { password: { switchHTML: 'none' } } );										
 				
 		//
 		$( 'ul.menu' ).on( 'click', 'li:not(.current)', function( )

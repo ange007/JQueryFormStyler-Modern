@@ -1,7 +1,11 @@
 var selectboxOutput = function( el )
 {
+	// Параметры
+	var params = this.options.select || { },
+		locale = this.locales.select || { };
+
 	//
-	var optionList = $( 'option', el );
+	var	optionList = $( 'option', el );
 	
 	// Запрещаем прокрутку страницы при прокрутке селекта
 	function preventScrolling( selector )
@@ -21,7 +25,6 @@ var selectboxOutput = function( el )
 				e.stopPropagation( );
 				e.preventDefault( );
 			}
-
 		} );
 	}
 	
@@ -105,13 +108,12 @@ var selectboxOutput = function( el )
 		var att = new Attributes( el ),
 			ulList = makeList( optionList ),
 			searchHTML = '',
-			selectPlaceholder = el.data( 'placeholder' ) || opt.selectPlaceholder,
-			selectSearch = el.data( 'search' ) || opt.selectSearch,
-			selectSearchLimit = el.data( 'search-limit' ) || opt.selectSearchLimit,
-			selectSearchNotFound = el.data( 'search-not-found' ) || opt.selectSearchNotFound,
-			selectSearchPlaceholder = el.data( 'search-placeholder' ) || opt.selectSearchPlaceholder,
-			singleSelectzIndex = el.data( 'z-index' ) || opt.singleSelectzIndex,
-			selectSmartPositioning = el.data( 'smart-positioning' ) || opt.selectSmartPositioning;
+			selectPlaceholder = el.data( 'placeholder' ) || params.placeholder,
+			selectSearch = el.data( 'search' ) || ( params.search ? true : false ),
+			selectSearchLimit = el.data( 'search-limit' ) || ( params.search || {} ).limit,
+			selectSmartPosition = el.data( 'smart-position' ) || params.smartPosition,
+			selectSearchNotFound = el.data( 'search-not-found' ) || locale.search[ 'notFound' ],
+			selectSearchPlaceholder = el.data( 'search-placeholder' ) || locale.search[ 'placeholder' ];
 		
 		// Блок поиска
 		if( selectSearch )
@@ -131,10 +133,9 @@ var selectboxOutput = function( el )
 								+ '<div class="jq-selectbox__select">'
 									+ '<div class="jq-selectbox__select-text"></div>'
 									+ '<div class="jq-selectbox__trigger">'
-										+ opt.selectTriggerHtml
+										+ params.triggerHTML || ''
 									+ '</div>'
 							+ '</div></div>' )
-							.css( {	zIndex: singleSelectzIndex } )
 							.attr( { 'id': att.id, 'title': att.title } )
 							.data( att.data )
 							.addClass( att.classes )
@@ -315,7 +316,7 @@ var selectboxOutput = function( el )
 			// Колбек при закрытии селекта
 			if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 			{
-				opt.onSelectClosed.call( $( 'div.jq-selectbox' ).filter( '.opened' ) );
+				params.onClosed.call( $( 'div.jq-selectbox' ).filter( '.opened' ) );
 			}
 
 			// Фокусируем
@@ -333,7 +334,7 @@ var selectboxOutput = function( el )
 				liHeight = li.data( 'li-height' ) || 0,
 				topOffset = selectbox.offset( ).top || 0,
 				bottomOffset = win.height( ) - selectHeight - ( topOffset - win.scrollTop( ) ),
-				visible = el.data( 'visible-options' ) || opt.selectVisibleOptions,
+				visible = el.data( 'visible-options' ) || params.visibleOptions,
 				minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * 5,
 				newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible;
 			
@@ -384,7 +385,7 @@ var selectboxOutput = function( el )
 			};
 
 			//
-			if( selectSmartPositioning === true || selectSmartPositioning === 1 )
+			if( selectSmartPosition === true || selectSmartPosition === 1 )
 			{
 				// Раскрытие вниз
 				if( bottomOffset > ( minHeight + searchHeight + 20 ) )
@@ -404,7 +405,7 @@ var selectboxOutput = function( el )
 								.addClass( 'dropup' );
 				}
 			}
-			else if( selectSmartPositioning === false || selectSmartPositioning === 0 )
+			else if( selectSmartPosition === false || selectSmartPosition === 0 )
 			{
 				// Раскрытие вниз
 				if( bottomOffset > ( minHeight + searchHeight + 20 ) )
@@ -424,11 +425,7 @@ var selectboxOutput = function( el )
 			}
 
 			// 
-			$( 'div.jqselect' ).css( { zIndex: ( singleSelectzIndex - 1 ) } )
-								.removeClass( 'opened' );
-			
-			//
-			selectbox.css( { zIndex: singleSelectzIndex } );
+			$( 'div.jqselect' ).removeClass( 'opened' );
 			
 			//
 			if( dropdown.is( ':hidden' ) )
@@ -442,7 +439,7 @@ var selectboxOutput = function( el )
 				selectbox.addClass( 'opened focused' );
 				
 				// Колбек при открытии селекта
-				opt.onSelectOpened.call( selectbox );
+				params.onOpened.call( selectbox );
 			}
 			else
 			{
@@ -455,7 +452,7 @@ var selectboxOutput = function( el )
 				// Колбек при закрытии селекта
 				if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 				{
-					opt.onSelectClosed.call( selectbox );
+					params.onClosed.call( selectbox );
 				}
 			}
 
@@ -464,6 +461,7 @@ var selectboxOutput = function( el )
 			{
 				// Сбрасываем значение и начинаем поиск
 				search.val( '' )
+						.focus( )
 						.keyup( );
 				
 				// Прячем блок "не найдено"
@@ -477,14 +475,11 @@ var selectboxOutput = function( el )
 					// Проходим по содержимому
 					li.each( function( )
 					{
-						if( !$( this ).html( ).match( new RegExp( '.*?' + query + '.*?', 'i' ) ) )
-						{
-							$( this ).hide( );
-						} 
-						else
-						{
-							$( this ).show( );
-						}
+						var find = $( this ).html( )
+											.match( new RegExp( '.*?' + query + '.*?', 'i' ) );
+							
+						//
+						$( this ).toggle( find ? true : false );
 					} );
 					
 					// Прячем 1-ю пустую опцию
@@ -493,14 +488,8 @@ var selectboxOutput = function( el )
 						li.first( ).hide( );
 					}
 					
-					if( li.filter( ':visible' ).length < 1 )
-					{
-						notFound.show( );
-					}
-					else
-					{
-						notFound.hide( );
-					}
+					// Видимость блока "не найдено"
+					notFound.toggle( li.filter( ':visible' ).length < 1 );
 				} );
 			}
 
@@ -569,7 +558,7 @@ var selectboxOutput = function( el )
 			selectbox.removeClass( 'opened dropup dropdown' );
 			
 			// Колбек при закрытии селекта
-			opt.onSelectClosed.call( selectbox );
+			params.onClosed.call( selectbox );
 
 		} );
 		
@@ -628,7 +617,7 @@ var selectboxOutput = function( el )
 				selectbox.removeClass( 'opened dropup dropdown' );
 				
 				// Колбек при закрытии селекта
-				opt.onSelectClosed.call( selectbox );
+				params.onClosed.call( selectbox );
 			}
 		} )
 		//
@@ -675,4 +664,4 @@ var selectboxOutput = function( el )
 };
 
 // Стилизируем компонент
-selectboxOutput( element );
+selectboxOutput.call( this, element );

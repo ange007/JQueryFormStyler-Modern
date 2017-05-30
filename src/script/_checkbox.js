@@ -1,8 +1,11 @@
 var checkboxOutput = function( el )
 {
+	// Параметры
+	var params = this.options.checkbox || { },
+		locale = this.locales.checkbox || { };
+	
 	//
 	var att = new Attributes( el ),
-		parent = el.parent( ),
 		checkbox = $( '<div class="jq-checkbox"><div class="jq-checkbox__div"></div></div>' )
 					.attr( { 'id': att.id, 'title': att.title, 'unselectable': 'on' } )
 					.addClass( att.classes )
@@ -51,7 +54,7 @@ var checkboxOutput = function( el )
 			if( el.is( ':checked' ) || el.is( ':indeterminate' ) )
 			{
 				// ... если работаем через 3 состояния - отмечаем "не определено",  или просто снимаем отметку
-				el.prop( 'checked', ( opt.checkboxIndeterminate && el.is( ':indeterminate' ) ) );
+				el.prop( 'checked', ( params.indeterminate && el.is( ':indeterminate' ) ) );
 
 				// "Неопределено" в любом случае снимаем
 				el.prop( 'indeterminate', false );
@@ -60,7 +63,7 @@ var checkboxOutput = function( el )
 			else
 			{
 				// ... если работаем через 3 состояния - отмечаем "не определено"
-				if( opt.checkboxIndeterminate )
+				if( params.indeterminate )
 				{
 					el.prop( 'checked', false )
 						.prop( 'indeterminate', true );
@@ -124,4 +127,4 @@ var checkboxOutput = function( el )
 };
 
 // Стилизируем компонент
-checkboxOutput( element );
+checkboxOutput.call( this, element );

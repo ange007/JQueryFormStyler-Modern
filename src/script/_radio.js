@@ -1,5 +1,10 @@
 var radioOutput = function( el )
 {
+	// Параметры
+	var params = this.options.radio || { },
+		locale = this.locales.radio || { };
+	
+	// Формируем компонент
 	var att = new Attributes( el ),
 		radio = $( '<div class="jq-radio"><div class="jq-radio__div"></div></div>' )
 				.attr( { 'id': att.id, 'title': att.title, 'unselectable': 'on' } )
@@ -31,16 +36,9 @@ var radioOutput = function( el )
 			//
 			var name = el.attr( 'name' );
 			
-			// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
-			var findElement = radio.closest( opt.wrapper )
+			// Ищем нужный нам елемент по родителям
+			var findElement = radio.closest( '#' + name )
 									.find( 'input[name="' + name + '"]:radio' );
-
-			// ... если не нашли - ищем по родителям
-			if( findElement.length <= 0 )
-			{
-				findElement = radio.closest( '#' + name )
-									.find( 'input[name="' + name + '"]:radio' );
-			}
 
 			// ... или же по всему документу
 			if( findElement.length <= 0 )
@@ -105,4 +103,4 @@ var radioOutput = function( el )
 };
 
 // Стилизируем компонент
-radioOutput( element );
+radioOutput.call( this, element );

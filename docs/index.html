@@ -61,7 +61,7 @@
 							<code class="state" data-checkbox="checkbox1"></code> <input type="checkbox" id="checkbox1" /> <label for="checkbox1"> в тег <code>label</code> помещен только текст</label><br />
 							<code class="state" data-checkbox="checkbox2"></code> <label><input type="checkbox" id="checkbox2" /> и текст, и <code>input</code> помещены в тег <code>label</code></label><br />
 							<code class="state" data-checkbox="checkbox-disabled"></code> <label><input type="checkbox" id="checkbox-disabled" disabled checked /> неактивный</label><br />
-							<code class="state" data-checkbox="checkbox-indeterminate"></code> <label><input type="checkbox" id="checkbox-indeterminate"/> установлен в "неопределённое" состояниее</label><br />
+							<code class="state" data-checkbox="checkbox-indeterminate"></code> <label><input type="checkbox" id="checkbox-indeterminate"/> установлен в "неопределённое" состояние</label><br />
 							<code class="state" data-checkbox="checkbox-indeterminate-change"></code> <label><input type="checkbox" id="checkbox-indeterminate-change"/> с постоянными тремя состояниями</label>
 						</div><!-- .section -->
 					</div><!-- .box -->
@@ -138,6 +138,10 @@
 							<input type="password" id="p-3" size="60" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" value="Пароль">
 						</div><!-- .section -->
 						
+						<div class="section">
+							<p>Без кнопки.</p>
+							<input type="password" id="p-4" size="60" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" value="Пароль">
+						</div><!-- .section -->					
 					</div><!-- .box -->
 					
 					<div class="box">
@@ -546,12 +550,18 @@
 
 							<textarea class="styler" cols="60" rows="5" placeholder="Многострочное текстовое поле..."></textarea> <code>&lt;textarea>&lt;/textarea></code><br />
 
+							<input class="styler" type="search" placeholder="Поисковое текстовое поле..." /> <code>&lt;input type="search"></code><br />
+							
+							<input class="styler" type="tel" placeholder="Номер телефона..." pattern="2[0-9]{3}-[0-9]{3}" /> <code>&lt;input type="tel"></code><br />
+							
+							<input class="styler" type="url" placeholder="URL адрес..." /> <code>&lt;input type="url"></code><br />
+							
+							<input class="styler" type="reset" value="Сброс" /> <code>&lt;input type="reset"></code><br />
+							
 							<input class="styler" type="button" value="Кнопка" /> <code>&lt;input type="button"></code><br />
 
 							<button class="styler" type="submit">Кнопка</button> <code>&lt;button>&lt;/button></code><br />
-
-							<input class="styler" type="reset" value="Сброс" /> <code>&lt;input type="reset"></code><br />
-
+							
 							<input class="styler" type="button" value="Кнопка неактивная" disabled /> <code>&lt;input type="button" disabled></code><br />
 							<button class="styler" type="submit" disabled>Кнопка неактивная</button> <code>&lt;button disabled>&lt;/button></code>
 

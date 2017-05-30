@@ -55,15 +55,15 @@ var bundles =
 	dev: {
 		fileSuffix: '',
 		compress: false,
-		themePath: 'theme/',
+		themePath: 'style/',
 		mainPath: ''
 	},
 	
 	min: {
 		fileSuffix: '.min',
 		compress: true,
-		themePath: 'theme.min/',
-		mainPath: 'min/'
+		themePath: 'style/',
+		mainPath: ''
 	}
 };
 
