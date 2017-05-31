@@ -28,6 +28,8 @@ script:
 after_success: 
   - git config --global user.name "${GIT_NAME}"
   - git config --global user.email "${GIT_EMAIL}"
+  # - chmod +x ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh
+  # - chmod +x ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh
   - ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh
   - ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh
 
