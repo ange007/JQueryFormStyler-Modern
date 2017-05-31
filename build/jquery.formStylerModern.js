@@ -1,6 +1,6 @@
 /**
  * jquery.formstyler-modern - JQuery HTML form styling plugin
- * @version v1.5.0
+ * @version v2.0.0
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
  * @author Borisenko Vladimir
@@ -21,73 +21,119 @@
 	'use strict';
 
 	var pluginName = 'styler',	/* Имя плагина. 
-										* Используется для вызова плагина, 
-										*	а так-же в качестве класса для 
-										*	стилизации без "псевдо-компонентов" */
+										 * Используется для вызова плагина, 
+										 * а так-же в качестве класса для 
+										 * стилизации без "псевдо-компонентов" */
+										  
 		idSuffix = '-' + pluginName,	/* Суффикс - который подставляется к ID "псевдо-компонента" */
 
 		// Параметры по умолчанию
 		defaults = {
-			wrapper: 'form',
-			selectTriggerHtml: '<div class="jq-selectbox__trigger-arrow"></div>',
-			selectSearch: false,
-			selectSearchLimit: 10,
-			selectVisibleOptions: 0,
-			singleSelectzIndex: '100',
-			selectSmartPositioning: true,
-			checkboxIndeterminate: false,
-			passwordSwitchHtml: '<button type="button" class="' + pluginName + '"></button>',
-			locale: 'ru',
-			locales: 
-			{
-				'ru': {
-					filePlaceholder: 'Файл не выбран',
-					fileBrowse: 'Обзор...',
-					fileNumber: 'Выбрано файлов: %s',
-					selectPlaceholder: 'Выберите...',
-					selectSearchNotFound: 'Совпадений не найдено',
-					selectSearchPlaceholder: 'Поиск...',
-					passwordShow: 'Показать',
-					passwordHide: 'Скрыть'
+			locale: navigator.browserLanguage || navigator.language || navigator.userLanguage || 'en-US',
+			
+			select: {
+				search: {
+					limit: 10,
+			
+					/* @todo: Заготовка будущего функционала
+					ajax: {
+						delay: 250,
+						onSuccess: function( ) { }
+					}
+					*/
 				},
-				'en': {
-					filePlaceholder: 'No file selected',
-					fileBrowse: 'Browse...',
-					fileNumber: 'Selected files: %s',
-					selectPlaceholder: 'Select...',
-					selectSearchNotFound: 'No matches found',
-					selectSearchPlaceholder: 'Search...',
-					passwordShow: 'Show',
-					passwordHide: 'Hide'
+				triggerHTML: '<div class="jq-selectbox__trigger-arrow"></div>',
+				visibleOptions: 0,
+				smartPosition: true,
+				onOpened: function( ) { },
+				onClosed: function( ) { }
+			},
+			checkbox: {
+				indeterminate: false
+			},
+			password: {
+				switchHTML: '<button type="button" class="' + pluginName + '"></button>'
+			},
+			
+			onFormStyled: function( ) { },
+		},
+		
+		// Локализация
+		locales = {
+			// English
+			'en-US': {
+				file: {
+					placeholder: 'No file selected',
+					browse: 'Browse...',
+					counter: 'Selected files: %s'
 				},
-				'ua': {
-					filePlaceholder: 'Файл не обраний',
-					fileBrowse: 'Огляд...',
-					fileNumber: 'Обрано файлів: %s',
-					selectPlaceholder: 'Виберіть...',
-					selectSearchNotFound: 'Збігів не знайдено',
-					selectSearchPlaceholder: 'Пошук...',
-					passwordShow: 'Показати',
-					passwordHide: 'Сховати'
+				select: {
+					placeholder: 'Select...',
+					search: {
+						notFound: 'No matches found',
+						placeholder: 'Search...'
+					}
+				},
+				password: {
+					show: '&#10687;',
+					hide: '&#10686;'
 				}
 			},
-			onSelectOpened: function( ) { },
-			onSelectClosed: function( ) { },
-			onFormStyled: function( ) { }
+						
+			// Русский
+			'ru-RU': {
+				file: {
+					placeholder: 'Файл не выбран',
+					browse: 'Обзор...',
+					counter: 'Выбрано файлов: %s'
+				},
+				select: {
+					placeholder: 'Выберите...',
+					search: {
+						notFound: 'Совпадений не найдено',
+						placeholder: 'Поиск...'
+					}
+				}
+			},
+			
+			// Українська
+			'uk-UA': {
+				file: {
+					placeholder: 'Файл не обрано',
+					browse: 'Огляд...',
+					counter: 'Обрано файлів: %s'
+				},
+				select: {
+					placeholder: 'Виберіть...',
+					search: {
+						notFound: 'Збігів не знайдено',
+						placeholder: 'Пошук...'
+					}
+				}
+			}
 		};
+		
+	// Добавляем синонимы языковых кодов
+	locales[ 'en' ] = locales[ 'en-US' ];
+	locales[ 'ru' ] = locales[ 'ru-RU' ];
+	locales[ 'ua' ] = locales[ 'uk-UA' ];
 
 	// Конструктор плагина
 	function Plugin( element, options )
 	{
+		// Запоминаем єлемент
 		this.element = element;
-		this.options = $.extend( { }, defaults, options );
 		
-		var locale = this.options.locale;
-		if( this.options.locales[ locale ] !== undefined )
-		{
-			$.extend( this.options, this.options.locales[ locale ] );
-		}
+		// Настройки
+		this.options = $.extend( true, { }, defaults, options );
 		
+		// Расширяем английскую локализацию - выборанной локализацией из параметров
+		var mainLocale = $.extend( true, { }, locales[ 'en-US' ], locales[ this.options.locale ] );
+
+		// Расширяем полученный словарь словами переданными через настройки
+		this.locales = $.extend( true, { }, mainLocale, this.options.locales );
+		
+		// Инициаплизация
 		this.init( );
 	}
 
@@ -110,10 +156,11 @@
 		// Инициализация
 		init: function( )
 		{
+			//
 			var context = this,
-				element = $( this.element ),
-				opt = this.options;
+				element = $( this.element );
 
+			//
 			var iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
 				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) );
 
@@ -122,9 +169,12 @@
 			{
 				var checkboxOutput = function( el )
 				{
+					// Параметры
+					var params = this.options.checkbox || { },
+						locale = this.locales.checkbox || { };
+					
 					//
 					var att = new Attributes( el ),
-						parent = el.parent( ),
 						checkbox = $( '<div class="jq-checkbox"><div class="jq-checkbox__div"></div></div>' )
 									.attr( { 'id': att.id, 'title': att.title, 'unselectable': 'on' } )
 									.addClass( att.classes )
@@ -173,7 +223,7 @@
 							if( el.is( ':checked' ) || el.is( ':indeterminate' ) )
 							{
 								// ... если работаем через 3 состояния - отмечаем "не определено",  или просто снимаем отметку
-								el.prop( 'checked', ( opt.checkboxIndeterminate && el.is( ':indeterminate' ) ) );
+								el.prop( 'checked', ( params.indeterminate && el.is( ':indeterminate' ) ) );
 				
 								// "Неопределено" в любом случае снимаем
 								el.prop( 'indeterminate', false );
@@ -182,7 +232,7 @@
 							else
 							{
 								// ... если работаем через 3 состояния - отмечаем "не определено"
-								if( opt.checkboxIndeterminate )
+								if( params.indeterminate )
 								{
 									el.prop( 'checked', false )
 										.prop( 'indeterminate', true );
@@ -246,13 +296,18 @@
 				};
 				
 				// Стилизируем компонент
-				checkboxOutput( element );
+				checkboxOutput.call( this, element );
 			}
 			// Радиокнопка
 			else if( element.is( ':radio' ) )
 			{
 				var radioOutput = function( el )
 				{
+					// Параметры
+					var params = this.options.radio || { },
+						locale = this.locales.radio || { };
+					
+					// Формируем компонент
 					var att = new Attributes( el ),
 						radio = $( '<div class="jq-radio"><div class="jq-radio__div"></div></div>' )
 								.attr( { 'id': att.id, 'title': att.title, 'unselectable': 'on' } )
@@ -284,16 +339,9 @@
 							//
 							var name = el.attr( 'name' );
 							
-							// Ищем нужный нам елемент в блоке который указан в настройках ( по умолчанию form )
-							var findElement = radio.closest( opt.wrapper )
+							// Ищем нужный нам елемент по родителям
+							var findElement = radio.closest( '#' + name )
 													.find( 'input[name="' + name + '"]:radio' );
-				
-							// ... если не нашли - ищем по родителям
-							if( findElement.length <= 0 )
-							{
-								findElement = radio.closest( '#' + name )
-													.find( 'input[name="' + name + '"]:radio' );
-							}
 				
 							// ... или же по всему документу
 							if( findElement.length <= 0 )
@@ -358,28 +406,22 @@
 				};
 				
 				// Стилизируем компонент
-				radioOutput( element );
+				radioOutput.call( this, element );
 			}
 			// Выбор файла
 			else if ( element.is( ':file' ) ) 
 			{
-				//
 				var fileOutput = function( el )
 				{
-					var att = new Attributes( el ), 
-						placeholder = el.data( 'placeholder' ),
-						browse = el.data( 'browse' );
-						
-					if( placeholder === undefined )
-					{
-						placeholder = opt.filePlaceholder;
-					}
-				
-					if( browse === undefined || browse === '' )
-					{
-						browse = opt.fileBrowse;
-					}
+					// Параметры
+					var params = this.options.file || { },
+						locale = this.locales.file || { };
 					
+					// Формируем компонент
+					var att = new Attributes( el ), 
+						placeholder = el.data( 'placeholder' ) || locale[ 'placeholder' ],
+						browse = el.data( 'browse' ) || locale[ 'browse' ];
+						
 					// Формируем блок
 					var file = $( '<div class="jq-file">' +
 									'<div class="jq-file__name">' + placeholder + '</div>' +
@@ -407,13 +449,8 @@
 							
 							if( files > 0 )
 							{
-								var number = el.data( 'number' );
-								
-								if( number === undefined )
-								{
-									number = opt.fileNumber;
-								}
-								
+								var number = el.data( 'number' ) || params.counter;
+				
 								number = number.replace( '%s', files );
 								value = number;
 							}
@@ -453,13 +490,17 @@
 				};
 				
 				// Стилизируем компонент
-				fileOutput( element );
+				fileOutput.call( this, element );
 			}
 			// Номер
 			else if( element.is( 'input[type="number"]' ) )
 			{
 				var numberOutput = function( el )
 				{
+					// Параметры
+					var params = this.options.number || { },
+						locale = this.locales.number || { };
+					
 					// Формируем компонент
 					var att = new Attributes( el ),
 						number = $( '<div class="jq-number">'
@@ -505,7 +546,7 @@
 						}
 						
 						// Определяем количество десятичных знаков после запятой в step
-						var decimals = ( step.toString().split( '.' )[1] || [ ] ).length.prototype,
+						var decimals = ( step.toString( ).split( '.' )[1] || [ ] ).length.prototype,
 							multiplier = '1';
 							
 						if( decimals > 0 )
@@ -597,22 +638,34 @@
 				}; 
 				
 				// Стилизируем компонент
-				numberOutput( element );
+				numberOutput.call( this, element );
 			} 
 			// Пароль
 			else if( element.is('input[type="password"]' ) ) 
 			{
 				var passwordOutput = function( el )
 				{
+					// Параметры
+					var params = this.options.password || { },
+						locale = this.locales.password || { };
+					
+					// Если не нужно оставлять кнопку - не оставляем
+					if( params.switchHTML === undefined || params.switchHTML === 'none' )
+					{
+						el.addClass( pluginName );
+						
+						return;
+					}
+					
 					//
-					var button = $( '<div class="jq-password__switch">' + opt.passwordSwitchHtml + '</div>' ),
+					var button = $( '<div class="jq-password__switch">' + ( params.switchHTML || '' ) + '</div>' ),
 						password = $( '<div class="jq-password">' ).append( button ),
-						customButton = ( button.children( 'button' ).length > 0 ?  button.children( 'button' ) : button );
+						customButton = ( button.children( 'button' ).length > 0 ? button.children( 'button' ) : button );
 					
 					// Есть ли текст в блоке, и нужно ли его ставить
-					if( customButton.html( ) === '' && opt.passwordShow !== '' )
+					if( customButton.html( ) === '' && locale[ 'show' ] !== '' )
 					{
-						customButton.html( opt.passwordShow );
+						customButton.html( locale[ 'show' ] );
 									
 						// Если был вставлен только текст
 						if( button.children( 'button' ).length <= 0 )
@@ -644,9 +697,9 @@
 						wrapper.toggleClass( 'jq-password_seen', !seen );
 				
 						// Меняем текст
-						if( opt.passwordShow !== '' && opt.passwordHide !== '' )
+						if( locale[ 'show' ] !== '' && locale[ 'hide' ] !== '' )
 						{
-							customButton.html( seen ? opt.passwordShow : opt.passwordHide );
+							customButton.html( seen ? locale[ 'show' ] : locale[ 'hide' ] );
 						}
 						
 						//
@@ -669,7 +722,7 @@
 				}; 
 				
 				// Стилизируем компонент
-				passwordOutput( element );
+				passwordOutput.call( this, element );
 			}
 			// Скрытое поле
 			else if( element.is( 'input[type="hidden"]' ) )
@@ -681,8 +734,12 @@
 			{
 				var selectboxOutput = function( el )
 				{
+					// Параметры
+					var params = this.options.select || { },
+						locale = this.locales.select || { };
+				
 					//
-					var optionList = $( 'option', el );
+					var	optionList = $( 'option', el );
 					
 					// Запрещаем прокрутку страницы при прокрутке селекта
 					function preventScrolling( selector )
@@ -702,7 +759,6 @@
 								e.stopPropagation( );
 								e.preventDefault( );
 							}
-				
 						} );
 					}
 					
@@ -786,13 +842,12 @@
 						var att = new Attributes( el ),
 							ulList = makeList( optionList ),
 							searchHTML = '',
-							selectPlaceholder = el.data( 'placeholder' ) || opt.selectPlaceholder,
-							selectSearch = el.data( 'search' ) || opt.selectSearch,
-							selectSearchLimit = el.data( 'search-limit' ) || opt.selectSearchLimit,
-							selectSearchNotFound = el.data( 'search-not-found' ) || opt.selectSearchNotFound,
-							selectSearchPlaceholder = el.data( 'search-placeholder' ) || opt.selectSearchPlaceholder,
-							singleSelectzIndex = el.data( 'z-index' ) || opt.singleSelectzIndex,
-							selectSmartPositioning = el.data( 'smart-positioning' ) || opt.selectSmartPositioning;
+							selectPlaceholder = el.data( 'placeholder' ) || params.placeholder,
+							selectSearch = el.data( 'search' ) || ( params.search ? true : false ),
+							selectSearchLimit = el.data( 'search-limit' ) || ( params.search || {} ).limit,
+							selectSmartPosition = el.data( 'smart-position' ) || params.smartPosition,
+							selectSearchNotFound = el.data( 'search-not-found' ) || locale.search[ 'notFound' ],
+							selectSearchPlaceholder = el.data( 'search-placeholder' ) || locale.search[ 'placeholder' ];
 						
 						// Блок поиска
 						if( selectSearch )
@@ -812,10 +867,9 @@
 												+ '<div class="jq-selectbox__select">'
 													+ '<div class="jq-selectbox__select-text"></div>'
 													+ '<div class="jq-selectbox__trigger">'
-														+ opt.selectTriggerHtml
+														+ params.triggerHTML || ''
 													+ '</div>'
 											+ '</div></div>' )
-											.css( {	zIndex: singleSelectzIndex } )
 											.attr( { 'id': att.id, 'title': att.title } )
 											.data( att.data )
 											.addClass( att.classes )
@@ -996,7 +1050,7 @@
 							// Колбек при закрытии селекта
 							if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 							{
-								opt.onSelectClosed.call( $( 'div.jq-selectbox' ).filter( '.opened' ) );
+								params.onClosed.call( $( 'div.jq-selectbox' ).filter( '.opened' ) );
 							}
 				
 							// Фокусируем
@@ -1014,9 +1068,9 @@
 								liHeight = li.data( 'li-height' ) || 0,
 								topOffset = selectbox.offset( ).top || 0,
 								bottomOffset = win.height( ) - selectHeight - ( topOffset - win.scrollTop( ) ),
-								visible = el.data( 'visible-options' ) || opt.selectVisibleOptions,
-								minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * 5,
-								newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible;
+								visible = el.data( 'visible-options' ) || params.visibleOptions,
+								newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible,
+								minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * 5;
 							
 							// Выпадающее вниз меню
 							// @todo: Как-то тут много "магии"
@@ -1065,7 +1119,7 @@
 							};
 				
 							//
-							if( selectSmartPositioning === true || selectSmartPositioning === 1 )
+							if( selectSmartPosition )
 							{
 								// Раскрытие вниз
 								if( bottomOffset > ( minHeight + searchHeight + 20 ) )
@@ -1085,7 +1139,7 @@
 												.addClass( 'dropup' );
 								}
 							}
-							else if( selectSmartPositioning === false || selectSmartPositioning === 0 )
+							else
 							{
 								// Раскрытие вниз
 								if( bottomOffset > ( minHeight + searchHeight + 20 ) )
@@ -1105,11 +1159,7 @@
 							}
 				
 							// 
-							$( 'div.jqselect' ).css( { zIndex: ( singleSelectzIndex - 1 ) } )
-												.removeClass( 'opened' );
-							
-							//
-							selectbox.css( { zIndex: singleSelectzIndex } );
+							$( 'div.jqselect' ).removeClass( 'opened' );
 							
 							//
 							if( dropdown.is( ':hidden' ) )
@@ -1123,7 +1173,7 @@
 								selectbox.addClass( 'opened focused' );
 								
 								// Колбек при открытии селекта
-								opt.onSelectOpened.call( selectbox );
+								params.onOpened.call( selectbox );
 							}
 							else
 							{
@@ -1136,7 +1186,7 @@
 								// Колбек при закрытии селекта
 								if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
 								{
-									opt.onSelectClosed.call( selectbox );
+									params.onClosed.call( selectbox );
 								}
 							}
 				
@@ -1145,6 +1195,7 @@
 							{
 								// Сбрасываем значение и начинаем поиск
 								search.val( '' )
+										.focus( )
 										.keyup( );
 								
 								// Прячем блок "не найдено"
@@ -1158,14 +1209,11 @@
 									// Проходим по содержимому
 									li.each( function( )
 									{
-										if( !$( this ).html( ).match( new RegExp( '.*?' + query + '.*?', 'i' ) ) )
-										{
-											$( this ).hide( );
-										} 
-										else
-										{
-											$( this ).show( );
-										}
+										var find = $( this ).html( )
+															.match( new RegExp( '.*?' + query + '.*?', 'i' ) );
+											
+										//
+										$( this ).toggle( find ? true : false );
 									} );
 									
 									// Прячем 1-ю пустую опцию
@@ -1174,14 +1222,8 @@
 										li.first( ).hide( );
 									}
 									
-									if( li.filter( ':visible' ).length < 1 )
-									{
-										notFound.show( );
-									}
-									else
-									{
-										notFound.hide( );
-									}
+									// Видимость блока "не найдено"
+									notFound.toggle( li.filter( ':visible' ).length < 1 );
 								} );
 							}
 				
@@ -1250,7 +1292,7 @@
 							selectbox.removeClass( 'opened dropup dropdown' );
 							
 							// Колбек при закрытии селекта
-							opt.onSelectClosed.call( selectbox );
+							params.onClosed.call( selectbox );
 				
 						} );
 						
@@ -1309,7 +1351,7 @@
 								selectbox.removeClass( 'opened dropup dropdown' );
 								
 								// Колбек при закрытии селекта
-								opt.onSelectClosed.call( selectbox );
+								params.onClosed.call( selectbox );
 							}
 						} )
 						//
@@ -1319,7 +1361,7 @@
 							if( e.which === 32 )
 							{
 								e.preventDefault( );
-								divSelect.click( );
+								divSelect.trigger( 'click' );
 							}
 						} );
 				
@@ -1557,7 +1599,7 @@
 				};
 				
 				// Стилизируем компонент
-				selectboxOutput( element );
+				selectboxOutput.call( this, element );
 			}
 			// Другие компоненты
 			else if( element.is( 'input' ) || element.is( 'textarea' ) 
@@ -1572,8 +1614,8 @@
 				{
 					setTimeout( function( ) 
 					{ 
-						element.closest( opt.wrapper ).children( )
-													.trigger( 'repaint' );
+						element.closest( 'form' ).children( )
+												.trigger( 'repaint' );
 					}, 1 );
 				} );
 			}
@@ -1637,8 +1679,13 @@
 			// Убираем стилизацию елементов
 			this.destroy( true ); 
 
-			// Перезаписываем настройки и снова инициализируем стилизацию
-			this.options = $.extend( { }, this.options, options );
+			// Перезаписываем настройки
+			$.extend( this.options, options );
+			
+			// Расширяем текущий словарь словами переданными через настройки
+			$.extend( this.locales, this.options.locales );
+
+			// Снова инициализируем стилизацию
 			this.init( );
 		}
 	};
@@ -1727,10 +1774,10 @@
 					var selectbox = $( 'div.jq-selectbox.opened' ),
 						search = $( 'div.jq-selectbox__search input', selectbox ),
 						dropdown = $( 'div.jq-selectbox__dropdown', selectbox ),
-						opt = selectbox.find( 'select' ).data( '_' + pluginName ).options;
+						opt = selectbox.find( 'select' ).data( '_' + pluginName ).options.select || {};
 	
 					// колбек при закрытии селекта
-					opt.onSelectClosed.call( selectbox );
+					opt.onClosed.call( selectbox );
 	
 					//
 					if( search.length )

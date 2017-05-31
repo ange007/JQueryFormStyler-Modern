@@ -60,8 +60,8 @@
 		};
 		
 		// Стилизируем имеющиеся елементы
-		$( 'input, select:not(#style)' ).styler( {
-			selectSearch: true,
+		$( 'input, select:not(#style)' ).styler( 
+		{
 			onFormStyled: function( ) 
 			{ 
 				$( 'body' ).find( 'input, select' )
@@ -78,10 +78,7 @@
 			}
 			
 			//
-			var style = './build/theme/' + $( this ).val( );
-
-			//
-            activeStyle = $( "<link rel='stylesheet' href='" + style + "' type='text/css' media='screen' />" ).appendTo( $( 'head' ) );
+            activeStyle = $( "<link rel='stylesheet' href='./build/style/" + $( this ).val( ) + "' type='text/css' media='screen' />" ).appendTo( $( 'head' ) );
 		} );
 				
 		// Обработка "изменения" елемента
@@ -89,18 +86,25 @@
 				
 		// Состояние "неопределено" по умолчанию
 		$( '#checkbox-indeterminate' ).prop( 'indeterminate', 'true' )
-										.trigger( 'refresh' );
+										.trigger( 'repaint' );
 		
 		// input:checkbox с постоянными 3 состояниями
 		$( '#checkbox-indeterminate-change' ).prop( 'indeterminate', 'true' )
-											.styler( 'reinitialize', { checkboxIndeterminate: true } );
+											.styler( 'reinitialize', { checkbox: { indeterminate: true } } );
 			
 		// input:password без <button>
-		$( '#p-2' ).styler( 'reinitialize', { passwordSwitchHtml: '' } );		
+		$( '#p-2' ).styler( 'reinitialize', { password: { switchHTML: '' } } );		
 		
 		// input:password со своим текстом
-		$( '#p-3' ).styler( 'reinitialize', { passwordShow: '&#10687;', 
-												passwordHide: '&#10686;' } );	
+		$( '#p-3' ).styler( 'reinitialize', { locales: { 
+													password: { 
+														show: 'Показать', 
+														hide: 'Скрыть' 
+													} 
+											} } );	
+											
+		// input:password без кнопки
+		$( '#p-4' ).styler( 'reinitialize', { password: { switchHTML: undefined } } );										
 				
 		//
 		$( 'ul.menu' ).on( 'click', 'li:not(.current)', function( )

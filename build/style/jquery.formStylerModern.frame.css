@@ -140,33 +140,14 @@ input[type="file"].jq-hidden {
     padding: 0 38px; }
     .jq-number.horizontal .jq-number__field {
       width: 60px; }
-    .jq-number.horizontal .jq-number__field input {
-      text-align: center; }
+      .jq-number.horizontal .jq-number__field input {
+        text-align: center; }
     .jq-number.horizontal .jq-number__spin {
       left: 0;
       height: 32px; }
-    .jq-number.horizontal .jq-number__spin.plus {
-      right: 0;
-      left: auto; }
-    .jq-number.horizontal .jq-number__spin:before {
-      content: '';
-      position: absolute;
-      top: 15px;
-      left: 10px;
-      width: 12px;
-      height: 2px;
-      border: none; }
-    .jq-number.horizontal .jq-number__spin.minus:after {
-      display: none; }
-    .jq-number.horizontal .jq-number__spin.plus:after {
-      top: 10px;
-      left: 15px;
-      width: 2px;
-      height: 12px;
-      border: none; }
-    .jq-number.horizontal .jq-number__spin:hover:before,
-    .jq-number.horizontal .jq-number__spin.plus:hover:after {
-      background: #000; }
+      .jq-number.horizontal .jq-number__spin.plus {
+        right: 0;
+        left: auto; }
 
 /* password */
 .jq-password {
@@ -176,7 +157,8 @@ input[type="file"].jq-hidden {
   .jq-password input[type='text'] {
     border: none;
     outline: none;
-    padding: 8px 9px; }
+    padding: 8px 9px;
+    width: auto; }
     .jq-password input[type='password']:focus, .jq-password input[type='password']:active,
     .jq-password input[type='text']:focus,
     .jq-password input[type='text']:active {
