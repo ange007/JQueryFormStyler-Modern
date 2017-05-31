@@ -1,7 +1,7 @@
 // Мультиселект
 function doMultipleSelect( el )
 {
-	var att = new Attributes( el ),
+	const att = new Attributes( el ),
 		ulList = makeList( optionList ),
 		selectbox = $( '<div class="jq-select-multiple jqselect"></div>' )
 					.attr( { 'id': att.id, 'title': att.title } )
@@ -13,7 +13,7 @@ function doMultipleSelect( el )
 	el.after( selectbox ).prependTo( selectbox );
 
 	//
-	var ul = $( 'ul', selectbox ),
+	const ul = $( 'ul', selectbox ),
 		li = $( 'li', selectbox ).attr( 'unselectable', 'on' ),
 		size = el.attr( 'size' ) || 4,
 		ulHeight = ul.outerHeight( ) || 0,
@@ -41,7 +41,7 @@ function doMultipleSelect( el )
 	// Необходимо "перерисовать" контрол
 	selectbox.on( 'repaint', function( )
 	{
-		var arrIndexes = [ ];
+		let arrIndexes = [ ];
 		optionList.filter( ':selected' )
 					.each( function( ) { arrIndexes.push( $( this ).data( 'optionIndex' ) ); } );
 		
@@ -65,7 +65,7 @@ function doMultipleSelect( el )
 	// При клике на пункт списка
 	li.click( function( e )
 	{
-		var selected = $( this );
+		const selected = $( this );
 		
 		// Клик должен срабатывать только при активном контроле
 		if( el.is( ':disabled' ) || selected.is( '.disabled, .optgroup' ) )
@@ -104,7 +104,7 @@ function doMultipleSelect( el )
 		// Выделение пунктов при зажатом Shift
 		if( e.shiftKey )
 		{
-			var prev = false,
+			let prev = false,
 				next = false;
 
 			//
@@ -147,8 +147,8 @@ function doMultipleSelect( el )
 		//
 		li.filter( '.selected' ).each( function( )
 		{
-			var t = $( this ),
-				index = t.index( ) - ( t.is( '.option' ) ? t.prevAll( '.optgroup' ).length : 0 );
+			const item = $( this ),
+				index = item.index( ) - ( item.is( '.option' ) ? item.prevAll( '.optgroup' ).length : 0 );
 
 			optionList.eq( index ).prop( 'selected', true );
 		} );

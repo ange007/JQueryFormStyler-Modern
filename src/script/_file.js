@@ -1,80 +1,123 @@
-var fileOutput = function( el )
+let File = 
+( function( )
 {
-	// Параметры
-	var params = this.options.file || { },
-		locale = this.locales.file || { };
-	
-	// Формируем компонент
-	var att = new Attributes( el ), 
-		placeholder = el.data( 'placeholder' ) || locale[ 'placeholder' ],
-		browse = el.data( 'browse' ) || locale[ 'browse' ];
+	let File = function( element, options, locale ) 
+	{		
+		//
+		this.element = element;
+		this.options = options;
+		this.locale = locale;
 		
-	// Формируем блок
-	var file = $( '<div class="jq-file">' +
-					'<div class="jq-file__name">' + placeholder + '</div>' +
-					'<div class="jq-file__browse">' + browse + '</div>' +
-					'</div>' )
-				.attr( { 'id': att.id, 'title': att.title } )
-				.addClass( att.classes )
-				.data( att.data );
-	
-	// Прячем оригинальное поле
-	el.addClass( 'jq-hidden' )
-		.after( file ).appendTo( file );
-
-	// Необходимо "перерисовать" контрол 
-	file.on( 'repaint', function( )
-	{
-		var value = el.val( ),
-			name = $('div.jq-file__name', file);
+		//
+		this.placeholderText = this.element.data( 'placeholder' ) || locale[ 'placeholder' ];
+		this.browseText = this.element.data( 'browse' ) || locale[ 'browse' ];
 				
-		// 
-		if( el.is( '[multiple]' ) )
-		{
-			var files = el[0].files.length;
-			value = '';
+		// Формируем компонент
+		const att = new Attributes( this.element );
+		
+		//
+		this.file = $( '<div class="jq-file">' +
+						'<div class="jq-file__name">' + this.placeholderText + '</div>' +
+						'<div class="jq-file__browse">' + this.browseText + '</div>' +
+						'</div>' )
+					.attr( { 'id': att.id, 'title': att.title } )
+					.addClass( att.classes )
+					.data( att.data );
+
+		// Прячем оригинальное поле
+		this.element.addClass( 'jq-hidden' )
+					.after( this.file ).appendTo( this.file );						
 			
-			if( files > 0 )
-			{
-				var number = el.data( 'number' ) || params.counter;
-
-				number = number.replace( '%s', files );
-				value = number;
-			}
-		}
-				
-		// Выводим название файлов или примечание
-		name.text( value.replace( /.+[\\\/]/, '' ) || placeholder );
-		
-		// Активация/деактивация
-		file.toggleClass( 'changed', ( value !== '' ) );
-		
-		// Активация/деактивация
-		file.toggleClass( 'disabled', el.is( ':disabled' ) );
-	} );
-
-	// Обработка "изменения" состояния
-	el.on( 'change.' + pluginName, function( )
-	{
-		file.triggerHandler( 'repaint' );
-	} )
-	// Работа с "фокусировкой"
-	.on( 'focus.' + pluginName, function( )
-	{
-		file.addClass( 'focused' );
-	} )
-	.on( 'blur.' + pluginName, function( )
-	{
-		file.removeClass( 'focused' );
-	} )
-	.on( 'click.' + pluginName, function( )
-	{
-		file.removeClass( 'focused' );
-	} );
+		//
+		this.setEvents( )
+			.repaint( );
+	}
 	
-	// Мы установили стиль, уведомляем об изменении
-	file.triggerHandler( 'repaint' );
-};
+	File.prototype = 
+	{
+		// Обработка событий
+		setEvents: function( )
+		{
+			const context = this,
+				element = this.element,
+				file = this.file;
+			
+			// Необходимо "перерисовать" контрол 
+			file.on( 'repaint', function( )
+			{
+				context.repaint( );
+			} );
 
-// Стилизируем компонент
-fileOutput.call( this, element );
+			// Обработка "изменения" состояния
+			element.on( 'change.' + pluginName, function( )
+			{
+				file.triggerHandler( 'repaint' );
+			} )
+			// Работа с "фокусировкой"
+			.on( 'focus.' + pluginName, function( )
+			{
+				file.addClass( 'focused' );
+			} )
+			.on( 'blur.' + pluginName, function( )
+			{
+				file.removeClass( 'focused' );
+			} )
+			.on( 'click.' + pluginName, function( )
+			{
+				file.removeClass( 'focused' );
+			} );
+			
+			return this;
+		},
+		
+		// Перерисовка
+		repaint: function( )
+		{
+			const element = this.element,
+				file = this.file,
+				options = this.options,
+				name = $( 'div.jq-file__name', file );
+
+			//
+			let value = element.val( );
+
+			// Если необходим множественный выбор
+			if( element.is( '[multiple]' ) )
+			{
+				let fileCount = element[ 0 ].files.length;
+
+				if( fileCount > 0 )
+				{
+					value = ( element.data( 'number' ) || options.counter ).replace( '%s', fileCount );
+				}
+				else
+				{
+					value = '';
+				}
+			}
+
+			// Выводим название файлов или примечание
+			name.text( value.replace( /.+[\\\/]/, '' ) || this.placeholderText );
+
+			// Активация/деактивация
+			file.toggleClass( 'changed', ( value !== '' ) )
+				.toggleClass( 'disabled', element.is( ':disabled' ) );
+			
+			return this;
+		},
+		
+		// Уничтожение
+		destroy: function( )
+		{
+			const element = this.element;
+			
+			element.off( '.' + pluginName + ', refresh' )
+					.removeAttr( 'style' )
+					.parent( ).before( element ).remove( );
+			
+			return this;
+		}
+	}
+	
+	return File;
+} )( );

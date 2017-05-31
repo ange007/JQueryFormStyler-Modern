@@ -1,130 +1,180 @@
-var checkboxOutput = function( el )
+let CheckBox = 
+( function( )
 {
-	// Параметры
-	var params = this.options.checkbox || { },
-		locale = this.locales.checkbox || { };
-	
-	//
-	var att = new Attributes( el ),
-		checkbox = $( '<div class="jq-checkbox"><div class="jq-checkbox__div"></div></div>' )
-					.attr( { 'id': att.id, 'title': att.title, 'unselectable': 'on' } )
-					.addClass( att.classes )
-					.data( att.data );
-
-	// Прячем оригинальный чекбокс
-	el.addClass( 'jq-hidden' )
-		.after( checkbox ).prependTo( checkbox );
-	
-	// Необходимо "перерисовать" контрол 
-	checkbox.on( 'repaint', function( )
+	let CheckBox = function( element, options, locale ) 
 	{
-		// Отмечено
-		if( el.is( ':checked' ) || el.is( ':indeterminate' ) )
+		//
+		this.element = element;
+		this.options = options;
+		this.locale = locale;
+		
+		//
+		const attr = new Attributes( this.element );
+		
+		//
+		this.checkbox = $( '<div class="jq-checkbox"><div class="jq-checkbox__div"></div></div>' )
+							.attr( { 'id': attr.id, 'title': attr.title, 'unselectable': 'on' } )
+							.addClass( attr.classes )
+							.data( attr.data );
+			
+		// Прячем оригинальный чекбокс
+		this.element.addClass( 'jq-hidden' )
+					.after( this.checkbox ).prependTo( this.checkbox );
+			
+		//
+		this.setEvents( )
+			.repaint( );
+	}
+	
+	CheckBox.prototype = 
+	{
+		// Обработка событий
+		setEvents: function( )
 		{
-			if( el.is( ':indeterminate' ) )
+			const context = this,
+				options = this.options,
+				element = this.element,
+				checkbox = this.checkbox;
+
+			// Необходимо "перерисовать" контрол 
+			checkbox.on( 'repaint', function( )
 			{
-				checkbox.removeClass( 'checked' )
-						.addClass( 'indeterminate' );
+				context.repaint( );
+			} )	
+			// Клик по псевдоблоку ( смена состояния )
+			.on( 'click', function( e )
+			{
+				e.preventDefault( );
+
+				// Обрабатываем только активный псевдобокс
+				if( !checkbox.is( '.disabled' ) )
+				{
+					// Текущее состояние: "Отмечено"
+					if( element.is( ':checked' ) || element.is( ':indeterminate' ) )
+					{
+						// ... если работаем через 3 состояния - отмечаем "не определено",  или просто снимаем отметку
+						element.prop( 'checked', ( options.indeterminate && element.is( ':indeterminate' ) ) );
+
+						// "Неопределено" в любом случае снимаем
+						element.prop( 'indeterminate', false );
+					}
+					// Текущее состояние: "Не отмечено"
+					else
+					{
+						// ... если работаем через 3 состояния - отмечаем "не определено"
+						if( options.indeterminate )
+						{
+							element.prop( 'checked', false )
+									.prop( 'indeterminate', true );
+						}
+						// ... или просто отмечаем
+						else
+						{
+							element.prop( 'checked', true )
+									.prop( 'indeterminate', false );
+						}
+					}
+
+					// Фокусируем и изменяем вызываем состояние изменения
+					element.focus( )
+							.trigger( 'change' )
+							.triggerHandler( 'click' );
+				}
+			} );
+
+			// Клик по label привязанному к данному checkbox
+			element.closest( 'label' ).add( 'label[for="' + this.element.attr( 'id' ) + '"]' )
+								.on( 'click.' + pluginName, function( e )
+			{
+				if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( checkbox ).length )
+				{
+					checkbox.triggerHandler( 'click' );
+					e.preventDefault( );
+				}
+			} );
+
+			// Обработка изменений
+			element.on( 'change.' + pluginName, function( )
+			{
+				checkbox.triggerHandler( 'repaint' );
+			} )
+			// Обработка переключения при помощи клавиатуры
+			.on( 'keydown.' + pluginName, function( e )
+			{
+				if( e.which === 32 )
+				{
+					e.preventDefault( );
+					checkbox.triggerHandler( 'click' );
+				}
+			} )
+			// Обработка наведения фокуса
+			.on( 'focus.' + pluginName, function( )
+			{
+				if( !checkbox.is( '.disabled' ) )
+				{
+					checkbox.addClass( 'focused' );
+				}
+			} )
+			// Обработка снятия фокуса
+			.on( 'blur.' + pluginName, function( )
+			{
+				checkbox.removeClass( 'focused' );
+			} );
+
+			return this;
+		},
+
+		// Перерисовка
+		repaint: function( ) 
+		{
+			const element = this.element,
+				checkbox = this.checkbox;
+
+			// Отмечено
+			if( element.is( ':checked' ) || element.is( ':indeterminate' ) )
+			{
+				if( element.is( ':indeterminate' ) )
+				{
+					checkbox.removeClass( 'checked' )
+							.addClass( 'indeterminate' );
+				}
+				else
+				{
+					checkbox.removeClass( 'indeterminate' )
+							.addClass( 'checked' );
+				}
 			}
+			// Не отмечено
 			else
 			{
 				checkbox.removeClass( 'indeterminate' )
-						.addClass( 'checked' );
+						.removeClass( 'checked' );
 			}
-		}
-		// Не отмечено
-		else
-		{
-			checkbox.removeClass( 'indeterminate' )
-					.removeClass( 'checked' );
-		}
-		
-		// Активация/деактивация
-		checkbox.toggleClass( 'disabled', el.is( ':disabled' ) );
-	} )	
-	// Клик по псевдоблоку ( смена состояния )
-	.on( 'click', function( e )
-	{
-		e.preventDefault( );
 
-		// Обрабатываем только активный псевдобокс
-		if( !checkbox.is( '.disabled' ) )
-		{
-			// Текущее состояние: "Отмечено"
-			if( el.is( ':checked' ) || el.is( ':indeterminate' ) )
-			{
-				// ... если работаем через 3 состояния - отмечаем "не определено",  или просто снимаем отметку
-				el.prop( 'checked', ( params.indeterminate && el.is( ':indeterminate' ) ) );
+			// Активация/деактивация
+			checkbox.toggleClass( 'disabled', element.is( ':disabled' ) );
 
-				// "Неопределено" в любом случае снимаем
-				el.prop( 'indeterminate', false );
-			}
-			// Текущее состояние: "Не отмечено"
-			else
-			{
-				// ... если работаем через 3 состояния - отмечаем "не определено"
-				if( params.indeterminate )
-				{
-					el.prop( 'checked', false )
-						.prop( 'indeterminate', true );
-				}
-				// ... или просто отмечаем
-				else
-				{
-					el.prop( 'checked', true )
-						.prop( 'indeterminate', false );
-				}
-			}
+			return this;
+		},
+
+		// Уничтожение
+		destroy: function( )
+		{
+			const element = this.element;
 			
-			// Фокусируем и изменяем вызываем состояние изменения
-			el.focus( )
-				.trigger( 'change' )
-				.triggerHandler( 'click' );
-		}
-	} );
+			//
+			element.off( '.' + pluginName + ', refresh' )
+					.removeAttr( 'style' )
+					.parent( ).before( element ).remove( );
 
-	// Клик по label привязанному к данному checkbox
-	el.closest( 'label' ).add( 'label[for="' + el.attr( 'id' ) + '"]' )
-						.on( 'click.' + pluginName, function( e )
-	{
-		if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( checkbox ).length )
-		{
-			checkbox.triggerHandler( 'click' );
-			e.preventDefault( );
-		}
-	} );
+			//
+			element.closest( 'label' )
+					.add( 'label[for="' + element.attr( 'id' ) + '"]' )
+					.off( '.' + pluginName );
 
-	// Обработка изменений
-	el.on( 'change.' + pluginName, function( )
-	{
-		checkbox.triggerHandler( 'repaint' );
-	} )
-	// Обработка переключения при помощи клавиатуры
-	.on( 'keydown.' + pluginName, function( e )
-	{
-		if( e.which === 32 )
-		{
-			e.preventDefault( );
-			checkbox.triggerHandler( 'click' );
+			return this;
 		}
-	} )
-	// Обработка наведения фокуса
-	.on( 'focus.' + pluginName, function( )
-	{
-		if( !checkbox.is( '.disabled' ) )
-		{
-			checkbox.addClass( 'focused' );
-		}
-	} )
-	// Обработка снятия фокуса
-	.on( 'blur.' + pluginName, function( )
-	{
-		checkbox.removeClass( 'focused' );
-	} );
+	}
 	
-	// Мы установили стиль, уведомляем об изменении
-	checkbox.triggerHandler( 'repaint' );
-};
-
-// Стилизируем компонент
-checkboxOutput.call( this, element );
+	return CheckBox;
+} )( );

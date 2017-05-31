@@ -19,6 +19,7 @@ var gulp = require( 'gulp' ),
 	sass = require( 'gulp-sass' ),
 	cssmin = require( 'gulp-minify-css' ),
 	postcss = require( 'gulp-postcss' ),
+	babel = require( 'gulp-babel' ),
 	autoprefixer = require( 'autoprefixer' );
 
 /* * * * * * * * * * * * * *
@@ -132,6 +133,7 @@ gulp.task( 'js:build', function( )
 				.pipe( header( banner, { pkg : pkg } ) ) // Установка хидера
 				.pipe( gulpif( bundle.compress, uglify( { mangle: true, compress: false } ) ) ) //
 				.pipe( rename( fileName ) ) // Переименовываем
+				.pipe( babel( {	presets: [ 'es2015' ] } ) )
 				.pipe( gulp.dest( path ) );
 } );
 

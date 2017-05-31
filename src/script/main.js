@@ -12,7 +12,7 @@
 {
 	'use strict';
 
-	var pluginName = '%pluginName%',	/* Имя плагина. 
+	let pluginName = '%pluginName%',	/* Имя плагина. 
 										 * Используется для вызова плагина, 
 										 * а так-же в качестве класса для 
 										 * стилизации без "псевдо-компонентов" */
@@ -110,25 +110,6 @@
 	locales[ 'ru' ] = locales[ 'ru-RU' ];
 	locales[ 'ua' ] = locales[ 'uk-UA' ];
 
-	// Конструктор плагина
-	function Plugin( element, options )
-	{
-		// Запоминаем єлемент
-		this.element = element;
-		
-		// Настройки
-		this.options = $.extend( true, { }, defaults, options );
-		
-		// Расширяем английскую локализацию - выборанной локализацией из параметров
-		var mainLocale = $.extend( true, { }, locales[ 'en-US' ], locales[ this.options.locale ] );
-
-		// Расширяем полученный словарь словами переданными через настройки
-		this.locales = $.extend( true, { }, mainLocale, this.options.locales );
-		
-		// Инициаплизация
-		this.init( );
-	}
-
 	// Атрибуты елемента
 	function Attributes( element )
 	{
@@ -142,44 +123,78 @@
 		this.data = element.data( );
 	}
 
+	// Конструктор плагина
+	function Plugin( element, options )
+	{
+		// Запоминаем єлемент
+		this.element = element;
+		this.customElement = undefined;
+		
+		// Настройки
+		this.options = $.extend( true, { }, defaults, options );
+		
+		// Расширяем английскую локализацию - выборанной локализацией из параметров
+		let mainLocale = $.extend( true, { }, locales[ 'en-US' ], locales[ this.options.locale ] );
+
+		// Расширяем полученный словарь словами переданными через настройки
+		this.locales = $.extend( true, { }, mainLocale, this.options.locales );
+		
+		// Инициаплизация
+		this.init( );
+	}
+
 	// Расширение функционала плагина
 	Plugin.prototype = 
 	{
 		// Инициализация
 		init: function( )
 		{
-			//
-			var context = this,
+			const context = this,
 				element = $( this.element );
 
-			//
-			var iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
+			// Определение мобильного браузера
+			const iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
 				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) );
 
 			// Чекбокс
 			if( element.is( ':checkbox' ) )
 			{
 				//= _checkbox.js
+				
+				// Стилизируем компонент
+				this.customElement = new CheckBox( element, this.options.checkbox, this.locales.checkbox );
 			}
 			// Радиокнопка
 			else if( element.is( ':radio' ) )
 			{
 				//= _radio.js
+				
+				// Стилизируем компонент
+				this.customElement = new Radio( element, this.options.radio, this.locales.radio );
 			}
 			// Выбор файла
 			else if ( element.is( ':file' ) ) 
 			{
 				//= _file.js
+				
+				// Стилизируем компонент
+				this.customElement = new File( element, this.options.file, this.locales.file );
 			}
 			// Номер
 			else if( element.is( 'input[type="number"]' ) )
 			{
 				//= _number.js
+				
+				// Стилизируем компонент
+				this.customElement = new Number( element, this.options.number, this.locales.number );
 			} 
 			// Пароль
-			else if( element.is('input[type="password"]' ) ) 
+			else if( element.is('input[type="password"]' ) && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none' ) 
 			{
 				//= _password.js
+				
+				// Стилизируем компонент
+				this.customElement = new Password( element, this.options.password, this.locales.password );
 			}
 			// Скрытое поле
 			else if( element.is( 'input[type="hidden"]' ) )
@@ -220,7 +235,7 @@
 		// Убрать стилизацию елемент(а/ов) 
 		destroy: function( reinitialize )
 		{
-			var el = $( this.element );
+			const el = $( this.element );
 			
 			// Если происходит уничтожение для переинициализации - data удалять не нужно
 			if( !reinitialize )
@@ -232,30 +247,12 @@
 			el.removeClass( 'jq-hidden' );
 
 			// Дополнительная пост-обработка checkbox и radio
-			if( el.is( ':checkbox' ) || el.is( ':radio' ) )
+			if( this.customElement !== undefined )
 			{
-				el.off( '.' + pluginName + ', refresh' )
-					.removeAttr( 'style' )
-					.parent( ).before( el ).remove( );
-			
-				el.closest( 'label' )
-					.add( 'label[for="' + el.attr( 'id' ) + '"]' )
-					.off( '.' + pluginName );
+				this.customElement.destroy( );
 			}
-			// Дополнительная пост-обработка number
-			else if( el.is( 'input[type="number"]' ) )
-			{
-				el.off( '.' + pluginName + ', refresh' )
-					.closest( '.jq-number' ).before( el ).remove( );
-			} 
-			// Дополнительная пост-обработка password
-			else if( el.is( 'input[type="password"]' ) )
-			{
-				el.off( '.' + pluginName + ', refresh' )
-					.closest( '.jq-password' ).before( el ).remove( );
-			} 
 			// Дополнительная пост-обработка file и select
-			else if( el.is( ':file' ) || el.is( 'select' ) )
+			else if( el.is( 'select' ) )
 			{
 				el.off( '.' + pluginName + ', refresh' )
 					.removeAttr( 'style' )
@@ -283,7 +280,7 @@
 	// Прописываем плагин в JQuery
 	$.fn[ pluginName ] = function( options )
 	{
-		var args = arguments;
+		const args = arguments;
 		
 		// Если параметры это объект
 		if( options === undefined || typeof options === 'object' )
@@ -305,7 +302,7 @@
 			// Колбек после выполнения плагина
 			.done( function( )
 			{
-				var opt = $( this[0] ).data( '_' + pluginName );
+				let opt = $( this[0] ).data( '_' + pluginName );
 				
 				if( opt )
 				{
@@ -318,11 +315,12 @@
 		// Если параметры это строка
 		else if( typeof options === 'string' && options[0] !== '_' && options !== 'init' )
 		{
-			var returns;
+			let returns = undefined;
 			
+			//
 			this.each( function( )
 			{
-				var instance = $.data( this, '_' + pluginName );
+				const instance = $.data( this, '_' + pluginName );
 				
 				if( instance instanceof Plugin && typeof instance[ options ] === 'function' )
 				{

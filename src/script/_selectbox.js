@@ -1,21 +1,24 @@
 var selectboxOutput = function( el )
 {
-	// Параметры
-	var params = this.options.select || { },
+	// Параметры компонента
+	const params = this.options.select || { },
 		locale = this.locales.select || { };
 
 	//
-	var	optionList = $( 'option', el );
+	const optionList = $( 'option', el );
 	
 	// Запрещаем прокрутку страницы при прокрутке селекта
 	function preventScrolling( selector )
 	{
-		var scrollDiff = selector.prop( 'scrollHeight' ) - selector.outerHeight( ),
-			wheelDelta = null,
+		const scrollDiff = selector.prop( 'scrollHeight' ) - selector.outerHeight( );
+		
+		//
+		let wheelDelta = null,
 			scrollTop = null;
 
+		// 
 		selector.off( 'mousewheel DOMMouseScroll' )
-				.on( 'mousewheel DOMMouseScroll', function (e)
+				.on( 'mousewheel DOMMouseScroll', function( e )
 		{
 			wheelDelta = ( e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0 ) ? 1 : -1; // Направление прокрутки (-1 вниз, 1 вверх)
 			scrollTop = selector.scrollTop( ); // Позиция скролла
@@ -31,15 +34,16 @@ var selectboxOutput = function( el )
 	// Формируем список селекта
 	function makeList( opList )
 	{
-		var list = $( '<ul>' );
+		let list = $( '<ul>' );
 		
-		//
-		for( var i = 0; i < opList.length; i++ )
-		{
-			var op = opList.eq( i ),
-				liClass = op.attr( 'class' ) || '',
+		// Перебираем список элементов
+		for( let i = 0; i < opList.length; i++ )
+		{					
+			const op = opList.eq( i ),
 				id = ( op.attr( 'id' ) || '' ) !== '' ? ( op.attr( 'id' ) + idSuffix ) : '',
 				title = op.attr( 'title' );
+		
+			let liClass = op.attr( 'class' ) || '';
 		
 			if( op.is( ':selected' ) )
 			{
@@ -52,7 +56,7 @@ var selectboxOutput = function( el )
 			}
 			
 			// Параметры по умолчанию
-			var defaultAttr = { 'title': title,
+			let defaultAttr = { 'title': title,
 								'data': op.data( ),
 								'html': op.html( ) };
 							
@@ -65,7 +69,7 @@ var selectboxOutput = function( el )
 			// Если есть optgroup
 			if( op.parent( ).is( 'optgroup' ) )
 			{
-				var optGroupClass = '';
+				let optGroupClass = '';
 				
 				//
 				if( op.parent( ).attr( 'class' ) !== undefined )
@@ -105,31 +109,28 @@ var selectboxOutput = function( el )
 	function doSelect( el )
 	{
 		//
-		var att = new Attributes( el ),
+		const att = new Attributes( el ),
 			ulList = makeList( optionList ),
-			searchHTML = '',
+			optionSelected = optionList.filter( ':selected' ),
 			selectPlaceholder = el.data( 'placeholder' ) || params.placeholder,
 			selectSearch = el.data( 'search' ) || ( params.search ? true : false ),
 			selectSearchLimit = el.data( 'search-limit' ) || ( params.search || {} ).limit,
 			selectSmartPosition = el.data( 'smart-position' ) || params.smartPosition,
 			selectSearchNotFound = el.data( 'search-not-found' ) || locale.search[ 'notFound' ],
 			selectSearchPlaceholder = el.data( 'search-placeholder' ) || locale.search[ 'placeholder' ];
-		
-		// Блок поиска
-		if( selectSearch )
-		{
-			searchHTML = '<div class="jq-selectbox__search"><input type="search" autocomplete="off" placeholder="' + selectSearchPlaceholder + '"></div>'
-						+ '<div class="jq-selectbox__not-found">' + selectSearchNotFound + '</div>';
-		}
+	
+		// Поле поиска
+		const searchHTML = !selectSearch ? '' : '<div class="jq-selectbox__search"><input type="search" autocomplete="off" placeholder="' + selectSearchPlaceholder + '"></div>'
+												+ '<div class="jq-selectbox__not-found">' + selectSearchNotFound + '</div>';
 		
 		// Выпадающий список
-		var dropdown = $( '<div class="jq-selectbox__dropdown" style="position: absolute">'
-							+ searchHTML
+		const dropdown = $( '<div class="jq-selectbox__dropdown" style="position: absolute">'
+							+ searchHTML || ''
 						+ '</div>' )
 						.append( ulList );
 		
 		// Формируем компонент
-		var selectbox = $( '<div class="jq-selectbox jqselect">'
+		const selectbox = $( '<div class="jq-selectbox jqselect">'
 								+ '<div class="jq-selectbox__select">'
 									+ '<div class="jq-selectbox__select-text"></div>'
 									+ '<div class="jq-selectbox__trigger">'
@@ -145,16 +146,16 @@ var selectboxOutput = function( el )
 		el.after( selectbox ).prependTo( selectbox );
 
 		// Разбираем на составляющие 
-		var divSelect = $( 'div.jq-selectbox__select', selectbox ),
-			divText = $( 'div.jq-selectbox__select-text', selectbox ),
-			optionSelected = optionList.filter( ':selected' );
-		
+		const divSelect = $( 'div.jq-selectbox__select', selectbox ),
+			divText = $( 'div.jq-selectbox__select-text', selectbox );
+
 		// Разбираем на составляющие выпадающий список
-		var menu = $( 'ul', dropdown ),
+		const menu = $( 'ul', dropdown ),
 			li = $( 'li', dropdown ).css( { 'display': 'inline-block' } ),
 			search = $( 'input', dropdown ),
-			notFound = $( 'div.jq-selectbox__not-found', dropdown ).hide( ),
-			liWidthInner = 0,
+			notFound = $( 'div.jq-selectbox__not-found', dropdown ).hide( );
+	
+		let	liWidthInner = 0,
 			liWidth = 0;
 	
 		//
@@ -166,12 +167,12 @@ var selectboxOutput = function( el )
 		// Расчитываем максимальную ширину
 		li.each( function( )
 		{
-			var l = $( this );
+			let item = $( this );
 			
-			if( l.innerWidth( ) > liWidthInner )
+			if( item.innerWidth( ) > liWidthInner )
 			{
-				liWidthInner = l.innerWidth( );
-				liWidth = l.width( );
+				liWidthInner = item.innerWidth( );
+				liWidth = item.width( );
 			}
 		} );
 		
@@ -187,11 +188,11 @@ var selectboxOutput = function( el )
 		else
 		{
 			// Клонируем селектор и устанавливаем ему размер "авто"
-			var selClone = selectbox.clone( ).appendTo( 'body' )
+			let selClone = selectbox.clone( ).appendTo( 'body' )
 									.width( 'auto' );
 			
 			// Записываем размер клона
-			var	selCloneWidth = selClone.outerWidth( );
+			let	selCloneWidth = selClone.outerWidth( );
 		
 			// Удаляем клон
 			selClone.remove( );
@@ -220,12 +221,12 @@ var selectboxOutput = function( el )
 		el.addClass( 'jq-hidden' );
 
 		//
-		var selectHeight = selectbox.outerHeight( true ) || 0,
+		const liSelected = li.filter( '.selected' ),
+			selectHeight = selectbox.outerHeight( true ) || 0,
 			searchHeight = search.parent( ).outerHeight( true ) || 0,
 			isMaxHeight = menu.css( 'max-height' ) || 0,
-			liSelected = li.filter( '.selected' ),
 			position = selectHeight || 0;
-		
+
 		if( li.data( 'li-height' ) === undefined )
 		{
 			li.data( 'li-height', li.outerHeight( ) );
@@ -262,7 +263,7 @@ var selectboxOutput = function( el )
 		selectbox.on( 'repaint', function( )
 		{
 			//
-			var selectedItems = optionList.filter( ':selected' ),
+			const selectedItems = optionList.filter( ':selected' ),
 				disabledItems = optionList.filter( ':disabled' );
 
 			// Выводим в тексте выбранный элемент
@@ -329,9 +330,11 @@ var selectboxOutput = function( el )
 				return;
 			}
 
-			// Умное позиционирование
-			var win = $( window ),
-				liHeight = li.data( 'li-height' ) || 0,
+			// Умное позиционирование - переменные
+			let liHeight = li.data( 'li-height' ) || 0;
+			
+			// Умное позиционирование - константы
+			const win = $( window ),
 				topOffset = selectbox.offset( ).top || 0,
 				bottomOffset = win.height( ) - selectHeight - ( topOffset - win.scrollTop( ) ),
 				visible = el.data( 'visible-options' ) || params.visibleOptions,
@@ -340,10 +343,10 @@ var selectboxOutput = function( el )
 			
 			// Выпадающее вниз меню
 			// @todo: Как-то тут много "магии"
-			var dropDown = function( menu )
+			const dropDown = function( menu )
 			{			
 				//
-				var maxHeightBottom = function( )
+				const maxHeightBottom = function( )
 				{
 					menu.css( 'max-height', Math.floor( ( bottomOffset - searchHeight - liHeight ) / liHeight ) * liHeight );
 				};
@@ -363,10 +366,10 @@ var selectboxOutput = function( el )
 
 			// Выпадающее вверх меню
 			// @todo: Как-то тут много "магии"
-			var dropUp = function( menu )
+			const dropUp = function( menu )
 			{
 				//
-				var maxHeightTop = function( )
+				const maxHeightTop = function( )
 				{
 					menu.css( 'max-height', Math.floor( ( topOffset - win.scrollTop( ) - liHeight - searchHeight ) / liHeight ) * liHeight );
 				};
@@ -470,12 +473,12 @@ var selectboxOutput = function( el )
 				// Начинаем поиск после "отжатия кнопки"
 				search.keyup( function( )
 				{
-					var query = $( this ).val( );
+					const query = $( this ).val( );
 					
 					// Проходим по содержимому
 					li.each( function( )
 					{
-						var find = $( this ).html( )
+						const find = $( this ).html( )
 											.match( new RegExp( '.*?' + query + '.*?', 'i' ) );
 							
 						//
@@ -518,7 +521,7 @@ var selectboxOutput = function( el )
 		} );
 
 		// 
-		var selectedText = li.filter( '.selected' ).text( );
+		const selectedText = li.filter( '.selected' ).text( );
 
 		// При наведении курсора на пункт списка
 		li.on( 'hover', function( )
@@ -528,7 +531,7 @@ var selectboxOutput = function( el )
 		// При клике на пункт визуального списка
 		.on( 'click', function( )
 		{
-			var selected = $( this );
+			const selected = $( this );
 			
 			// Если пункт не активен или заголовок - не пускаем дальше
 			if( selected.is( '.disabled, .optgroup' ) )
@@ -542,7 +545,7 @@ var selectboxOutput = function( el )
 			//
 			if( !selected.is( '.selected' ) )
 			{
-				var index = selected.index( );
+				let index = selected.index( );
 					index -= selected.prevAll( '.optgroup' ).length;
 
 				//

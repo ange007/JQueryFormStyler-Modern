@@ -2,7 +2,7 @@
 	// http://stackoverflow.com/a/27733847
 	$.fn.commonParents = function( )
 	{
-		var cachedThis = this;
+		let cachedThis = this;
 		
 		return cachedThis.first( ).parents( ).filter( function( )
 		{
@@ -25,7 +25,7 @@
 			if( $( 'div.jq-selectbox.opened' ).length )
 			{
 				//
-				var selectbox = $( 'div.jq-selectbox.opened' ),
+				const selectbox = $( 'div.jq-selectbox.opened' ),
 					search = $( 'div.jq-selectbox__search input', selectbox ),
 					dropdown = $( 'div.jq-selectbox__dropdown', selectbox ),
 					opt = selectbox.find( 'select' ).data( '_' + pluginName ).options.select || {};
