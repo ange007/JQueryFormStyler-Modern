@@ -12,98 +12,101 @@
 {
 	'use strict';
 
-	let pluginName = '%pluginName%',	/* Имя плагина. 
-										 * Используется для вызова плагина, 
-										 * а так-же в качестве класса для 
-										 * стилизации без "псевдо-компонентов" */
-										  
-		idSuffix = '-' + pluginName,	/* Суффикс - который подставляется к ID "псевдо-компонента" */
+	/* Имя плагина. Используется для вызова плагина, 
+	* а так-же в качестве класса для 
+	 * стилизации без "псевдо-компонентов" */
+	const pluginName = '%pluginName%';
+										
+	// Суффикс - который подставляется к ID "псевдо-компонента"
+	const idSuffix = '-' + pluginName;
 
-		// Параметры по умолчанию
-		defaults = {
-			locale: navigator.browserLanguage || navigator.language || navigator.userLanguage || 'en-US',
-			
-			select: {
-				search: {
-					limit: 10,
-			
-					/* @todo: Заготовка будущего функционала
-					ajax: {
-						delay: 250,
-						onSuccess: function( ) { }
-					}
-					*/
-				},
-				triggerHTML: '<div class="jq-selectbox__trigger-arrow"></div>',
-				visibleOptions: 0,
-				smartPosition: true,
-				onOpened: function( ) { },
-				onClosed: function( ) { }
+	// Параметры по умолчанию
+	const defaults = 
+	{
+		locale: navigator.browserLanguage || navigator.language || navigator.userLanguage || 'en-US',
+
+		select: {
+			search: {
+				limit: 10,
+
+				/* @todo: Заготовка будущего функционала
+				ajax: {
+					delay: 250,
+					onSuccess: function( ) { }
+				}
+				*/
 			},
-			checkbox: {
-				indeterminate: false
+			triggerHTML: '<div class="jq-selectbox__trigger-arrow"></div>',
+			visibleOptions: 0,
+			smartPosition: true,
+			onOpened: function( ) { },
+			onClosed: function( ) { }
+		},
+		checkbox: {
+			indeterminate: false
+		},
+		password: {
+			switchHTML: '<button type="button" class="' + pluginName + '"></button>'
+		},
+
+		onFormStyled: function( ) { },
+	};
+		
+	// Локализация
+	let locales = 
+	{
+		// English
+		'en-US': {
+			file: {
+				placeholder: 'No file selected',
+				browse: 'Browse...',
+				counter: 'Selected files: %s'
+			},
+			select: {
+				placeholder: 'Select...',
+				search: {
+					notFound: 'No matches found',
+					placeholder: 'Search...'
+				}
 			},
 			password: {
-				switchHTML: '<button type="button" class="' + pluginName + '"></button>'
-			},
-			
-			onFormStyled: function( ) { },
+				show: '&#10687;',
+				hide: '&#10686;'
+			}
 		},
-		
-		// Локализация
-		locales = {
-			// English
-			'en-US': {
-				file: {
-					placeholder: 'No file selected',
-					browse: 'Browse...',
-					counter: 'Selected files: %s'
-				},
-				select: {
-					placeholder: 'Select...',
-					search: {
-						notFound: 'No matches found',
-						placeholder: 'Search...'
-					}
-				},
-				password: {
-					show: '&#10687;',
-					hide: '&#10686;'
-				}
+
+		// Русский
+		'ru-RU': {
+			file: {
+				placeholder: 'Файл не выбран',
+				browse: 'Обзор...',
+				counter: 'Выбрано файлов: %s'
 			},
-						
-			// Русский
-			'ru-RU': {
-				file: {
-					placeholder: 'Файл не выбран',
-					browse: 'Обзор...',
-					counter: 'Выбрано файлов: %s'
-				},
-				select: {
-					placeholder: 'Выберите...',
-					search: {
-						notFound: 'Совпадений не найдено',
-						placeholder: 'Поиск...'
-					}
-				}
-			},
-			
-			// Українська
-			'uk-UA': {
-				file: {
-					placeholder: 'Файл не обрано',
-					browse: 'Огляд...',
-					counter: 'Обрано файлів: %s'
-				},
-				select: {
-					placeholder: 'Виберіть...',
-					search: {
-						notFound: 'Збігів не знайдено',
-						placeholder: 'Пошук...'
-					}
+			select: {
+				placeholder: 'Выберите...',
+				search: {
+					notFound: 'Совпадений не найдено',
+					placeholder: 'Поиск...'
 				}
 			}
-		};
+		},
+
+		// Українська
+		'uk-UA': {
+			file: {
+				placeholder: 'Файл не обрано',
+				browse: 'Огляд...',
+				counter: 'Обрано файлів: %s'
+			},
+			select: {
+				placeholder: 'Виберіть...',
+				search: {
+					notFound: 'Збігів не знайдено',
+					placeholder: 'Пошук...'
+				}
+			}
+		}
+	};
 		
 	// Добавляем синонимы языковых кодов
 	locales[ 'en' ] = locales[ 'en-US' ];
