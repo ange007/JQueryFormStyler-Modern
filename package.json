@@ -1,6 +1,6 @@
 {
   "name": "jquery.formstyler-modern",
-  "version": "1.5.3",
+  "version": "2.0.0",
   "author": "Borisenko Vladimir",
   "description": "JQuery HTML form styling plugin",
   "license": "MIT",
@@ -36,7 +36,7 @@
   "engine": {
     "node": ">= 0.12"
   },
-  "main": "min/jquery.formStylerModern.min.js",
+  "main": "jquery.formStylerModern.min.js",
   "devDependencies": {
     "gulp": "^3.9.0",
     "rimraf": "^2.4.2",

@@ -157,7 +157,8 @@ input[type="file"].jq-hidden {
   .jq-password input[type='text'] {
     border: none;
     outline: none;
-    padding: 8px 9px; }
+    padding: 8px 9px;
+    width: auto; }
     .jq-password input[type='password']:focus, .jq-password input[type='password']:active,
     .jq-password input[type='text']:focus,
     .jq-password input[type='text']:active {

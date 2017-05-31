@@ -3,7 +3,7 @@
 .jq-checkbox {
   border: 1px solid #C3C3C3;
   border-radius: 3px;
-  background: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
+  background: #F5F5F5;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05), inset -1px -1px #FFF, inset 1px -1px #FFF; }
   .jq-checkbox:not(.disabled):hover {
     border-color: gray; }
@@ -20,7 +20,7 @@
   border: 1px solid #C3C3C3;
   border-radius: 50%;
   background: #F5F5F5;
-  background: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
+  background: #F5F5F5;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05), inset -1px -1px #FFF, inset 1px -1px #FFF; }
   .jq-radio:not(.disabled):hover {
     border-color: gray; }
@@ -45,12 +45,12 @@
   .jq-file .jq-file__browse {
     border-left: 1px solid #CCC;
     border-radius: 0 4px 4px 0;
-    background: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
+    background: #F5F5F5;
     box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0, 0, 0, 0.1);
     color: #333;
     text-shadow: 1px 1px #FFF; }
   .jq-file:hover .jq-file__browse {
-    background: linear-gradient(#F6F6F6, #E6E6E6), #E6E6E6; }
+    background: #E6E6E6; }
   .jq-file:active .jq-file__browse {
     background: #F5F5F5;
     box-shadow: inset 1px 1px 3px #DDD; }
@@ -79,12 +79,12 @@
   border: 1px solid #C3C3C3;
   border-bottom: 1px solid #B3B3B3;
   border-radius: 4px;
-  background: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
+  background: #F5F5F5;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0, 0, 0, 0.1);
   text-shadow: 1px 1px #FFF; }
   .jq-number .jq-number__spin:hover {
-    background: linear-gradient(#F6F6F6, #E6E6E6), #E6E6E6; }
+    background: #E6E6E6; }
   .jq-number .jq-number__spin:active {
     background: #F5F5F5;
     box-shadow: inset 1px 1px 3px #DDD; }
@@ -197,17 +197,18 @@
   color: #888; }
 
 .jq-selectbox .jq-selectbox__select {
+  z-index: 1;
   border: 1px solid #C3C3C3;
   border-bottom: 1px solid #B3B3B3;
   border-radius: 4px;
-  background: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
+  background: #F5F5F5;
   box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0, 0, 0, 0.1);
   color: #333;
   font-size: 14px/32px;
   text-shadow: 1px 1px #FFF; }
 
 .jq-selectbox:not(.disabled) .jq-selectbox__select:hover {
-  background: linear-gradient(#F6F6F6, #E6E6E6), #E6E6E6;
+  background: #E6E6E6;
   border-color: gray; }
 
 .jq-selectbox:not(.disabled) .jq-selectbox__select:active {
@@ -219,7 +220,8 @@
   border-radius: 4px;
   background: #FFF;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  font-size: 14px/18px; }
+  font-size: 14px/18px;
+  z-index: 2; }
   .jq-selectbox .jq-selectbox__dropdown li:first-child {
     border-radius: 4px 4px 0px 0px; }
   .jq-selectbox .jq-selectbox__dropdown li:last-child {
@@ -283,9 +285,11 @@
 
 /* other */
 input[type='email'].styler,
+input[type='search'].styler,
 input[type='tel'].styler,
 input[type='text'].styler,
 input[type='url'].styler,
+:not(.jq-password) > input[type='password'].styler,
 textarea.styler {
   padding: 8px 9px;
   border: 1px solid #C3C3C3;
@@ -294,15 +298,19 @@ textarea.styler {
   box-shadow: inset 1px 1px #F1F1F1, 0 1px 2px rgba(0, 0, 0, 0.1);
   color: #333; }
   input[type='email'].styler:not([disabled]):hover,
+  input[type='search'].styler:not([disabled]):hover,
   input[type='tel'].styler:not([disabled]):hover,
   input[type='text'].styler:not([disabled]):hover,
   input[type='url'].styler:not([disabled]):hover,
+  :not(.jq-password) > input[type='password'].styler:not([disabled]):hover,
   textarea.styler:not([disabled]):hover {
     border-color: gray; }
   input[type='email'].styler:not([disabled]):focus,
+  input[type='search'].styler:not([disabled]):focus,
   input[type='tel'].styler:not([disabled]):focus,
   input[type='text'].styler:not([disabled]):focus,
   input[type='url'].styler:not([disabled]):focus,
+  :not(.jq-password) > input[type='password'].styler:not([disabled]):focus,
   textarea.styler:not([disabled]):focus {
     border-color: #08C;
     outline: none;
@@ -325,7 +333,7 @@ input[type='reset'].styler {
   border-bottom-color: #B3B3B3;
   border-radius: 4px;
   outline: none;
-  background: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
+  background: #F5F5F5;
   box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0, 0, 0, 0.1);
   color: #333;
   text-shadow: 1px 1px #FFF;
@@ -344,7 +352,7 @@ input[type='reset'].styler {
   input[type='submit'].styler:not([disabled]):hover,
   input[type='reset'].styler:not([disabled]):hover {
     border-color: gray;
-    background: linear-gradient(#F6F6F6, #E6E6E6), #E6E6E6; }
+    background: #E6E6E6; }
   a.button.styler:not([disabled]):active,
   button.styler:not([disabled]):active,
   input[type='button'].styler:not([disabled]):active,
