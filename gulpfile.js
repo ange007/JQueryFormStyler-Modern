@@ -131,9 +131,9 @@ gulp.task( 'js:build', function( )
 				.pipe( replace( '%pluginName%', params.pluginName ) )
 				.pipe( rigger( ) ) // Подстановка исходного кода файлов на место переменных
 				.pipe( header( banner, { pkg : pkg } ) ) // Установка хидера
+				.pipe( babel( {	presets: [ 'es2015' ] } ) )
 				.pipe( gulpif( bundle.compress, uglify( { mangle: true, compress: false } ) ) ) //
 				.pipe( rename( fileName ) ) // Переименовываем
-				.pipe( babel( {	presets: [ 'es2015' ] } ) )
 				.pipe( gulp.dest( path ) );
 } );
 
