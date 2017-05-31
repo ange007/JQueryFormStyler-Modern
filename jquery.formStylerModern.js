@@ -1069,8 +1069,8 @@
 								topOffset = selectbox.offset( ).top || 0,
 								bottomOffset = win.height( ) - selectHeight - ( topOffset - win.scrollTop( ) ),
 								visible = el.data( 'visible-options' ) || params.visibleOptions,
-								minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * 5,
-								newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible;
+								newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible,
+								minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * 5;
 							
 							// Выпадающее вниз меню
 							// @todo: Как-то тут много "магии"
@@ -1361,7 +1361,7 @@
 							if( e.which === 32 )
 							{
 								e.preventDefault( );
-								divSelect.click( );
+								divSelect.trigger( 'click' );
 							}
 						} );
 				
