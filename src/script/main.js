@@ -36,7 +36,7 @@
 				},
 				triggerHTML: '<div class="jq-selectbox__trigger-arrow"></div>',
 				visibleOptions: 0,
-				smartPosition: 0,
+				smartPosition: true,
 				onOpened: function( ) { },
 				onClosed: function( ) { }
 			},

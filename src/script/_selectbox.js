@@ -385,7 +385,7 @@ var selectboxOutput = function( el )
 			};
 
 			//
-			if( selectSmartPosition === true || selectSmartPosition === 1 )
+			if( selectSmartPosition )
 			{
 				// Раскрытие вниз
 				if( bottomOffset > ( minHeight + searchHeight + 20 ) )
@@ -405,7 +405,7 @@ var selectboxOutput = function( el )
 								.addClass( 'dropup' );
 				}
 			}
-			else if( selectSmartPosition === false || selectSmartPosition === 0 )
+			else
 			{
 				// Раскрытие вниз
 				if( bottomOffset > ( minHeight + searchHeight + 20 ) )

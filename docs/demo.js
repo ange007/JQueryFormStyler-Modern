@@ -62,8 +62,6 @@
 		// Стилизируем имеющиеся елементы
 		$( 'input, select:not(#style)' ).styler( 
 		{
-			select: { search: { } },
-			
 			onFormStyled: function( ) 
 			{ 
 				$( 'body' ).find( 'input, select' )
@@ -106,7 +104,7 @@
 											} } );	
 											
 		// input:password без кнопки
-		$( '#p-4' ).styler( 'reinitialize', { password: { switchHTML: 'none' } } );										
+		$( '#p-4' ).styler( 'reinitialize', { password: { switchHTML: undefined } } );										
 				
 		//
 		$( 'ul.menu' ).on( 'click', 'li:not(.current)', function( )
