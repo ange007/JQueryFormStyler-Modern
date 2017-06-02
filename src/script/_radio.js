@@ -24,7 +24,7 @@ let Radio =
 		//
 		this.setEvents( )
 			.repaint( );
-	}
+	};
 	
 	Radio.prototype = 
 	{
