@@ -208,14 +208,6 @@
 				// Стилизируем компонент
 				if( element.is( '[multiple]' ) || element.attr( 'size' ) > 1 )
 				{
-					// Если Android или iOS, то мультиселект не стилизуем
-					// Причина для Android: в стилизованном селекте нет возможности выбрать несколько пунктов
-					// Причина для iOS: в стилизованном селекте неправильно отображаются выбранные пункты
-					/*if( Android || iOS )
-					{
-						return;
-					}*/
-
 					this.customElement = new SelectBoxMulti( element, this.options.select, this.locales.select );
 				} 
 				else
