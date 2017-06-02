@@ -186,6 +186,10 @@ let SelectBoxMulti =
 				li = $( 'li', selectbox ),
 				ulHeight = ul.outerHeight( ) || 0,
 				liHeight = li.outerHeight( ) || 0;
+		
+			// Определение мобильного браузера
+			const iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
+				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) );
 			
 			// Необходимо "перерисовать" контрол
 			selectbox.on( 'repaint', function( )
@@ -195,7 +199,7 @@ let SelectBoxMulti =
 
 			// При клике на пункт списка
 			// @todo: Для Андроида выделение реализовать по клику и повторному клику, без зажатия
-			li.on( 'click', function( e )
+			li.on( 'click tap', function( e )
 			{
 				const selected = $( this );
 
