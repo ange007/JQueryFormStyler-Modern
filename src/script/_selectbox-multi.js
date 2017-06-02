@@ -37,7 +37,7 @@ let SelectBoxMulti =
 		if( ulHeight > this.selectbox.height( ) )
 		{
 			ul.css( 'overflowY', 'scroll' );
-			this.preventScrolling( ul );
+			SelectBoxExtra.preventScrolling( ul );
 
 			// Прокручиваем до выбранного пункта
 			if( li.filter( '.selected' ).length )
@@ -64,113 +64,13 @@ let SelectBoxMulti =
 				selectbox = this.selectbox;
 			
 			const optionList = $( 'option', element ),
-				ulList = this.makeList( optionList );
+				ulList = SelectBoxExtra.makeList( optionList );
 				
 			// Обновляем содержимое
 			selectbox.html( ulList );
 			
 			//
 			return this;
-		},
-		
-		// Запрещаем прокрутку страницы при прокрутке селекта
-		// @todo: Убрать дублирование
-		preventScrolling: function( selector )
-		{
-			const scrollDiff = selector.prop( 'scrollHeight' ) - selector.outerHeight( );
-
-			//
-			let wheelDelta = null,
-				scrollTop = null;
-
-			// 
-			selector.off( 'mousewheel DOMMouseScroll' )
-					.on( 'mousewheel DOMMouseScroll', function( e )
-			{
-				wheelDelta = ( e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0 ) ? 1 : -1; // Направление прокрутки (-1 вниз, 1 вверх)
-				scrollTop = selector.scrollTop( ); // Позиция скролла
-
-				if( ( scrollTop >= scrollDiff && wheelDelta < 0 ) || ( scrollTop <= 0 && wheelDelta > 0 ) ) 
-				{
-					e.stopPropagation( );
-					e.preventDefault( );
-				}
-			} );
-		},
-
-		// Формируем список селекта
-		// @todo: Убрать дублирование
-		makeList: function( opList )
-		{
-			let list = $( '<ul>' );
-
-			// Перебираем список элементов
-			for( let i = 0; i < opList.length; i++ )
-			{					
-				const op = opList.eq( i ),
-					id = ( op.attr( 'id' ) || '' ) !== '' ? ( op.attr( 'id' ) + idSuffix ) : '',
-					title = op.attr( 'title' );
-
-				let liClass = op.attr( 'class' ) || '';
-
-				if( op.is( ':selected' ) )
-				{
-					liClass += ( liClass !== '' ? ' ' : '' ) + 'selected sel';
-				}
-
-				if( op.is( ':disabled' ) )
-				{
-					liClass += ( liClass !== '' ? ' ' : '' ) + 'disabled';
-				}
-
-				// Параметры по умолчанию
-				let defaultAttr = { 'title': title,
-									'data': op.data( ),
-									'html': op.html( ) };
-
-				// Добавляем к пункту идентификатор если он есть
-				if( id !== '' )
-				{
-					defaultAttr[ 'id' ] = id;
-				}
-
-				// Если есть optgroup
-				if( op.parent( ).is( 'optgroup' ) )
-				{
-					let optGroupClass = '';
-
-					//
-					if( op.parent( ).attr( 'class' ) !== undefined )
-					{
-						optGroupClass = ' ' + op.parent( ).attr( 'class' );
-					}
-
-					// Заголовок группы
-					if( op.is( ':first-child' ) )
-					{
-						$( '<li>', { 'class': 'optgroup' + optGroupClass,
-									'html': op.parent( ).attr( 'label' ) } )
-						.appendTo( list );
-					}
-
-					// Создаём пункт для группы
-					$( '<li>', $.extend( defaultAttr, { 'class': 'option' } ) )
-						.addClass( liClass )
-						.addClass( optGroupClass )
-						.data( 'jqfs-class', op.attr( 'class' ) )
-						.appendTo( list );
-				}
-				else
-				{
-					// Создаём пункт
-					$( '<li>', defaultAttr )
-						.addClass( liClass )	
-						.data( 'jqfs-class', op.attr( 'class' ) )
-						.appendTo( list );
-				}
-			}
-
-			return list;
 		},
 		
 		// Обработка событий
@@ -195,7 +95,6 @@ let SelectBoxMulti =
 			} );
 
 			// При клике на пункт списка
-			// @todo: Для Андроида выделение реализовать по клику и повторному клику, без зажатия
 			li.on( 'click tap', function( e )
 			{
 				const selected = $( this );
@@ -209,14 +108,14 @@ let SelectBoxMulti =
 				// Фокусируем
 				element.focus( );
 				
-				//
+				// Удаление лишних классов
 				if( ( mobile && !element.is( '[multiple]' ) ) 
 					|| ( !mobile && !e.ctrlKey && !e.metaKey && !e.shiftKey ) )
 				{
 					selected.siblings( ).removeClass( 'selected first' );
 				}
 				
-				//
+				// Добавление класса отметки
 				if( ( mobile && !element.is( '[multiple]' ) ) 
 					|| ( !mobile && !e.ctrlKey && !e.metaKey ) )
 				{
@@ -226,7 +125,7 @@ let SelectBoxMulti =
 				// Выделение нескольких пунктов
 				if( element.is( '[multiple]' ) )
 				{
-					//
+					// Отмечаем классом - первый элемент
 					if( !e.shiftKey )
 					{
 						selected.addClass( 'first' );
@@ -241,35 +140,27 @@ let SelectBoxMulti =
 					// Выделение пунктов при зажатом Shift
 					else if( e.shiftKey )
 					{
-						let prev = false,
-							next = false;
-
+						// Функция отметки
+						const selectedFunc = function( )
+						{
+							if( $( this ).is( '.selected' ) ) {	return false; }
+							else { $( this ).not( '.disabled, .optgroup' ).addClass( 'selected' ); }
+						};
+						
 						//
 						selected.siblings( ).removeClass( 'selected' )
 								.siblings( '.first' ).addClass( 'selected' );
 
-						//
-						selected.prevAll( ).each( function( ) {	prev = ( prev || $( this ).is( '.first' ) ); } );
-						selected.nextAll( ).each( function( ) {	next = ( next || $( this ).is( '.first' ) ); } );
-
 						// Предыдущие пункты
-						if( prev )
+						if( selected.prevAll( '.first' ).length > 0 )
 						{
-							selected.prevAll( ).each( function( )
-							{
-								if( $( this ).is( '.selected' ) ) {	return false; }
-								else { $( this ).not( '.disabled, .optgroup' ).addClass( 'selected' );	}
-							} );
+							selected.prevAll( ).each( selectedFunc );
 						}
 
 						// Следующие пункты
-						if( next )
+						if( selected.nextAll( '.first' ).length > 0 )
 						{
-							selected.nextAll( ).each( function( )
-							{
-								if( $( this ).is( '.selected' ) ) {	return false; }
-								else { $( this ).not( '.disabled, .optgroup' ).addClass( 'selected' ); }
-							} );
+							selected.nextAll( ).each( selectedFunc );
 						}
 
 						//
@@ -374,7 +265,9 @@ let SelectBoxMulti =
 		// Уничтожение
 		destroy: function( )
 		{
-			
+			this.element.off( '.' + pluginName + ', refresh' )
+						.removeAttr( 'style' )
+						.parent( ).before( this.element ).remove( );
 		}
 	};
 	

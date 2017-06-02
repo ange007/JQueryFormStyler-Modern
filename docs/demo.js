@@ -8,33 +8,34 @@
 		var checkState = function( )
 		{
 			var section = $( this ).closest( 'div.section' ),
-				stateBlock = section.children('[data-checkbox="' + this.id + '"]');
+				stateBlock = section.children( '[data-checkbox="' + this.id + '"]' ),
+				state = '';
 						
-			if( $( this ).is( ':checkbox' ) )
+			if( !$( this ).is( ':checkbox' ) )
 			{
-				var state = '';
-				
-				if( $( this ).is( ':disabled' ) )
-				{
-					state += 'disabled ';
-				}
-				
-				if( $( this ).is( ':checked' ) )
-				{
-					state += 'checked';
-				}
-				else if( $( this ).is( ':indeterminate' ) )
-				{
-					state += 'indeterminate';
-				}
-				else
-				{
-					state += 'unchecked';
-				}
-				
-				// Установка состояния
-				stateBlock.html( state );
+				return;
 			}
+
+			if( $( this ).is( ':disabled' ) )
+			{
+				state += ' disabled ';
+			}
+
+			if( $( this ).is( ':checked' ) )
+			{
+				state += ' checked';
+			}
+			else if( $( this ).is( ':indeterminate' ) )
+			{
+				state += ' indeterminate';
+			}
+			else
+			{
+				state += ' unchecked';
+			}
+
+			// Установка состояния
+			stateBlock.html( state );
 		};
 		
 		// Переключить активность

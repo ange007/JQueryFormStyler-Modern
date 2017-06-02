@@ -163,7 +163,7 @@
 			if( element.is( ':checkbox' ) )
 			{
 				//= _checkbox.js
-				
+
 				this.customElement = new CheckBox( element, this.options.checkbox, this.locales.checkbox );
 			}
 			// Радиокнопка
@@ -202,6 +202,7 @@
 			// Список
 			else if( element.is( 'select' ) )
 			{
+				//= _selectbox-extra.js
 				//= _selectbox.js
 				//= _selectbox-multi.js
 				
@@ -219,17 +220,19 @@
 			else if( element.is( 'input' ) || element.is( 'textarea' ) 
 					|| element.is( 'button' ) || element.is( 'a.button' ) )
 			{
+				// Добавляем класс
 				element.addClass( pluginName );
-			}
-			// Кнопка сброса
-			else if( element.is( ':reset' ) )
-			{
-				element.on( 'click', function( )
+				
+				// Обработка кнопки сброса
+				if( element.is( 'input[type="reset"]' ) )
 				{
-					setTimeout( function( ) { element.closest( 'form' ).children( ).trigger( 'repaint' ); }, 1 );
-				} );
+					element.on( 'click', function( )
+					{
+						setTimeout( function( ) { element.closest( 'form' ).children( ).trigger( 'repaint' ); }, 1 );
+					} );
+				}
 			}
-			
+
 			// Переинициализация
 			element.on( 'refresh reinitialize', function( )
 			{
