@@ -1554,6 +1554,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													    ulHeight = ul.outerHeight() || 0,
 													    liHeight = li.outerHeight() || 0;
 
+													// Определение мобильного браузера
+													var iOS = navigator.userAgent.match(/(iPad|iPhone|iPod)/i) && !navigator.userAgent.match(/(Windows\sPhone)/i),
+													    Android = navigator.userAgent.match(/Android/i) && !navigator.userAgent.match(/(Windows\sPhone)/i);
+
 													// Необходимо "перерисовать" контрол
 													selectbox.on('repaint', function () {
 														context.repaint();
@@ -1561,7 +1565,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 													// При клике на пункт списка
 													// @todo: Для Андроида выделение реализовать по клику и повторному клику, без зажатия
-													li.on('click', function (e) {
+													li.on('click tap', function (e) {
 														var selected = $(this);
 
 														// Клик должен срабатывать только при активном контроле
