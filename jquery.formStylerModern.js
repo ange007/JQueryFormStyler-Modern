@@ -781,6 +781,87 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								}
 								// Список
 								else if (element.is('select')) {
+										var SelectBoxExtra = function () {
+											return {
+												// Запрещаем прокрутку страницы при прокрутке селекта
+												preventScrolling: function preventScrolling(selector) {
+													var scrollDiff = selector.prop('scrollHeight') - selector.outerHeight();
+
+													//
+													var wheelDelta = null,
+													    scrollTop = null;
+
+													// 
+													selector.off('mousewheel DOMMouseScroll').on('mousewheel DOMMouseScroll', function (e) {
+														wheelDelta = e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0 ? 1 : -1; // Направление прокрутки (-1 вниз, 1 вверх)
+														scrollTop = selector.scrollTop(); // Позиция скролла
+
+														if (scrollTop >= scrollDiff && wheelDelta < 0 || scrollTop <= 0 && wheelDelta > 0) {
+															e.stopPropagation();
+															e.preventDefault();
+														}
+													});
+
+													return this;
+												},
+
+												// Формируем список селекта
+												makeList: function makeList(opList) {
+													var list = $('<ul>');
+
+													// Перебираем список элементов
+													for (var i = 0; i < opList.length; i++) {
+														var op = opList.eq(i),
+														    id = (op.attr('id') || '') !== '' ? op.attr('id') + idSuffix : '',
+														    title = op.attr('title');
+
+														var liClass = op.attr('class') || '';
+
+														if (op.is(':selected')) {
+															liClass += (liClass !== '' ? ' ' : '') + 'selected sel';
+														}
+
+														if (op.is(':disabled')) {
+															liClass += (liClass !== '' ? ' ' : '') + 'disabled';
+														}
+
+														// Параметры по умолчанию
+														var defaultAttr = { 'title': title,
+															'data': op.data(),
+															'html': op.html() };
+
+														// Добавляем к пункту идентификатор если он есть
+														if (id !== '') {
+															defaultAttr['id'] = id;
+														}
+
+														// Если есть optgroup
+														if (op.parent().is('optgroup')) {
+															var optGroupClass = '';
+
+															//
+															if (op.parent().attr('class') !== undefined) {
+																optGroupClass = ' ' + op.parent().attr('class');
+															}
+
+															// Заголовок группы
+															if (op.is(':first-child')) {
+																$('<li>', { 'class': 'optgroup' + optGroupClass,
+																	'html': op.parent().attr('label') }).appendTo(list);
+															}
+
+															// Создаём пункт для группы
+															$('<li>', $.extend(defaultAttr, { 'class': 'option' })).addClass(liClass).addClass(optGroupClass).data('jqfs-class', op.attr('class')).appendTo(list);
+														} else {
+															// Создаём пункт
+															$('<li>', defaultAttr).addClass(liClass).data('jqfs-class', op.attr('class')).appendTo(list);
+														}
+													}
+
+													return list;
+												}
+											};
+										}();
 										var SelectBox = function () {
 											var SelectBox = function SelectBox(element, options, locale) {
 												//
@@ -835,7 +916,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													//
 													var optionList = $('option', element),
 													    optionSelected = optionList.filter(':selected'),
-													    ulList = this.makeList(optionList);
+													    ulList = SelectBoxExtra.makeList(optionList);
 
 													// Обновляем содержимое
 													dropdown.html(ulList);
@@ -963,82 +1044,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													}
 
 													return this;
-												},
-
-												// Запрещаем прокрутку страницы при прокрутке селекта
-												preventScrolling: function preventScrolling(selector) {
-													var scrollDiff = selector.prop('scrollHeight') - selector.outerHeight();
-
-													//
-													var wheelDelta = null,
-													    scrollTop = null;
-
-													// 
-													selector.off('mousewheel DOMMouseScroll').on('mousewheel DOMMouseScroll', function (e) {
-														wheelDelta = e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0 ? 1 : -1; // Направление прокрутки (-1 вниз, 1 вверх)
-														scrollTop = selector.scrollTop(); // Позиция скролла
-
-														if (scrollTop >= scrollDiff && wheelDelta < 0 || scrollTop <= 0 && wheelDelta > 0) {
-															e.stopPropagation();
-															e.preventDefault();
-														}
-													});
-												},
-
-												// Формируем список селекта
-												makeList: function makeList(opList) {
-													var list = $('<ul>');
-
-													// Перебираем список элементов
-													for (var i = 0; i < opList.length; i++) {
-														var op = opList.eq(i),
-														    id = (op.attr('id') || '') !== '' ? op.attr('id') + idSuffix : '',
-														    title = op.attr('title');
-
-														var liClass = op.attr('class') || '';
-
-														if (op.is(':selected')) {
-															liClass += (liClass !== '' ? ' ' : '') + 'selected sel';
-														}
-
-														if (op.is(':disabled')) {
-															liClass += (liClass !== '' ? ' ' : '') + 'disabled';
-														}
-
-														// Параметры по умолчанию
-														var defaultAttr = { 'title': title,
-															'data': op.data(),
-															'html': op.html() };
-
-														// Добавляем к пункту идентификатор если он есть
-														if (id !== '') {
-															defaultAttr['id'] = id;
-														}
-
-														// Если есть optgroup
-														if (op.parent().is('optgroup')) {
-															var optGroupClass = '';
-
-															//
-															if (op.parent().attr('class') !== undefined) {
-																optGroupClass = ' ' + op.parent().attr('class');
-															}
-
-															// Заголовок группы
-															if (op.is(':first-child')) {
-																$('<li>', { 'class': 'optgroup' + optGroupClass,
-																	'html': op.parent().attr('label') }).appendTo(list);
-															}
-
-															// Создаём пункт для группы
-															$('<li>', $.extend(defaultAttr, { 'class': 'option' })).addClass(liClass).addClass(optGroupClass).data('jqfs-class', op.attr('class')).appendTo(list);
-														} else {
-															// Создаём пункт
-															$('<li>', defaultAttr).addClass(liClass).data('jqfs-class', op.attr('class')).appendTo(list);
-														}
-													}
-
-													return list;
 												},
 
 												// Выпадающее вниз меню
@@ -1225,7 +1230,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 														}
 
 														//
-														context.preventScrolling(dropdownUl);
+														SelectBoxExtra.preventScrolling(dropdownUl);
 													});
 
 													// Начинаем поиск после "отжатия кнопки"
@@ -1431,7 +1436,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												// 
 												if (ulHeight > this.selectbox.height()) {
 													ul.css('overflowY', 'scroll');
-													this.preventScrolling(ul);
+													SelectBoxExtra.preventScrolling(ul);
 
 													// Прокручиваем до выбранного пункта
 													if (li.filter('.selected').length) {
@@ -1454,91 +1459,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													    selectbox = this.selectbox;
 
 													var optionList = $('option', element),
-													    ulList = this.makeList(optionList);
+													    ulList = SelectBoxExtra.makeList(optionList);
 
 													// Обновляем содержимое
 													selectbox.html(ulList);
 
 													//
 													return this;
-												},
-
-												// Запрещаем прокрутку страницы при прокрутке селекта
-												// @todo: Убрать дублирование
-												preventScrolling: function preventScrolling(selector) {
-													var scrollDiff = selector.prop('scrollHeight') - selector.outerHeight();
-
-													//
-													var wheelDelta = null,
-													    scrollTop = null;
-
-													// 
-													selector.off('mousewheel DOMMouseScroll').on('mousewheel DOMMouseScroll', function (e) {
-														wheelDelta = e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0 ? 1 : -1; // Направление прокрутки (-1 вниз, 1 вверх)
-														scrollTop = selector.scrollTop(); // Позиция скролла
-
-														if (scrollTop >= scrollDiff && wheelDelta < 0 || scrollTop <= 0 && wheelDelta > 0) {
-															e.stopPropagation();
-															e.preventDefault();
-														}
-													});
-												},
-
-												// Формируем список селекта
-												// @todo: Убрать дублирование
-												makeList: function makeList(opList) {
-													var list = $('<ul>');
-
-													// Перебираем список элементов
-													for (var i = 0; i < opList.length; i++) {
-														var op = opList.eq(i),
-														    id = (op.attr('id') || '') !== '' ? op.attr('id') + idSuffix : '',
-														    title = op.attr('title');
-
-														var liClass = op.attr('class') || '';
-
-														if (op.is(':selected')) {
-															liClass += (liClass !== '' ? ' ' : '') + 'selected sel';
-														}
-
-														if (op.is(':disabled')) {
-															liClass += (liClass !== '' ? ' ' : '') + 'disabled';
-														}
-
-														// Параметры по умолчанию
-														var defaultAttr = { 'title': title,
-															'data': op.data(),
-															'html': op.html() };
-
-														// Добавляем к пункту идентификатор если он есть
-														if (id !== '') {
-															defaultAttr['id'] = id;
-														}
-
-														// Если есть optgroup
-														if (op.parent().is('optgroup')) {
-															var optGroupClass = '';
-
-															//
-															if (op.parent().attr('class') !== undefined) {
-																optGroupClass = ' ' + op.parent().attr('class');
-															}
-
-															// Заголовок группы
-															if (op.is(':first-child')) {
-																$('<li>', { 'class': 'optgroup' + optGroupClass,
-																	'html': op.parent().attr('label') }).appendTo(list);
-															}
-
-															// Создаём пункт для группы
-															$('<li>', $.extend(defaultAttr, { 'class': 'option' })).addClass(liClass).addClass(optGroupClass).data('jqfs-class', op.attr('class')).appendTo(list);
-														} else {
-															// Создаём пункт
-															$('<li>', defaultAttr).addClass(liClass).data('jqfs-class', op.attr('class')).appendTo(list);
-														}
-													}
-
-													return list;
 												},
 
 												// Обработка событий
@@ -1561,7 +1488,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													});
 
 													// При клике на пункт списка
-													// @todo: Для Андроида выделение реализовать по клику и повторному клику, без зажатия
 													li.on('click tap', function (e) {
 														var selected = $(this);
 
@@ -1573,19 +1499,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 														// Фокусируем
 														element.focus();
 
-														//
+														// Удаление лишних классов
 														if (mobile && !element.is('[multiple]') || !mobile && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
 															selected.siblings().removeClass('selected first');
 														}
 
-														//
+														// Добавление класса отметки
 														if (mobile && !element.is('[multiple]') || !mobile && !e.ctrlKey && !e.metaKey) {
 															selected.addClass('selected');
 														}
 
 														// Выделение нескольких пунктов
 														if (element.is('[multiple]')) {
-															//
+															// Отмечаем классом - первый элемент
 															if (!e.shiftKey) {
 																selected.addClass('first');
 															}
@@ -1596,40 +1522,26 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 															}
 															// Выделение пунктов при зажатом Shift
 															else if (e.shiftKey) {
-																	var prev = false,
-																	    next = false;
+																	// Функция отметки
+																	var selectedFunc = function selectedFunc() {
+																		if ($(this).is('.selected')) {
+																			return false;
+																		} else {
+																			$(this).not('.disabled, .optgroup').addClass('selected');
+																		}
+																	};
 
 																	//
 																	selected.siblings().removeClass('selected').siblings('.first').addClass('selected');
 
-																	//
-																	selected.prevAll().each(function () {
-																		prev = prev || $(this).is('.first');
-																	});
-																	selected.nextAll().each(function () {
-																		next = next || $(this).is('.first');
-																	});
-
 																	// Предыдущие пункты
-																	if (prev) {
-																		selected.prevAll().each(function () {
-																			if ($(this).is('.selected')) {
-																				return false;
-																			} else {
-																				$(this).not('.disabled, .optgroup').addClass('selected');
-																			}
-																		});
+																	if (selected.prevAll('.first').length > 0) {
+																		selected.prevAll().each(selectedFunc);
 																	}
 
 																	// Следующие пункты
-																	if (next) {
-																		selected.nextAll().each(function () {
-																			if ($(this).is('.selected')) {
-																				return false;
-																			} else {
-																				$(this).not('.disabled, .optgroup').addClass('selected');
-																			}
-																		});
+																	if (selected.nextAll('.first').length > 0) {
+																		selected.nextAll().each(selectedFunc);
 																	}
 
 																	//
@@ -1720,7 +1632,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												},
 
 												// Уничтожение
-												destroy: function destroy() {}
+												destroy: function destroy() {
+													this.element.off('.' + pluginName + ', refresh').removeAttr('style').parent().before(this.element).remove();
+												}
 											};
 
 											return SelectBoxMulti;
@@ -1735,16 +1649,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									}
 									// Другие компоненты
 									else if (element.is('input') || element.is('textarea') || element.is('button') || element.is('a.button')) {
+											// Добавляем класс
 											element.addClass(pluginName);
-										}
-										// Кнопка сброса
-										else if (element.is(':reset')) {
+
+											// Обработка кнопки сброса
+											if (element.is('input[type="reset"]')) {
 												element.on('click', function () {
 													setTimeout(function () {
 														element.closest('form').children().trigger('repaint');
 													}, 1);
 												});
 											}
+										}
 
 			// Переинициализация
 			element.on('refresh reinitialize', function () {
