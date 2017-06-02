@@ -185,11 +185,8 @@ let SelectBoxMulti =
 				ul = $( 'ul', selectbox ),
 				li = $( 'li', selectbox ),
 				ulHeight = ul.outerHeight( ) || 0,
-				liHeight = li.outerHeight( ) || 0;
-		
-			// Определение мобильного браузера
-			const iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
-				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) );
+				liHeight = li.outerHeight( ) || 0,
+				mobile = Android || iOS;
 			
 			// Необходимо "перерисовать" контрол
 			selectbox.on( 'repaint', function( )
@@ -213,13 +210,13 @@ let SelectBoxMulti =
 				element.focus( );
 				
 				//
-				if( !e.ctrlKey && !e.metaKey && !e.shiftKey )
+				if( !mobile && !e.ctrlKey && !e.metaKey && !e.shiftKey )
 				{
 					selected.siblings( ).removeClass( 'selected first' );
 				}
 				
 				//
-				if( !e.ctrlKey && !e.metaKey )
+				if( !mobile && !e.ctrlKey && !e.metaKey )
 				{
 					selected.addClass( 'selected' );
 				}
@@ -234,7 +231,7 @@ let SelectBoxMulti =
 					}
 
 					// Выделение пунктов при зажатом Ctrl
-					if( e.ctrlKey || e.metaKey || Android )
+					if( mobile || e.ctrlKey || e.metaKey )
 					{
 						selected.toggleClass( 'selected first', !selected.is( '.selected' ) )
 								.siblings( ).removeClass( 'first' );
@@ -279,19 +276,19 @@ let SelectBoxMulti =
 							selected.addClass( 'first' );
 						}
 					}
+					
+					// Отмечаем выбранные мышью
+					optionList.prop( 'selected', false );
+
+					//
+					li.filter( '.selected' ).each( function( )
+					{
+						const item = $( this ),
+							index = item.index( ) - ( item.is( '.option' ) ? item.prevAll( '.optgroup' ).length : 0 );
+
+						optionList.eq( index ).prop( 'selected', true );
+					} );
 				}
-
-				// Отмечаем выбранные мышью
-				optionList.prop( 'selected', false );
-
-				//
-				li.filter( '.selected' ).each( function( )
-				{
-					const item = $( this ),
-						index = item.index( ) - ( item.is( '.option' ) ? item.prevAll( '.optgroup' ).length : 0 );
-
-					optionList.eq( index ).prop( 'selected', true );
-				} );
 
 				//
 				element.change( );
