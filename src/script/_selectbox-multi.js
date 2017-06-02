@@ -210,13 +210,15 @@ let SelectBoxMulti =
 				element.focus( );
 				
 				//
-				if( !mobile && !e.ctrlKey && !e.metaKey && !e.shiftKey )
+				if( ( mobile && !element.is( '[multiple]' ) ) 
+					|| ( !mobile && !e.ctrlKey && !e.metaKey && !e.shiftKey ) )
 				{
 					selected.siblings( ).removeClass( 'selected first' );
 				}
 				
 				//
-				if( !mobile && !e.ctrlKey && !e.metaKey )
+				if( ( mobile && !element.is( '[multiple]' ) ) 
+					|| ( !mobile && !e.ctrlKey && !e.metaKey ) )
 				{
 					selected.addClass( 'selected' );
 				}
@@ -276,19 +278,19 @@ let SelectBoxMulti =
 							selected.addClass( 'first' );
 						}
 					}
-					
-					// Отмечаем выбранные мышью
-					optionList.prop( 'selected', false );
-
-					//
-					li.filter( '.selected' ).each( function( )
-					{
-						const item = $( this ),
-							index = item.index( ) - ( item.is( '.option' ) ? item.prevAll( '.optgroup' ).length : 0 );
-
-						optionList.eq( index ).prop( 'selected', true );
-					} );
 				}
+
+				// Отмечаем выбранные мышью
+				optionList.prop( 'selected', false );
+
+				//
+				li.filter( '.selected' ).each( function( )
+				{
+					const item = $( this ),
+						index = item.index( ) - ( item.is( '.option' ) ? item.prevAll( '.optgroup' ).length : 0 );
+
+					optionList.eq( index ).prop( 'selected', true );
+				} );
 
 				//
 				element.change( );
