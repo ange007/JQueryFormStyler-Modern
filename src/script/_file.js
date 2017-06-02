@@ -31,7 +31,7 @@ let File =
 		//
 		this.setEvents( )
 			.repaint( );
-	}
+	};
 	
 	File.prototype = 
 	{

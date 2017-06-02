@@ -24,7 +24,7 @@ let CheckBox =
 		//
 		this.setEvents( )
 			.repaint( );
-	}
+	};
 	
 	CheckBox.prototype = 
 	{

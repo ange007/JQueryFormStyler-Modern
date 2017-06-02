@@ -33,7 +33,7 @@ let Password =
 		//
 		this.setEvents( )
 			.repaint( );
-	}
+	};
 	
 	Password.prototype = 
 	{

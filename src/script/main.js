@@ -164,50 +164,64 @@
 			{
 				//= _checkbox.js
 				
-				// Стилизируем компонент
 				this.customElement = new CheckBox( element, this.options.checkbox, this.locales.checkbox );
 			}
 			// Радиокнопка
 			else if( element.is( ':radio' ) )
 			{
 				//= _radio.js
-				
-				// Стилизируем компонент
+
 				this.customElement = new Radio( element, this.options.radio, this.locales.radio );
 			}
 			// Выбор файла
 			else if ( element.is( ':file' ) ) 
 			{
 				//= _file.js
-				
-				// Стилизируем компонент
+
 				this.customElement = new File( element, this.options.file, this.locales.file );
 			}
 			// Номер
 			else if( element.is( 'input[type="number"]' ) )
 			{
 				//= _number.js
-				
-				// Стилизируем компонент
+
 				this.customElement = new Number( element, this.options.number, this.locales.number );
 			} 
 			// Пароль
 			else if( element.is('input[type="password"]' ) && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none' ) 
 			{
 				//= _password.js
-				
-				// Стилизируем компонент
+
 				this.customElement = new Password( element, this.options.password, this.locales.password );
 			}
 			// Скрытое поле
 			else if( element.is( 'input[type="hidden"]' ) )
 			{
-				return false;
+				return;
 			}
 			// Список
 			else if( element.is( 'select' ) )
 			{
 				//= _selectbox.js
+				//= _selectbox-multi.js
+				
+				// Стилизируем компонент
+				if( element.is( '[multiple]' ) || element.attr( 'size' ) > 1 )
+				{
+					// Если Android или iOS, то мультиселект не стилизуем
+					// Причина для Android: в стилизованном селекте нет возможности выбрать несколько пунктов
+					// Причина для iOS: в стилизованном селекте неправильно отображаются выбранные пункты
+					if( /*Android ||*/ iOS )
+					{
+						return;
+					}
+
+					this.customElement = new SelectBoxMulti( element, this.options.select, this.locales.select );
+				} 
+				else
+				{
+					this.customElement = new SelectBox( element, this.options.select, this.locales.select );
+				}
 			}
 			// Другие компоненты
 			else if( element.is( 'input' ) || element.is( 'textarea' ) 
@@ -220,11 +234,7 @@
 			{
 				element.on( 'click', function( )
 				{
-					setTimeout( function( ) 
-					{ 
-						element.closest( 'form' ).children( )
-												.trigger( 'repaint' );
-					}, 1 );
+					setTimeout( function( ) { element.closest( 'form' ).children( ).trigger( 'repaint' ); }, 1 );
 				} );
 			}
 			

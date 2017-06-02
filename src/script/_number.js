@@ -27,7 +27,7 @@ let Number =
 		//
 		this.setEvents( )
 			.repaint( );
-	}
+	};
 	
 	Number.prototype = 
 	{
