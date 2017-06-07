@@ -4,16 +4,14 @@
 [![License](https://poser.pugx.org/ange007/jquery-formstyler-modern/license)](https://packagist.org/packages/ange007/jquery-formstyler-modern)
 [![Build Status](https://travis-ci.org/ange007/JQueryFormStyler-Modern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStyler-Modern)
 
->Самостоятельное ответвление от плагина **jQueryFormStyler** 
-*(оригинальный плагин: https://github.com/Dimox/jQueryFormStyler)*
+> Самостоятельное ответвление от плагина **[jQueryFormStyler](https://github.com/Dimox/jQueryFormStyler)** 
 
-- [DEMO](http://ange007.github.io/JQueryFormStyler-Modern/)
-- [CHANGELOG](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGELOG.md)
-- [DOWNLOAD](https://github.com/ange007/JQueryFormStyler-Modern/releases)
+- [Demo](http://ange007.github.io/JQueryFormStyler-Modern/)
+- [Changelog](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGELOG.md)
+- [Download](https://github.com/ange007/JQueryFormStyler-Modern/releases)
 
 ## Info
 JQuery HTML form styling plugin:
-> JQuery-плагин для стилизации элементов HTML-форм:
 - `<input type="checkbox">`
 - `<input type="radio">`
 - `<input type="file">`
@@ -21,8 +19,8 @@ JQuery HTML form styling plugin:
 - `<input type="password">`
 - `<select>`
 
-## Attention
-Settings from plugin vesion **2.x** - differ from version **1.x**
+## Attention!
+Settings from plugin vesion **2.x** - differ from version **1.x**.
 > Структура настроек плагина версии **2.x** - отличаются от настроек [оригинального](https://github.com/Dimox/jQueryFormStyler) и версии [1.x](https://github.com/ange007/JQueryFormStyler-Modern/tree/1.x---release) данного плагина.
 
 ## Install
@@ -47,39 +45,38 @@ Connection of styles is possible in two ways:
 > - Подключение файлов из директории `/style/` - `jquery.formStylerModern.frame.css` *(каркас)* и одной из тем в той-же директории *(например `jquery.formStylerModern.flat.css`)*
 
 ## Works
-Stylish elements
-> Стилизация элементов
+Stylish elements. `/ Стилизация элементов.`
 ```javascript
-	$( 'input, select, button' ).styler( 
-	{
-		locale: 'ru',
-		select: { 
-			search: {
-				limit: 10
-			}
-		},
-		onFormStyled: function( ) 
-		{ 
-			...
+$( 'input, select, button' ).styler( 
+{
+	locale: 'ru',
+	select: { 
+		search: {
+			limit: 10
 		}
-	} );
+	},
+	onFormStyled: function( ) 
+	{ 
+		...
+	}
+} );
 ```
 
-Reload plugin with certain settings
-> Перезагрузка элементов с определёнными настройками
+
+Reload plugin with certain settings. `/ Перезагрузка элементов с определёнными настройками.`
 ```javascript
-	$( '#checkbox-indeterminate-change' ).styler( 'reinitialize', { checkbox: { indeterminate: true } } );
+$( '#checkbox-indeterminate-change' ).styler( 'reinitialize', { checkbox: { indeterminate: true } } );
 ```
 
-Clean style
-> Убрать стилизацию
+
+Clean style. `/ Убрать стилизацию.`
 ```javascript
-	$( 'input, select, button' ).styler( 'destroy' );
+$( 'input, select, button' ).styler( 'destroy' );
 ```
 
-Repaint after "manual" change
-> Перерисовка компонента после "ручного" изменения состояния
+
+Repaint after "manual" change. `/ Перерисовка компонента после "ручного" изменения состояния.`
 ```javascript
-	$( this ).prop( 'disabled', true )
-			.trigger( 'repaint' );
+$( this ).prop( 'disabled', true )
+	.trigger( 'repaint' );
 ```
