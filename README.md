@@ -7,12 +7,13 @@
 >Самостоятельное ответвление от плагина **jQueryFormStyler** 
 *(оригинальный плагин: https://github.com/Dimox/jQueryFormStyler)*
 
-- [Страница с примерами](http://ange007.github.io/JQueryFormStyler-Modern/)
-- [Список изменений](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGELOG.md)
-- [Скачать](https://github.com/ange007/JQueryFormStyler-Modern/releases)
+- [DEMO](http://ange007.github.io/JQueryFormStyler-Modern/)
+- [CHANGELOG](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGELOG.md)
+- [DOWNLOAD](https://github.com/ange007/JQueryFormStyler-Modern/releases)
 
-## Описание
-jQuery-плагин для стилизации элементов HTML-форм:
+## Info
+JQuery HTML form styling plugin:
+> JQuery-плагин для стилизации элементов HTML-форм:
 - `<input type="checkbox">`
 - `<input type="radio">`
 - `<input type="file">`
@@ -20,17 +21,34 @@ jQuery-плагин для стилизации элементов HTML-форм
 - `<input type="password">`
 - `<select>`
 
-## Внимание!
-Структура настроек плагина версии **2.x** - отличаются от настроек [оригинального](https://github.com/Dimox/jQueryFormStyler) и версии [1.x](https://github.com/ange007/JQueryFormStyler-Modern/tree/1.x---release) данного плагина.
+## Attention
+Settings from plugin vesion **2.x** - differ from version **1.x**
+> Структура настроек плагина версии **2.x** - отличаются от настроек [оригинального](https://github.com/Dimox/jQueryFormStyler) и версии [1.x](https://github.com/ange007/JQueryFormStyler-Modern/tree/1.x---release) данного плагина.
 
-## Подключение плагина
-Сам плагин подключаетс посредством файла `jquery.formStylerModern.js`.
-А подключение стилей возможно в 2х вариантах:
-- Подключение `jquery.formStylerModern.css`- который в себе содержит каркас и тему по умолчанию *(default)*
-- Подключение файлов из директории `/style/` - `jquery.formStylerModern.frame.css` *(каркас)* и одной из тем в той-же директории *(например `jquery.formStylerModern.flat.css`)*
+## Install
+Composer:
+```sh
+$ php composer.phar require "ange007/jquery-formstyler-modern"
+```
+Bower:
+```sh
+$ bower install --save-dev ange007/jquery-formstyler-modern
+```
 
-## Работа с плагином
-Стилизация компонентов
+## Getting Started
+Main plugin file - `jquery.formStylerModern.js`.
+Connection of styles is possible in two ways:
+- `jquery.formStylerModern.css` *(frame and default style)*
+- Frame file - `/style/jquery.formStylerModern.frame.css` and style file - `/style/jquery.formStylerModern.(default|flat|etc).css`
+
+> Сам плагин подключается посредством файла `jquery.formStylerModern.js`.
+> Подключение стилей возможно в 2х вариантах:
+> - Подключение `jquery.formStylerModern.css` - который в себе содержит каркас и тему по умолчанию *(default)*
+> - Подключение файлов из директории `/style/` - `jquery.formStylerModern.frame.css` *(каркас)* и одной из тем в той-же директории *(например `jquery.formStylerModern.flat.css`)*
+
+## Works
+Stylish elements
+> Стилизация элементов
 ```javascript
 	$( 'input, select, button' ).styler( 
 	{
@@ -47,17 +65,20 @@ jQuery-плагин для стилизации элементов HTML-форм
 	} );
 ```
 
-Перезагрузка элементов с определёнными настройками
+Reload plugin with certain settings
+> Перезагрузка элементов с определёнными настройками
 ```javascript
 	$( '#checkbox-indeterminate-change' ).styler( 'reinitialize', { checkbox: { indeterminate: true } } );
 ```
 
-Убрать стилизацию
+Clean style
+> Убрать стилизацию
 ```javascript
 	$( 'input, select, button' ).styler( 'destroy' );
 ```
 
-Перерисовка компонента после "ручного" изменения состояния
+Repaint after "manual" change
+> Перерисовка компонента после "ручного" изменения состояния
 ```javascript
 	$( this ).prop( 'disabled', true )
 			.trigger( 'repaint' );

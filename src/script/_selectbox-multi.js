@@ -100,11 +100,11 @@ let SelectBoxMulti =
 				const selected = $( this );
 
 				// Клик должен срабатывать только при активном контроле
-				if( element.is( ':disabled' ) || selected.is( '.disabled, .optgroup' ) )
+				if( element.is( ':disabled' ) || selected.is( '.disabled' ) )
 				{
 					return;
 				}
-
+				
 				// Фокусируем
 				element.focus( );
 				
@@ -122,15 +122,35 @@ let SelectBoxMulti =
 					selected.addClass( 'selected' );
 				}
 
+				// Если это заголовок группы
+				if( element.is( '[multiple]' ) && selected.is( '.optgroup' ) )
+				{
+					// 
+					let selectedGroup = selected.nextUntil( '.optgroup' );
+
+					//
+					selectedGroup.each( function( )
+					{
+						if( !$( this ).is( '.disabled, .optgroup' ) ) 
+						{
+							if( $( this ).is( '.first' ) ) 
+							{
+								$( this ).removeClass( 'first');
+							}
+							
+							$( this ).toggleClass( 'selected' );
+						}
+					} );
+				}
 				// Выделение нескольких пунктов
-				if( element.is( '[multiple]' ) )
+				else if( element.is( '[multiple]' ) )
 				{
 					// Отмечаем классом - первый элемент
 					if( !e.shiftKey )
 					{
 						selected.addClass( 'first' );
 					}
-
+										
 					// Выделение пунктов при зажатом Ctrl
 					if( mobile || e.ctrlKey || e.metaKey )
 					{
