@@ -43,12 +43,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			search: {
 				limit: 10
 
-				/* @todo: Заготовка будущего функционала
-    ajax: {
-    	delay: 250,
-    	onSuccess: function( ) { }
-    }
-    */
 			},
 			triggerHTML: '<div class="jq-selectbox__trigger-arrow"></div>',
 			visibleOptions: 0,
@@ -200,9 +194,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							// Необходимо "перерисовать" контрол 
 							checkbox.on('repaint', function () {
 								context.repaint();
-							}
+							})
 							// Клик по псевдоблоку ( смена состояния )
-							).on('click', function (e) {
+							.on('click', function (e) {
 								e.preventDefault();
 
 								// Обрабатываем только активный псевдобокс
@@ -243,22 +237,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							// Обработка изменений
 							element.on('change.' + pluginName, function () {
 								checkbox.triggerHandler('repaint');
-							}
+							})
 							// Обработка переключения при помощи клавиатуры
-							).on('keydown.' + pluginName, function (e) {
+							.on('keydown.' + pluginName, function (e) {
 								if (e.which === 32) {
 									e.preventDefault();
 									checkbox.triggerHandler('click');
 								}
-							}
+							})
 							// Обработка наведения фокуса
-							).on('focus.' + pluginName, function () {
+							.on('focus.' + pluginName, function () {
 								if (!checkbox.is('.disabled')) {
 									checkbox.addClass('focused');
 								}
-							}
+							})
 							// Обработка снятия фокуса
-							).on('blur.' + pluginName, function () {
+							.on('blur.' + pluginName, function () {
 								checkbox.removeClass('focused');
 							});
 
@@ -340,9 +334,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								// Необходимо "перерисовать" контрол 
 								radio.on('repaint', function () {
 									context.repaint();
-								}
+								})
 								// Клик по псевдоблоку
-								).on('click', function (e) {
+								.on('click', function (e) {
 									//
 									e.preventDefault();
 
@@ -370,22 +364,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								// Обработка изменений
 								element.on('change.' + pluginName, function (e) {
 									radio.triggerHandler('repaint');
-								}
+								})
 								// Обработка переключения при помощи клавиатуры
-								).on('keydown.' + pluginName, function (e) {
+								.on('keydown.' + pluginName, function (e) {
 									if (e.which === 32) {
 										e.preventDefault();
 										radio.trigger('click');
 									}
-								}
+								})
 								// Обработка наведения фокуса
-								).on('focus.' + pluginName, function () {
+								.on('focus.' + pluginName, function () {
 									if (!radio.is('.disabled')) {
 										radio.addClass('focused');
 									}
-								}
+								})
 								// Обработка снятия фокуса
-								).on('blur.' + pluginName, function () {
+								.on('blur.' + pluginName, function () {
 									radio.removeClass('focused');
 								});
 
@@ -474,9 +468,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									// Обработка "изменения" состояния
 									element.on('change.' + pluginName, function () {
 										file.triggerHandler('repaint');
-									}
+									})
 									// Работа с "фокусировкой"
-									).on('focus.' + pluginName, function () {
+									.on('focus.' + pluginName, function () {
 										file.addClass('focused');
 									}).on('blur.' + pluginName, function () {
 										file.removeClass('focused');
@@ -567,9 +561,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										// Необходимо "перерисовать" контрол
 										number.on('repaint', function () {
 											context.repaint();
-										}
+										})
 										//
-										).on('mousedown', 'div.jq-number__spin', function () {
+										.on('mousedown', 'div.jq-number__spin', function () {
 											if (element.is(':disabled')) {
 												return;
 											}
@@ -582,9 +576,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													context.changeValue(spin);
 												}, 40);
 											}, 350);
-										}
+										})
 										//
-										).on('mouseup mouseout', 'div.jq-number__spin', function () {
+										.on('mouseup mouseout', 'div.jq-number__spin', function () {
 											if (element.is(':disabled')) {
 												return;
 											}
@@ -596,9 +590,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										// Фокусировка
 										element.on('focus.' + pluginName, function () {
 											number.addClass('focused');
-										}
+										})
 										// Расфокусировка
-										).on('blur.' + pluginName, function () {
+										.on('blur.' + pluginName, function () {
 											number.removeClass('focused');
 										});
 
@@ -720,9 +714,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 												// Активация/деактивация кнопки
 												button.prop('disabled', element.is(':disabled'));
-											}
+											})
 											// Реакция на клик по кнопке
-											).on('click', '.jq-password__switch', function () {
+											.on('click', '.jq-password__switch', function () {
 												var switcher = $(this),
 												    wrapper = switcher.closest('.jq-password'),
 												    seen = wrapper.is('.jq-password_seen');
@@ -742,9 +736,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 											// Фокусировка
 											element.on('focus.' + pluginName, function () {
 												password.addClass('focused');
-											}
+											})
 											// Расфокусировка
-											).on('blur.' + pluginName, function () {
+											.on('blur.' + pluginName, function () {
 												password.removeClass('focused');
 											});
 
@@ -1268,9 +1262,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// При наведении курсора на пункт списка
 													dropdownLi.on('hover', function () {
 														$(this).siblings().removeClass('selected');
-													}
+													})
 													// При клике на пункт визуального списка
-													).on('click', function () {
+													.on('click', function () {
 														var selected = $(this);
 
 														// Если пункт не активен или заголовок - не пускаем дальше
@@ -1303,19 +1297,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// Реакция на смену пункта оригинального селекта
 													element.on('change.' + pluginName, function () {
 														selectbox.triggerHandler('repaint');
-													}
+													})
 													// Фокусировка
-													).on('focus.' + pluginName, function () {
+													.on('focus.' + pluginName, function () {
 														selectbox.addClass('focused');
 
 														$('div.jqselect').not('.focused').removeClass('opened dropup dropdown').find('div.jq-selectbox__dropdown').hide();
-													}
+													})
 													// Расфокусировка
-													).on('blur.' + pluginName, function () {
+													.on('blur.' + pluginName, function () {
 														selectbox.removeClass('focused');
-													}
+													})
 													// Изменение селекта с клавиатуры
-													).on('keydown.' + pluginName + ' keyup.' + pluginName, function (e) {
+													.on('keydown.' + pluginName + ' keyup.' + pluginName, function (e) {
 														var liHeight = dropdownLi.data('li-height');
 
 														// Вверх, влево, Page Up, Home
@@ -1340,9 +1334,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 															// Колбек при закрытии селекта
 															options.onClosed.call(selectbox);
 														}
-													}
+													})
 													//
-													).on('keydown.' + pluginName, function (e) {
+													.on('keydown.' + pluginName, function (e) {
 														// Открываем выпадающий список при нажатии Space
 														if (e.which === 32) {
 															e.preventDefault();
@@ -1596,13 +1590,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// Реакция на смену пункта оригинального селекта
 													element.on('change.' + pluginName, function () {
 														selectbox.triggerHandler('repaint');
-													}
+													})
 													// Фокусировка
-													).on('focus.' + pluginName, function () {
+													.on('focus.' + pluginName, function () {
 														selectbox.addClass('focused');
-													}
+													})
 													// Расфокусировка
-													).on('blur.' + pluginName, function () {
+													.on('blur.' + pluginName, function () {
 														selectbox.removeClass('focused');
 													});
 
@@ -1741,11 +1735,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				} else {
 					$(this).styler('reinitialize');
 				}
-			}
+			})
 			// Ожидаем полного прохода
-			).promise
+			.promise()
 			// Колбек после выполнения плагина
-			().done(function () {
+			.done(function () {
 				var opt = $(this[0]).data('_' + pluginName);
 
 				if (opt) {
