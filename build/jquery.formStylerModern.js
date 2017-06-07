@@ -4,7 +4,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /**
  * jquery.formstyler-modern - JQuery HTML form styling plugin
- * @version v2.0.0
+ * @version v2.0.1
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
  * @author Borisenko Vladimir
@@ -164,7 +164,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			// Чекбокс
 			if (element.is(':checkbox')) {
 				var CheckBox = function () {
-					var CheckBox = function CheckBox(element, options, locale) {
+					var Element = function Element(element, options, locale) {
 						//
 						this.element = element;
 						this.options = options;
@@ -183,7 +183,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						this.setEvents().repaint();
 					};
 
-					CheckBox.prototype = {
+					Element.prototype = {
 						// Обработка событий
 						setEvents: function setEvents() {
 							var context = this,
@@ -297,7 +297,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						}
 					};
 
-					return CheckBox;
+					return Element;
 				}();
 
 				this.customElement = new CheckBox(element, this.options.checkbox, this.locales.checkbox);
@@ -305,7 +305,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			// Радиокнопка
 			else if (element.is(':radio')) {
 					var Radio = function () {
-						var Radio = function Radio(element, options, locale) {
+						var Element = function Element(element, options, locale) {
 							//
 							this.element = element;
 							this.options = options;
@@ -324,7 +324,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							this.setEvents().repaint();
 						};
 
-						Radio.prototype = {
+						Element.prototype = {
 							// Обработка событий
 							setEvents: function setEvents() {
 								var context = this,
@@ -422,7 +422,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							}
 						};
 
-						return Radio;
+						return Element;
 					}();
 
 					this.customElement = new Radio(element, this.options.radio, this.locales.radio);
@@ -430,7 +430,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				// Выбор файла
 				else if (element.is(':file')) {
 						var File = function () {
-							var File = function File(element, options, locale) {
+							var Element = function Element(element, options, locale) {
 								//
 								this.element = element;
 								this.options = options;
@@ -453,7 +453,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								this.setEvents().repaint();
 							};
 
-							File.prototype = {
+							Element.prototype = {
 								// Обработка событий
 								setEvents: function setEvents() {
 									var context = this,
@@ -521,7 +521,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								}
 							};
 
-							return File;
+							return Element;
 						}();
 
 						this.customElement = new File(element, this.options.file, this.locales.file);
@@ -529,7 +529,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					// Номер
 					else if (element.is('input[type="number"]')) {
 							var _Number = function () {
-								var Number = function Number(element, options, locale) {
+								var Element = function Element(element, options, locale) {
 									//
 									this.element = element;
 									this.options = options;
@@ -548,7 +548,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									this.setEvents().repaint();
 								};
 
-								Number.prototype = {
+								Element.prototype = {
 									// Обработка событий
 									setEvents: function setEvents() {
 										var context = this,
@@ -663,7 +663,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									}
 								};
 
-								return Number;
+								return Element;
 							}();
 
 							this.customElement = new _Number(element, this.options.number, this.locales.number);
@@ -671,7 +671,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						// Пароль
 						else if (element.is('input[type="password"]') && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none') {
 								var Password = function () {
-									var Password = function Password(element, options, locale) {
+									var Element = function Element(element, options, locale) {
 										//
 										this.element = element;
 										this.options = options;
@@ -700,7 +700,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										this.setEvents().repaint();
 									};
 
-									Password.prototype = {
+									Element.prototype = {
 										setEvents: function setEvents() {
 											var locale = this.locale,
 											    element = this.element,
@@ -770,7 +770,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										}
 									};
 
-									return Password;
+									return Element;
 								}();
 
 								this.customElement = new Password(element, this.options.password, this.locales.password);
@@ -863,21 +863,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 											};
 										}();
 										var SelectBox = function () {
-											var SelectBox = function SelectBox(element, options, locale) {
+											var Element = function Element(element, options, locale) {
 												//
 												this.element = element;
 												this.options = options;
 												this.locale = locale;
 
 												//
-												var attr = new Attributes(this.element),
-												    searchEnabled = !element.data('search') || (options.search ? true : false);
-
-												// Поле поиска
-												var searchHTML = !searchEnabled ? '' : '<div class="jq-selectbox__search">' + '<input type="search" autocomplete="off" placeholder="' + (element.data('search-placeholder') || locale.search['placeholder']) + '">' + '</div>' + '<div class="jq-selectbox__not-found">' + (element.data('search-not-found') || locale.search['notFound']) + '</div>';
+												var attr = new Attributes(this.element);
 
 												// Выпадающий список
-												this.dropdown = $('<div class="jq-selectbox__dropdown" style="position: absolute">' + (searchHTML || '') + '</div>');
+												this.dropdown = $('<div class="jq-selectbox__dropdown" style="position: absolute">' + '</div>');
 
 												// Формируем компонент
 												this.selectbox = $('<div class="jq-selectbox jqselect">' + '<div class="jq-selectbox__select">' + '<div class="jq-selectbox__select-text"></div>' + '<div class="jq-selectbox__trigger">' + (options.triggerHTML || '') + '</div>' + '</div></div>').attr({ 'id': attr.id, 'title': attr.title }).data(attr.data).addClass(attr.classes).append(this.dropdown);
@@ -898,6 +894,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												//
 												this.setEvents().repaint();
 
+												// Прячем оригинальный селект
+												element.addClass('jq-hidden');
+
 												// Прячем выпадающий список при клике за пределами селекта
 												if (!onDocumentClick.registered) {
 													$(document).on('click', onDocumentClick);
@@ -905,34 +904,45 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												}
 											};
 
-											SelectBox.prototype = {
+											Element.prototype = {
 												//
 												loadDropdown: function loadDropdown() {
 													var element = this.element,
 													    options = this.options,
+													    locale = this.locale,
 													    selectbox = this.selectbox,
 													    dropdown = this.dropdown;
 
 													//
 													var optionList = $('option', element),
 													    optionSelected = optionList.filter(':selected'),
-													    ulList = SelectBoxExtra.makeList(optionList);
+													    ulList = SelectBoxExtra.makeList(optionList),
+													    searchEnabled = !element.data('search') || (options.search ? true : false);
 
-													// Обновляем содержимое
-													dropdown.html(ulList);
+													// Очищаем содержимое
+													dropdown.html('').append(ulList);
 
 													//
 													var dropdownLi = $('li', dropdown).css({ 'display': 'inline-block' }),
 													    liSelected = dropdownLi.filter('.selected');
 
+													//
+													if (dropdown.css('left') === 'auto') {
+														dropdown.css({ left: 0 });
+													}
+
 													// Обновляем ширину
 													this.calculateDropdownWidth();
 
-													// Прячем оригинальный селект
-													element.addClass('jq-hidden');
-
 													// Обновляем высоту
 													this.calculateDropdownHeight();
+
+													// Добавляем поле поиска
+													if (searchEnabled && dropdownLi.length > options.search.limit) {
+														var searchBlock = $('<div class="jq-selectbox__search">' + '<input type="search" autocomplete="off" placeholder="' + (element.data('search-placeholder') || locale.search['placeholder']) + '">' + '</div>' + '<div class="jq-selectbox__not-found">' + (element.data('search-not-found') || locale.search['notFound']) + '</div>');
+
+														dropdown.prepend(searchBlock);
+													}
 
 													// Скрываем список
 													dropdown.hide();
@@ -960,17 +970,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													    dropdown = this.dropdown;
 
 													// Разбираем на составляющие выпадающий список
-													var dropdownLi = $('li', dropdown),
-													    notFound = $('div.jq-selectbox__not-found', dropdown).hide();
+													var dropdownLi = $('li', dropdown);
 
 													//
 													var liWidthInner = 0,
 													    liWidth = 0;
-
-													//
-													if (dropdownLi.length < options.search.limit) {
-														$('input', dropdown).parent().hide();
-													}
 
 													// Расчитываем максимальную ширину
 													dropdownLi.each(function () {
@@ -1034,11 +1038,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													}
 
 													//
-													if (dropdown.css('left') === 'auto') {
-														dropdown.css({ left: 0 });
-													}
-
-													//
 													if (dropdown.css('top') === 'auto') {
 														dropdown.css({ top: selectbox.outerHeight(true) || 0 });
 													}
@@ -1063,7 +1062,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													maxHeightBottom();
 
 													// Если есть конкретная высота - выставляем её
-													menu.css('max-height', maxHeight !== 'none' && maxHeight > 0 ? maxHeight : newHeight);
+													menu.css('max-height', maxHeight !== 'none' && parseInt(maxHeight) > 0 ? parseInt(maxHeight) : newHeight);
 
 													// Если высота больше чем нужно - снова ставим максммальную
 													if (offset < this.dropdown.outerHeight() + liHeight) {
@@ -1161,26 +1160,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 														    newHeight = visible === 0 ? 'auto' : liHeight * visible,
 														    minHeight = visible > 0 && visible < 6 ? newHeight : liHeight * 5;
 
-														// Раскрытие вверх
-														if (options.smartPosition && bottomOffset <= minHeight + searchHeight + 20) {
-															context.dropUp(dropdownUl, topOffset, newHeight, liHeight, maxHeight);
-														}
-														// Раскрытие вниз
-														else {
-																context.dropDown(dropdownUl, bottomOffset, newHeight, liHeight, maxHeight);
-															}
-
-														// Если выпадающий список выходит за правый край окна браузера,
-														// то меняем позиционирование с левого на правое
-														if (selectbox.offset().left + dropdown.outerWidth() > $(window).width()) {
-															dropdown.css({ left: 'auto', right: 0 });
-														}
-
-														// 
-														$('div.jqselect').removeClass('opened');
-
 														//
 														if (dropdown.is(':hidden')) {
+															// 
+															$('div.jqselect').removeClass('opened');
+
+															//
 															$('div.jq-selectbox__dropdown:visible').hide();
 
 															// Отображаем список
@@ -1188,6 +1173,21 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 															// Добавляем классы
 															selectbox.addClass('opened focused');
+
+															// Раскрытие вверх
+															if (options.smartPosition && bottomOffset <= minHeight + searchHeight + liHeight) {
+																context.dropUp(dropdownUl, topOffset, newHeight, liHeight, maxHeight);
+															}
+															// Раскрытие вниз
+															else {
+																	context.dropDown(dropdownUl, bottomOffset, newHeight, liHeight, maxHeight);
+																}
+
+															// Если выпадающий список выходит за правый край окна браузера,
+															// то меняем позиционирование с левого на правое
+															if (selectbox.offset().left + dropdown.outerWidth() > $(window).width()) {
+																dropdown.css({ left: 'auto', right: 0 });
+															}
 
 															// Колбек при открытии селекта
 															options.onOpened.call(selectbox);
@@ -1402,10 +1402,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												}
 											};
 
-											return SelectBox;
+											return Element;
 										}();
 										var SelectBoxMulti = function () {
-											var SelectBoxMulti = function SelectBoxMulti(element, options, locale) {
+											var Element = function Element(element, options, locale) {
 												//
 												this.element = element;
 												this.options = options;
@@ -1451,7 +1451,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												this.setEvents().repaint();
 											};
 
-											SelectBoxMulti.prototype = {
+											Element.prototype = {
 												// Загрузка списка
 												loadList: function loadList() {
 													var element = this.element,
@@ -1653,7 +1653,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												}
 											};
 
-											return SelectBoxMulti;
+											return Element;
 										}();
 
 										// Стилизируем компонент

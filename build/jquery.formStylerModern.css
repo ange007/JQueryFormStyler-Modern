@@ -252,6 +252,7 @@
   color: #333; }
 
 .jq-selectbox .jq-selectbox__not-found {
+  display: none;
   background: #F0F0F0; }
 
 /* selectbox-multi */
