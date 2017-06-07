@@ -4,7 +4,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /**
  * jquery.formstyler-modern - JQuery HTML form styling plugin
- * @version v2.0.1
+ * @version v2.0.2
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
  * @author Borisenko Vladimir
@@ -43,12 +43,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			search: {
 				limit: 10
 
-				/* @todo: Заготовка будущего функционала
-    ajax: {
-    	delay: 250,
-    	onSuccess: function( ) { }
-    }
-    */
 			},
 			triggerHTML: '<div class="jq-selectbox__trigger-arrow"></div>',
 			visibleOptions: 0,
@@ -170,7 +164,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			// Чекбокс
 			if (element.is(':checkbox')) {
 				var CheckBox = function () {
-					var Element = function Element(element, options, locale) {
+					var Component = function Component(element, options, locale) {
 						//
 						this.element = element;
 						this.options = options;
@@ -189,7 +183,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						this.setEvents().repaint();
 					};
 
-					Element.prototype = {
+					Component.prototype = {
 						// Обработка событий
 						setEvents: function setEvents() {
 							var context = this,
@@ -200,9 +194,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							// Необходимо "перерисовать" контрол 
 							checkbox.on('repaint', function () {
 								context.repaint();
-							}
+							})
 							// Клик по псевдоблоку ( смена состояния )
-							).on('click', function (e) {
+							.on('click', function (e) {
 								e.preventDefault();
 
 								// Обрабатываем только активный псевдобокс
@@ -243,22 +237,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							// Обработка изменений
 							element.on('change.' + pluginName, function () {
 								checkbox.triggerHandler('repaint');
-							}
+							})
 							// Обработка переключения при помощи клавиатуры
-							).on('keydown.' + pluginName, function (e) {
+							.on('keydown.' + pluginName, function (e) {
 								if (e.which === 32) {
 									e.preventDefault();
 									checkbox.triggerHandler('click');
 								}
-							}
+							})
 							// Обработка наведения фокуса
-							).on('focus.' + pluginName, function () {
+							.on('focus.' + pluginName, function () {
 								if (!checkbox.is('.disabled')) {
 									checkbox.addClass('focused');
 								}
-							}
+							})
 							// Обработка снятия фокуса
-							).on('blur.' + pluginName, function () {
+							.on('blur.' + pluginName, function () {
 								checkbox.removeClass('focused');
 							});
 
@@ -303,7 +297,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						}
 					};
 
-					return Element;
+					return Component;
 				}();
 
 				this.customElement = new CheckBox(element, this.options.checkbox, this.locales.checkbox);
@@ -311,7 +305,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			// Радиокнопка
 			else if (element.is(':radio')) {
 					var Radio = function () {
-						var Element = function Element(element, options, locale) {
+						var Component = function Component(element, options, locale) {
 							//
 							this.element = element;
 							this.options = options;
@@ -330,7 +324,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							this.setEvents().repaint();
 						};
 
-						Element.prototype = {
+						Component.prototype = {
 							// Обработка событий
 							setEvents: function setEvents() {
 								var context = this,
@@ -340,9 +334,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								// Необходимо "перерисовать" контрол 
 								radio.on('repaint', function () {
 									context.repaint();
-								}
+								})
 								// Клик по псевдоблоку
-								).on('click', function (e) {
+								.on('click', function (e) {
 									//
 									e.preventDefault();
 
@@ -368,24 +362,24 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								});
 
 								// Обработка изменений
-								element.on('change.' + pluginName, function (e) {
+								element.on('change.' + pluginName, function () {
 									radio.triggerHandler('repaint');
-								}
+								})
 								// Обработка переключения при помощи клавиатуры
-								).on('keydown.' + pluginName, function (e) {
+								.on('keydown.' + pluginName, function (e) {
 									if (e.which === 32) {
 										e.preventDefault();
 										radio.trigger('click');
 									}
-								}
+								})
 								// Обработка наведения фокуса
-								).on('focus.' + pluginName, function () {
+								.on('focus.' + pluginName, function () {
 									if (!radio.is('.disabled')) {
 										radio.addClass('focused');
 									}
-								}
+								})
 								// Обработка снятия фокуса
-								).on('blur.' + pluginName, function () {
+								.on('blur.' + pluginName, function () {
 									radio.removeClass('focused');
 								});
 
@@ -428,7 +422,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							}
 						};
 
-						return Element;
+						return Component;
 					}();
 
 					this.customElement = new Radio(element, this.options.radio, this.locales.radio);
@@ -436,7 +430,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				// Выбор файла
 				else if (element.is(':file')) {
 						var File = function () {
-							var Element = function Element(element, options, locale) {
+							var Component = function Component(element, options, locale) {
 								//
 								this.element = element;
 								this.options = options;
@@ -459,7 +453,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								this.setEvents().repaint();
 							};
 
-							Element.prototype = {
+							Component.prototype = {
 								// Обработка событий
 								setEvents: function setEvents() {
 									var context = this,
@@ -474,9 +468,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									// Обработка "изменения" состояния
 									element.on('change.' + pluginName, function () {
 										file.triggerHandler('repaint');
-									}
+									})
 									// Работа с "фокусировкой"
-									).on('focus.' + pluginName, function () {
+									.on('focus.' + pluginName, function () {
 										file.addClass('focused');
 									}).on('blur.' + pluginName, function () {
 										file.removeClass('focused');
@@ -527,7 +521,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								}
 							};
 
-							return Element;
+							return Component;
 						}();
 
 						this.customElement = new File(element, this.options.file, this.locales.file);
@@ -535,7 +529,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 					// Номер
 					else if (element.is('input[type="number"]')) {
 							var _Number = function () {
-								var Element = function Element(element, options, locale) {
+								var Component = function Component(element, options, locale) {
 									//
 									this.element = element;
 									this.options = options;
@@ -554,22 +548,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									this.setEvents().repaint();
 								};
 
-								Element.prototype = {
+								Component.prototype = {
 									// Обработка событий
 									setEvents: function setEvents() {
 										var context = this,
 										    element = this.element,
-										    number = this.number;
+										    num = this.number;
 
 										var timeout = null,
 										    interval = null;
 
 										// Необходимо "перерисовать" контрол
-										number.on('repaint', function () {
+										num.on('repaint', function () {
 											context.repaint();
-										}
+										})
 										//
-										).on('mousedown', 'div.jq-number__spin', function () {
+										.on('mousedown', 'div.jq-number__spin', function () {
 											if (element.is(':disabled')) {
 												return;
 											}
@@ -582,9 +576,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													context.changeValue(spin);
 												}, 40);
 											}, 350);
-										}
+										})
 										//
-										).on('mouseup mouseout', 'div.jq-number__spin', function () {
+										.on('mouseup mouseout', 'div.jq-number__spin', function () {
 											if (element.is(':disabled')) {
 												return;
 											}
@@ -595,11 +589,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 										// Фокусировка
 										element.on('focus.' + pluginName, function () {
-											number.addClass('focused');
-										}
+											num.addClass('focused');
+										})
 										// Расфокусировка
-										).on('blur.' + pluginName, function () {
-											number.removeClass('focused');
+										.on('blur.' + pluginName, function () {
+											num.removeClass('focused');
 										});
 
 										return this;
@@ -607,27 +601,23 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 									// Перерисовка
 									repaint: function repaint() {
-										var element = this.element,
-										    number = this.number;
-
-										number.toggleClass('disabled', element.is(':disabled'));
+										this.number.toggleClass('disabled', this.element.is(':disabled'));
 
 										return this;
 									},
 
 									//
 									changeValue: function changeValue(button) {
-										var element = this.element,
-										    number = this.number;
+										var element = this.element;
 
 										//
 										var min = element.attr('min') || undefined,
 										    max = element.attr('max') || undefined,
-										    step = window.Number(element.attr('step')) || 1;
+										    step = parseFloat(element.attr('step')) || 1;
 
 										//
 										var value = $.isNumeric(element.val()) ? element.val() : 0,
-										    newValue = window.Number(value) + (button.is('.plus') ? step : -step);
+										    newValue = parseFloat(value) + (button.is('.plus') ? step : -step);
 
 										// Определяем количество десятичных знаков после запятой в step
 										var decimals = (step.toString().split('.')[1] || []).length.prototype;
@@ -669,7 +659,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									}
 								};
 
-								return Element;
+								return Component;
 							}();
 
 							this.customElement = new _Number(element, this.options.number, this.locales.number);
@@ -677,7 +667,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 						// Пароль
 						else if (element.is('input[type="password"]') && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none') {
 								var Password = function () {
-									var Element = function Element(element, options, locale) {
+									var Component = function Component(element, options, locale) {
 										//
 										this.element = element;
 										this.options = options;
@@ -687,7 +677,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										var customButton = $('<div class="jq-password__switch">' + (this.options.switchHTML || '') + '</div>');
 
 										//
-										this.password = $('<div class="jq-password">').append(customButton), this.button = customButton.children('button').length > 0 ? customButton.children('button') : customButton;
+										this.password = $('<div class="jq-password">').append(customButton);
+										this.button = customButton.children('button').length > 0 ? customButton.children('button') : customButton;
 
 										// Есть ли текст в блоке, и нужно ли его ставить
 										if (this.button.html() === '' && locale['show'] !== '') {
@@ -706,7 +697,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										this.setEvents().repaint();
 									};
 
-									Element.prototype = {
+									Component.prototype = {
 										setEvents: function setEvents() {
 											var locale = this.locale,
 											    element = this.element,
@@ -720,9 +711,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 												// Активация/деактивация кнопки
 												button.prop('disabled', element.is(':disabled'));
-											}
+											})
 											// Реакция на клик по кнопке
-											).on('click', '.jq-password__switch', function () {
+											.on('click', '.jq-password__switch', function () {
 												var switcher = $(this),
 												    wrapper = switcher.closest('.jq-password'),
 												    seen = wrapper.is('.jq-password_seen');
@@ -742,9 +733,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 											// Фокусировка
 											element.on('focus.' + pluginName, function () {
 												password.addClass('focused');
-											}
+											})
 											// Расфокусировка
-											).on('blur.' + pluginName, function () {
+											.on('blur.' + pluginName, function () {
 												password.removeClass('focused');
 											});
 
@@ -776,7 +767,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										}
 									};
 
-									return Element;
+									return Component;
 								}();
 
 								this.customElement = new Password(element, this.options.password, this.locales.password);
@@ -869,7 +860,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 											};
 										}();
 										var SelectBox = function () {
-											var Element = function Element(element, options, locale) {
+											var Component = function Component(element, options, locale) {
 												//
 												this.element = element;
 												this.options = options;
@@ -910,7 +901,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												}
 											};
 
-											Element.prototype = {
+											Component.prototype = {
 												//
 												loadDropdown: function loadDropdown() {
 													var element = this.element,
@@ -923,7 +914,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													var optionList = $('option', element),
 													    optionSelected = optionList.filter(':selected'),
 													    ulList = SelectBoxExtra.makeList(optionList),
-													    searchEnabled = !element.data('search') || (options.search ? true : false);
+													    searchEnabled = !element.data('search') || (options.search ? true : false),
+													    selectSearchLimit = element.data('search-limit') || (options.search || {}).limit;
 
 													// Очищаем содержимое
 													dropdown.html('').append(ulList);
@@ -944,7 +936,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													this.calculateDropdownHeight();
 
 													// Добавляем поле поиска
-													if (searchEnabled && dropdownLi.length > options.search.limit) {
+													if (searchEnabled && dropdownLi.length > selectSearchLimit) {
 														var searchBlock = $('<div class="jq-selectbox__search">' + '<input type="search" autocomplete="off" placeholder="' + (element.data('search-placeholder') || locale.search['placeholder']) + '">' + '</div>' + '<div class="jq-selectbox__not-found">' + (element.data('search-not-found') || locale.search['notFound']) + '</div>');
 
 														dropdown.prepend(searchBlock);
@@ -970,7 +962,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												// Расчёт ширины
 												calculateDropdownWidth: function calculateDropdownWidth() {
 													var element = this.element,
-													    options = this.options,
 													    selectbox = this.selectbox,
 													    selectboxText = this.selectboxText,
 													    dropdown = this.dropdown;
@@ -1031,8 +1022,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 												// Расчёт высоты
 												calculateDropdownHeight: function calculateDropdownHeight() {
-													var element = this.element,
-													    selectbox = this.selectbox,
+													var selectbox = this.selectbox,
 													    dropdown = this.dropdown;
 
 													//
@@ -1106,7 +1096,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													var context = this,
 													    element = this.element,
 													    options = this.options,
-													    locale = this.locale,
 													    selectbox = this.selectbox,
 													    dropdown = this.dropdown,
 													    selectboxSelect = this.selectboxSelect,
@@ -1114,11 +1103,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 													//
 													var optionList = $('option', this.element),
-													    selectSearch = element.data('search') || (options.search ? true : false),
-													    selectSearchLimit = element.data('search-limit') || (options.search || {}).limit,
-													    selectSmartPosition = element.data('smart-position') || options.smartPosition,
-													    selectSearchNotFound = element.data('search-not-found') || locale.search['notFound'],
-													    selectSearchPlaceholder = element.data('search-placeholder') || locale.search['placeholder'];
+													    selectSmartPosition = element.data('smart-position') || options.smartPosition;
 
 													// Разбираем на составляющие выпадающий список
 													var dropdownUl = $('ul', dropdown),
@@ -1181,7 +1166,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 															selectbox.addClass('opened focused');
 
 															// Раскрытие вверх
-															if (options.smartPosition && bottomOffset <= minHeight + searchHeight + liHeight) {
+															if (selectSmartPosition && bottomOffset <= minHeight + searchHeight + liHeight) {
 																context.dropUp(dropdownUl, topOffset, newHeight, liHeight, maxHeight);
 															}
 															// Раскрытие вниз
@@ -1268,9 +1253,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// При наведении курсора на пункт списка
 													dropdownLi.on('hover', function () {
 														$(this).siblings().removeClass('selected');
-													}
+													})
 													// При клике на пункт визуального списка
-													).on('click', function () {
+													.on('click', function () {
 														var selected = $(this);
 
 														// Если пункт не активен или заголовок - не пускаем дальше
@@ -1303,19 +1288,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// Реакция на смену пункта оригинального селекта
 													element.on('change.' + pluginName, function () {
 														selectbox.triggerHandler('repaint');
-													}
+													})
 													// Фокусировка
-													).on('focus.' + pluginName, function () {
+													.on('focus.' + pluginName, function () {
 														selectbox.addClass('focused');
 
 														$('div.jqselect').not('.focused').removeClass('opened dropup dropdown').find('div.jq-selectbox__dropdown').hide();
-													}
+													})
 													// Расфокусировка
-													).on('blur.' + pluginName, function () {
+													.on('blur.' + pluginName, function () {
 														selectbox.removeClass('focused');
-													}
+													})
 													// Изменение селекта с клавиатуры
-													).on('keydown.' + pluginName + ' keyup.' + pluginName, function (e) {
+													.on('keydown.' + pluginName + ' keyup.' + pluginName, function (e) {
 														var liHeight = dropdownLi.data('li-height');
 
 														// Вверх, влево, Page Up, Home
@@ -1340,9 +1325,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 															// Колбек при закрытии селекта
 															options.onClosed.call(selectbox);
 														}
-													}
+													})
 													//
-													).on('keydown.' + pluginName, function (e) {
+													.on('keydown.' + pluginName, function (e) {
 														// Открываем выпадающий список при нажатии Space
 														if (e.which === 32) {
 															e.preventDefault();
@@ -1408,10 +1393,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												}
 											};
 
-											return Element;
+											return Component;
 										}();
 										var SelectBoxMulti = function () {
-											var Element = function Element(element, options, locale) {
+											var Component = function Component(element, options, locale) {
 												//
 												this.element = element;
 												this.options = options;
@@ -1457,11 +1442,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												this.setEvents().repaint();
 											};
 
-											Element.prototype = {
+											Component.prototype = {
 												// Загрузка списка
 												loadList: function loadList() {
 													var element = this.element,
-													    options = this.options,
 													    selectbox = this.selectbox;
 
 													var optionList = $('option', element),
@@ -1478,7 +1462,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												setEvents: function setEvents() {
 													var context = this,
 													    element = this.element,
-													    options = this.options,
 													    selectbox = this.selectbox;
 
 													var optionList = $('option', element),
@@ -1596,13 +1579,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// Реакция на смену пункта оригинального селекта
 													element.on('change.' + pluginName, function () {
 														selectbox.triggerHandler('repaint');
-													}
+													})
 													// Фокусировка
-													).on('focus.' + pluginName, function () {
+													.on('focus.' + pluginName, function () {
 														selectbox.addClass('focused');
-													}
+													})
 													// Расфокусировка
-													).on('blur.' + pluginName, function () {
+													.on('blur.' + pluginName, function () {
 														selectbox.removeClass('focused');
 													});
 
@@ -1626,11 +1609,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												// Перерисовка
 												repaint: function repaint() {
 													var element = this.element,
-													    options = this.options,
 													    selectbox = this.selectbox;
 
 													var optionList = $('option', element),
-													    ul = $('ul', selectbox),
 													    li = $('li', selectbox);
 
 													//
@@ -1659,7 +1640,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 												}
 											};
 
-											return Element;
+											return Component;
 										}();
 
 										// Стилизируем компонент
@@ -1741,11 +1722,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				} else {
 					$(this).styler('reinitialize');
 				}
-			}
+			})
 			// Ожидаем полного прохода
-			).promise
+			.promise()
 			// Колбек после выполнения плагина
-			().done(function () {
+			.done(function () {
 				var opt = $(this[0]).data('_' + pluginName);
 
 				if (opt) {
