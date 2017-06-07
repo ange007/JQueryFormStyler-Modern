@@ -1492,7 +1492,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 														var selected = $(this);
 
 														// Клик должен срабатывать только при активном контроле
-														if (element.is(':disabled') || selected.is('.disabled, .optgroup')) {
+														if (element.is(':disabled') || selected.is('.disabled')) {
 															return;
 														}
 
@@ -1509,47 +1509,63 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 															selected.addClass('selected');
 														}
 
-														// Выделение нескольких пунктов
-														if (element.is('[multiple]')) {
-															// Отмечаем классом - первый элемент
-															if (!e.shiftKey) {
-																selected.addClass('first');
-															}
+														// Если это заголовок группы
+														if (element.is('[multiple]') && selected.is('.optgroup')) {
+															// 
+															var selectedGroup = selected.nextUntil('.optgroup');
 
-															// Выделение пунктов при зажатом Ctrl
-															if (mobile || e.ctrlKey || e.metaKey) {
-																selected.toggleClass('selected first', !selected.is('.selected')).siblings().removeClass('first');
-															}
-															// Выделение пунктов при зажатом Shift
-															else if (e.shiftKey) {
-																	// Функция отметки
-																	var selectedFunc = function selectedFunc() {
-																		if ($(this).is('.selected')) {
-																			return false;
-																		} else {
-																			$(this).not('.disabled, .optgroup').addClass('selected');
-																		}
-																	};
-
-																	//
-																	selected.siblings().removeClass('selected').siblings('.first').addClass('selected');
-
-																	// Предыдущие пункты
-																	if (selected.prevAll('.first').length > 0) {
-																		selected.prevAll().each(selectedFunc);
+															//
+															selectedGroup.each(function () {
+																if (!$(this).is('.disabled, .optgroup')) {
+																	if ($(this).is('.first')) {
+																		$(this).removeClass('first');
 																	}
 
-																	// Следующие пункты
-																	if (selected.nextAll('.first').length > 0) {
-																		selected.nextAll().each(selectedFunc);
-																	}
-
-																	//
-																	if (li.filter('.selected').length === 1) {
-																		selected.addClass('first');
-																	}
+																	$(this).toggleClass('selected');
 																}
+															});
 														}
+														// Выделение нескольких пунктов
+														else if (element.is('[multiple]')) {
+																// Отмечаем классом - первый элемент
+																if (!e.shiftKey) {
+																	selected.addClass('first');
+																}
+
+																// Выделение пунктов при зажатом Ctrl
+																if (mobile || e.ctrlKey || e.metaKey) {
+																	selected.toggleClass('selected first', !selected.is('.selected')).siblings().removeClass('first');
+																}
+																// Выделение пунктов при зажатом Shift
+																else if (e.shiftKey) {
+																		// Функция отметки
+																		var selectedFunc = function selectedFunc() {
+																			if ($(this).is('.selected')) {
+																				return false;
+																			} else {
+																				$(this).not('.disabled, .optgroup').addClass('selected');
+																			}
+																		};
+
+																		//
+																		selected.siblings().removeClass('selected').siblings('.first').addClass('selected');
+
+																		// Предыдущие пункты
+																		if (selected.prevAll('.first').length > 0) {
+																			selected.prevAll().each(selectedFunc);
+																		}
+
+																		// Следующие пункты
+																		if (selected.nextAll('.first').length > 0) {
+																			selected.nextAll().each(selectedFunc);
+																		}
+
+																		//
+																		if (li.filter('.selected').length === 1) {
+																			selected.addClass('first');
+																		}
+																	}
+															}
 
 														// Отмечаем выбранные мышью
 														optionList.prop('selected', false);
