@@ -82,11 +82,11 @@
 		z-index: 2;
 
 		li:first-child {
-		  border-radius: 4px 4px 0px 0px; 
+			border-radius: 4px 4px 0px 0px; 
 		}
 
 		li:last-child {
-		  border-radius: 0px 0px 4px 4px; 
+			border-radius: 0px 0px 4px 4px; 
 		}
 	}
 
@@ -115,6 +115,7 @@
 	}
 
 	.jq-selectbox__not-found {
+		display: none;
 		background: #F0F0F0;
 	}
 }

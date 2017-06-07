@@ -1,7 +1,7 @@
 let Number = 
 ( function( )
 {
-	let Number = function( element, options, locale ) 
+	let Element = function( element, options, locale ) 
 	{		
 		//
 		this.element = element;
@@ -29,7 +29,7 @@ let Number =
 			.repaint( );
 	};
 	
-	Number.prototype = 
+	Element.prototype = 
 	{
 		// Обработка событий
 		setEvents: function( )
@@ -169,5 +169,5 @@ let Number =
 		}
 	}
 	
-	return Number;
+	return Element;
 } )( );

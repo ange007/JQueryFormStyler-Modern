@@ -1,7 +1,7 @@
 let Password = 
 ( function( )
 {
-	let Password = function( element, options, locale ) 
+	let Element = function( element, options, locale ) 
 	{		
 		//
 		this.element = element;
@@ -35,7 +35,7 @@ let Password =
 			.repaint( );
 	};
 	
-	Password.prototype = 
+	Element.prototype = 
 	{
 		setEvents: function( )
 		{
@@ -115,5 +115,5 @@ let Password =
 		}
 	}
 	
-	return Password;
+	return Element;
 } )( );

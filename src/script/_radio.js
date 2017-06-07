@@ -1,7 +1,7 @@
 let Radio = 
 ( function( )
 {
-	let Radio = function( element, options, locale ) 
+	let Element = function( element, options, locale ) 
 	{
 		//
 		this.element = element;
@@ -26,7 +26,7 @@ let Radio =
 			.repaint( );
 	};
 	
-	Radio.prototype = 
+	Element.prototype = 
 	{
 		// Обработка событий
 		setEvents: function( )
@@ -151,5 +151,5 @@ let Radio =
 		}
 	}
 	
-	return Radio;
+	return Element;
 } )( );

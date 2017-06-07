@@ -1,7 +1,7 @@
 let SelectBoxMulti = 
 ( function( )
 {
-	let SelectBoxMulti = function( element, options, locale ) 
+	let Element = function( element, options, locale ) 
 	{
 		//
 		this.element = element;
@@ -54,7 +54,7 @@ let SelectBoxMulti =
 			.repaint( );
 	};
 	
-	SelectBoxMulti.prototype = 
+	Element.prototype = 
 	{
 		// Загрузка списка
 		loadList: function( )
@@ -291,5 +291,5 @@ let SelectBoxMulti =
 		}
 	};
 	
-	return SelectBoxMulti;
+	return Element;
 } )( );

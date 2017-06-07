@@ -1,7 +1,7 @@
 let SelectBox = 
 ( function( )
 {
-	let SelectBox = function( element, options, locale ) 
+	let Element = function( element, options, locale ) 
 	{
 		//
 		this.element = element;
@@ -9,18 +9,10 @@ let SelectBox =
 		this.locale = locale;
 			
 		//
-		const attr = new Attributes( this.element ),
-			searchEnabled = ( !element.data( 'search' ) || ( options.search ? true : false ) );
-		
-		// Поле поиска
-		const searchHTML = !searchEnabled ? '' : '<div class="jq-selectbox__search">'
-													+ '<input type="search" autocomplete="off" placeholder="' + ( element.data( 'search-placeholder' ) || locale.search[ 'placeholder' ] ) + '">'
-												+ '</div>'
-												+ '<div class="jq-selectbox__not-found">' + ( element.data( 'search-not-found' ) || locale.search[ 'notFound' ] ) + '</div>';
+		const attr = new Attributes( this.element );
 		
 		// Выпадающий список
 		this.dropdown = $( '<div class="jq-selectbox__dropdown" style="position: absolute">'
-								+ ( searchHTML || '' )
 							+ '</div>' );
 				
 		// Формируем компонент
@@ -52,6 +44,9 @@ let SelectBox =
 		//
 		this.setEvents( )
 			.repaint( );
+
+		// Прячем оригинальный селект
+		element.addClass( 'jq-hidden' );
 	
 		// Прячем выпадающий список при клике за пределами селекта
 		if( !onDocumentClick.registered )
@@ -61,37 +56,54 @@ let SelectBox =
 		}
 	};
 	
-	SelectBox.prototype = 
+	Element.prototype = 
 	{
 		//
 		loadDropdown: function( )
 		{
 			const element = this.element,
 				options = this.options,
+				locale = this.locale,
 				selectbox = this.selectbox,
 				dropdown = this.dropdown;
 			
 			//
 			const optionList = $( 'option', element ),
 				optionSelected = optionList.filter( ':selected' ),
-				ulList = SelectBoxExtra.makeList( optionList );
-				
-			// Обновляем содержимое
-			dropdown.html( ulList );		
+				ulList = SelectBoxExtra.makeList( optionList ),
+				searchEnabled = ( !element.data( 'search' ) || ( options.search ? true : false ) );
+		
+			// Очищаем содержимое
+			dropdown.html( '' )
+					.append( ulList );
 			
 			//
 			const dropdownLi = $( 'li', dropdown ).css( { 'display': 'inline-block' } ),
 				liSelected = dropdownLi.filter( '.selected' );
 		
+			//
+			if( dropdown.css( 'left' ) === 'auto' )
+			{
+				dropdown.css( {	left: 0 } );
+			}
+		
 			// Обновляем ширину
 			this.calculateDropdownWidth( );
 
-			// Прячем оригинальный селект
-			element.addClass( 'jq-hidden' );
-
 			// Обновляем высоту
 			this.calculateDropdownHeight( );
-			
+
+			// Добавляем поле поиска
+			if( searchEnabled && dropdownLi.length > options.search.limit )
+			{
+				let searchBlock = $( '<div class="jq-selectbox__search">'
+										+ '<input type="search" autocomplete="off" placeholder="' + ( element.data( 'search-placeholder' ) || locale.search[ 'placeholder' ] ) + '">'
+									+ '</div>'
+									+ '<div class="jq-selectbox__not-found">' + ( element.data( 'search-not-found' ) || locale.search[ 'notFound' ] ) + '</div>' );
+							
+				dropdown.prepend( searchBlock );
+			}
+							
 			// Скрываем список
 			dropdown.hide( );
 
@@ -122,18 +134,11 @@ let SelectBox =
 				dropdown = this.dropdown;
 		
 			// Разбираем на составляющие выпадающий список
-			const dropdownLi = $( 'li', dropdown ),
-				notFound = $( 'div.jq-selectbox__not-found', dropdown ).hide( );
+			const dropdownLi = $( 'li', dropdown );
 			
 			//
 			let	liWidthInner = 0,
 				liWidth = 0;
-
-			//
-			if( dropdownLi.length < options.search.limit )
-			{
-				$( 'input', dropdown ).parent( ).hide( );
-			}
 
 			// Расчитываем максимальную ширину
 			dropdownLi.each( function( )
@@ -208,12 +213,6 @@ let SelectBox =
 			}
 
 			//
-			if( dropdown.css( 'left' ) === 'auto' )
-			{
-				dropdown.css( {	left: 0 } );
-			}
-
-			//
 			if( dropdown.css( 'top' ) === 'auto' )
 			{
 				dropdown.css( { top: selectbox.outerHeight( true ) || 0 } );
@@ -227,7 +226,7 @@ let SelectBox =
 		dropDown: function( menu, offset, newHeight, liHeight, maxHeight )
 		{	
 			const searchHeight = $( 'input', this.dropdown ).parent( ).outerHeight( true ) || 0;
-			
+
 			//
 			this.selectbox.removeClass( 'dropup' )
 							.addClass( 'dropdown' );
@@ -242,7 +241,7 @@ let SelectBox =
 			maxHeightBottom( );
 
 			// Если есть конкретная высота - выставляем её
-			menu.css( 'max-height', ( maxHeight !== 'none' && maxHeight > 0 ? maxHeight : newHeight ) );
+			menu.css( 'max-height', ( maxHeight !== 'none' && parseInt( maxHeight ) > 0 ? parseInt( maxHeight ) : newHeight ) );
 
 			// Если высота больше чем нужно - снова ставим максммальную
 			if( offset < ( this.dropdown.outerHeight( ) + liHeight ) )
@@ -351,37 +350,38 @@ let SelectBox =
 					newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible,
 					minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * 5;
 
-				// Раскрытие вверх
-				if( options.smartPosition && bottomOffset <= ( minHeight + searchHeight + 20 ) )
-				{
-					context.dropUp( dropdownUl, topOffset, newHeight, liHeight, maxHeight );
-				}
-				// Раскрытие вниз
-				else 
-				{
-					context.dropDown( dropdownUl, bottomOffset, newHeight, liHeight, maxHeight );
-				}
-
-				// Если выпадающий список выходит за правый край окна браузера,
-				// то меняем позиционирование с левого на правое
-				if( selectbox.offset( ).left + dropdown.outerWidth( ) > $( window ).width( ) )
-				{
-					dropdown.css( { left: 'auto', right: 0 } );
-				}
-
-				// 
-				$( 'div.jqselect' ).removeClass( 'opened' );
-
 				//
 				if( dropdown.is( ':hidden' ) )
 				{
+					// 
+					$( 'div.jqselect' ).removeClass( 'opened' );
+					
+					//
 					$( 'div.jq-selectbox__dropdown:visible' ).hide( );
-
+					
 					// Отображаем список
 					dropdown.show( );
 
 					// Добавляем классы
-					selectbox.addClass( 'opened focused' );
+					selectbox.addClass( 'opened focused' );		
+					
+					// Раскрытие вверх
+					if( options.smartPosition && ( bottomOffset <= ( minHeight + searchHeight + liHeight ) ) )
+					{
+						context.dropUp( dropdownUl, topOffset, newHeight, liHeight, maxHeight );
+					}
+					// Раскрытие вниз
+					else 
+					{
+						context.dropDown( dropdownUl, bottomOffset, newHeight, liHeight, maxHeight );
+					}
+
+					// Если выпадающий список выходит за правый край окна браузера,
+					// то меняем позиционирование с левого на правое
+					if( selectbox.offset( ).left + dropdown.outerWidth( ) > $( window ).width( ) )
+					{
+						dropdown.css( { left: 'auto', right: 0 } );
+					}
 
 					// Колбек при открытии селекта
 					options.onOpened.call( selectbox );
@@ -643,5 +643,5 @@ let SelectBox =
 		}
 	};
 	
-	return SelectBox;
+	return Element;
 } )( );
