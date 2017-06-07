@@ -1,7 +1,7 @@
 let Password = 
 ( function( )
 {
-	let Element = function( element, options, locale ) 
+	let Component = function( element, options, locale ) 
 	{		
 		//
 		this.element = element;
@@ -12,7 +12,7 @@ let Password =
 		const customButton = $( '<div class="jq-password__switch">' + ( this.options.switchHTML || '' ) + '</div>' );
 		
 		//
-		this.password = $( '<div class="jq-password">' ).append( customButton ),
+		this.password = $( '<div class="jq-password">' ).append( customButton );
 		this.button = ( customButton.children( 'button' ).length > 0 ? customButton.children( 'button' ) : customButton );
 
 		// Есть ли текст в блоке, и нужно ли его ставить
@@ -35,7 +35,7 @@ let Password =
 			.repaint( );
 	};
 	
-	Element.prototype = 
+	Component.prototype = 
 	{
 		setEvents: function( )
 		{
@@ -113,7 +113,7 @@ let Password =
 			
 			return this;
 		}
-	}
+	};
 	
-	return Element;
+	return Component;
 } )( );

@@ -1,7 +1,7 @@
 let File = 
 ( function( )
 {
-	let Element = function( element, options, locale ) 
+	let Component = function( element, options, locale ) 
 	{		
 		//
 		this.element = element;
@@ -33,7 +33,7 @@ let File =
 			.repaint( );
 	};
 	
-	Element.prototype = 
+	Component.prototype = 
 	{
 		// Обработка событий
 		setEvents: function( )
@@ -119,5 +119,5 @@ let File =
 		}
 	}
 	
-	return Element;
+	return Component;
 } )( );

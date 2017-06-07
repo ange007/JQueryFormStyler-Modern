@@ -1,7 +1,7 @@
 let SelectBox = 
 ( function( )
 {
-	let Element = function( element, options, locale ) 
+	let Component = function( element, options, locale ) 
 	{
 		//
 		this.element = element;
@@ -56,7 +56,7 @@ let SelectBox =
 		}
 	};
 	
-	Element.prototype = 
+	Component.prototype = 
 	{
 		//
 		loadDropdown: function( )
@@ -71,7 +71,8 @@ let SelectBox =
 			const optionList = $( 'option', element ),
 				optionSelected = optionList.filter( ':selected' ),
 				ulList = SelectBoxExtra.makeList( optionList ),
-				searchEnabled = ( !element.data( 'search' ) || ( options.search ? true : false ) );
+				searchEnabled = ( !element.data( 'search' ) || ( options.search ? true : false ) ), 
+				selectSearchLimit = element.data( 'search-limit' ) || ( options.search || {} ).limit;
 		
 			// Очищаем содержимое
 			dropdown.html( '' )
@@ -94,7 +95,7 @@ let SelectBox =
 			this.calculateDropdownHeight( );
 
 			// Добавляем поле поиска
-			if( searchEnabled && dropdownLi.length > options.search.limit )
+			if( searchEnabled && dropdownLi.length > selectSearchLimit )
 			{
 				let searchBlock = $( '<div class="jq-selectbox__search">'
 										+ '<input type="search" autocomplete="off" placeholder="' + ( element.data( 'search-placeholder' ) || locale.search[ 'placeholder' ] ) + '">'
@@ -128,7 +129,6 @@ let SelectBox =
 		calculateDropdownWidth: function( )
 		{
 			const element = this.element,
-				options = this.options,
 				selectbox = this.selectbox,
 				selectboxText = this.selectboxText,
 				dropdown = this.dropdown;
@@ -199,8 +199,7 @@ let SelectBox =
 		// Расчёт высоты
 		calculateDropdownHeight: function( )
 		{
-			const element = this.element,
-				selectbox = this.selectbox,
+			const selectbox = this.selectbox,
 				dropdown = this.dropdown;
 				
 			//
@@ -285,7 +284,6 @@ let SelectBox =
 			const context = this,
 				element = this.element,
 				options = this.options,
-				locale = this.locale,
 				selectbox = this.selectbox,
 				dropdown = this.dropdown,
 				selectboxSelect = this.selectboxSelect,
@@ -293,11 +291,7 @@ let SelectBox =
 			
 			//
 			const optionList = $( 'option', this.element ),
-				selectSearch = element.data( 'search' ) || ( options.search ? true : false ),
-				selectSearchLimit = element.data( 'search-limit' ) || ( options.search || {} ).limit,
-				selectSmartPosition = element.data( 'smart-position' ) || options.smartPosition,
-				selectSearchNotFound = element.data( 'search-not-found' ) || locale.search[ 'notFound' ],
-				selectSearchPlaceholder = element.data( 'search-placeholder' ) || locale.search[ 'placeholder' ];
+				selectSmartPosition = element.data( 'smart-position' ) || options.smartPosition;
 			
 			// Разбираем на составляющие выпадающий список
 			const dropdownUl = $( 'ul', dropdown ),
@@ -366,7 +360,7 @@ let SelectBox =
 					selectbox.addClass( 'opened focused' );		
 					
 					// Раскрытие вверх
-					if( options.smartPosition && ( bottomOffset <= ( minHeight + searchHeight + liHeight ) ) )
+					if( selectSmartPosition && ( bottomOffset <= ( minHeight + searchHeight + liHeight ) ) )
 					{
 						context.dropUp( dropdownUl, topOffset, newHeight, liHeight, maxHeight );
 					}
@@ -643,5 +637,5 @@ let SelectBox =
 		}
 	};
 	
-	return Element;
+	return Component;
 } )( );

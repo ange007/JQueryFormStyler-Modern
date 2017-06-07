@@ -1,7 +1,7 @@
 let CheckBox = 
 ( function( )
 {
-	let Element = function( element, options, locale ) 
+	let Component = function( element, options, locale ) 
 	{
 		//
 		this.element = element;
@@ -26,7 +26,7 @@ let CheckBox =
 			.repaint( );
 	};
 	
-	Element.prototype = 
+	Component.prototype = 
 	{
 		// Обработка событий
 		setEvents: function( )
@@ -174,7 +174,7 @@ let CheckBox =
 
 			return this;
 		}
-	}
+	};
 	
-	return Element;
+	return Component;
 } )( );

@@ -1,7 +1,7 @@
 let Radio = 
 ( function( )
 {
-	let Element = function( element, options, locale ) 
+	let Component = function( element, options, locale ) 
 	{
 		//
 		this.element = element;
@@ -26,7 +26,7 @@ let Radio =
 			.repaint( );
 	};
 	
-	Element.prototype = 
+	Component.prototype = 
 	{
 		// Обработка событий
 		setEvents: function( )
@@ -75,7 +75,7 @@ let Radio =
 			} );
 
 			// Обработка изменений
-			element.on( 'change.' + pluginName, function( e )
+			element.on( 'change.' + pluginName, function( )
 			{
 				radio.triggerHandler( 'repaint' );
 			} )
@@ -149,7 +149,7 @@ let Radio =
 
 			return this;
 		}
-	}
+	};
 	
-	return Element;
+	return Component;
 } )( );

@@ -1,7 +1,7 @@
 let SelectBoxMulti = 
 ( function( )
 {
-	let Element = function( element, options, locale ) 
+	let Component = function( element, options, locale ) 
 	{
 		//
 		this.element = element;
@@ -54,13 +54,12 @@ let SelectBoxMulti =
 			.repaint( );
 	};
 	
-	Element.prototype = 
+	Component.prototype = 
 	{
 		// Загрузка списка
 		loadList: function( )
 		{
 			const element = this.element,
-				options = this.options,
 				selectbox = this.selectbox;
 			
 			const optionList = $( 'option', element ),
@@ -78,7 +77,6 @@ let SelectBoxMulti =
 		{
 			const context = this,
 				element = this.element,
-				options = this.options,
 				selectbox = this.selectbox;	
 		
 			const optionList = $( 'option', element ),
@@ -254,11 +252,9 @@ let SelectBoxMulti =
 		repaint: function( )
 		{
 			const element = this.element,
-				options = this.options,
 				selectbox = this.selectbox;	
 		
 			const optionList = $( 'option', element ),
-				ul = $( 'ul', selectbox ),
 				li = $( 'li', selectbox );			
 			
 			//
@@ -291,5 +287,5 @@ let SelectBoxMulti =
 		}
 	};
 	
-	return Element;
+	return Component;
 } )( );

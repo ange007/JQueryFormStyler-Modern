@@ -1,7 +1,7 @@
 let Number = 
 ( function( )
 {
-	let Element = function( element, options, locale ) 
+	let Component = function( element, options, locale ) 
 	{		
 		//
 		this.element = element;
@@ -29,20 +29,20 @@ let Number =
 			.repaint( );
 	};
 	
-	Element.prototype = 
+	Component.prototype = 
 	{
 		// Обработка событий
 		setEvents: function( )
 		{
 			const context = this,
 				element = this.element,
-				number = this.number;
+				num = this.number;
 		
 			let timeout = null,
 				interval = null;
 			
 			// Необходимо "перерисовать" контрол
-			number.on( 'repaint', function( )
+			num.on( 'repaint', function( )
 			{
 				context.repaint( );
 			} )
@@ -74,12 +74,12 @@ let Number =
 			// Фокусировка
 			element.on( 'focus.' + pluginName, function( )
 			{
-				number.addClass( 'focused' );
+				num.addClass( 'focused' );
 			} )
 			// Расфокусировка
 			.on( 'blur.' + pluginName, function( )
 			{
-				number.removeClass( 'focused' );
+				num.removeClass( 'focused' );
 			} );
 			
 			return this;
@@ -88,10 +88,7 @@ let Number =
 		// Перерисовка
 		repaint: function( )
 		{
-			const element = this.element,
-				number = this.number;
-			
-			number.toggleClass( 'disabled', element.is( ':disabled' ) );
+			this.number.toggleClass( 'disabled', this.element.is( ':disabled' ) );
 			
 			return this;
 		},
@@ -99,17 +96,16 @@ let Number =
 		//
 		changeValue: function( button )
 		{
-			const element = this.element,
-				number = this.number;
+			const element = this.element;
 			
 			//
 			const min = element.attr( 'min' ) || undefined,
 				max = element.attr( 'max' ) || undefined,
-				step = window.Number( element.attr( 'step' ) ) || 1;		
+				step = parseFloat( element.attr( 'step' ) ) || 1;		
 			
 			//
 			let value = $.isNumeric( element.val( ) ) ? element.val( ) : 0,
-				newValue = window.Number( value ) + ( button.is( '.plus' ) ? step : -step );
+				newValue = parseFloat( value ) + ( button.is( '.plus' ) ? step : -step );
 
 			// Определяем количество десятичных знаков после запятой в step
 			const decimals = ( step.toString( ).split( '.' )[1] || [ ] ).length.prototype;
@@ -167,7 +163,7 @@ let Number =
 			
 			return this;
 		}
-	}
+	};
 	
-	return Element;
+	return Component;
 } )( );
