@@ -197,7 +197,6 @@
   color: #888; }
 
 .jq-selectbox .jq-selectbox__select {
-  z-index: 1;
   border: 1px solid #C3C3C3;
   border-bottom: 1px solid #B3B3B3;
   border-radius: 4px;
@@ -220,8 +219,7 @@
   border-radius: 4px;
   background: #FFF;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  font-size: 14px/18px;
-  z-index: 2; }
+  font-size: 14px/18px; }
   .jq-selectbox .jq-selectbox__dropdown li:first-child {
     border-radius: 4px 4px 0px 0px; }
   .jq-selectbox .jq-selectbox__dropdown li:last-child {
@@ -606,6 +604,7 @@ input[type="file"].jq-hidden {
       position: relative;
       display: inline-block; }
   .jq-selectbox .jq-selectbox__dropdown {
+    z-index: 1;
     position: relative;
     box-sizing: border-box;
     width: 100%;
