@@ -50,7 +50,6 @@
 	}
 	
 	.jq-selectbox__select {
-		z-index: 1;
 		border: $border;
 		border-bottom: $border-bottom;
 		border-radius: $border-radius;
@@ -79,7 +78,6 @@
 		background: $background;
 		box-shadow: 0 2px 10px rgba(0,0,0,.2);
 		font-size: 14px/18px;
-		z-index: 2;
 
 		li:first-child {
 			border-radius: 4px 4px 0px 0px; 

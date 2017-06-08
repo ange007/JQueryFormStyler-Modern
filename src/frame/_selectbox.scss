@@ -58,6 +58,7 @@
 	}
 
 	.jq-selectbox__dropdown {
+		z-index: 1;
 		position: relative;
 		box-sizing: border-box;
 		width: 100%;
