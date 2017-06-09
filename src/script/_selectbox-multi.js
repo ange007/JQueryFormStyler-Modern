@@ -66,7 +66,8 @@ let SelectBoxMulti =
 				ulList = SelectBoxExtra.makeList( optionList );
 				
 			// Обновляем содержимое
-			selectbox.html( ulList );
+			selectbox.remove( 'ul' )
+					.append( ulList );
 			
 			//
 			return this;
