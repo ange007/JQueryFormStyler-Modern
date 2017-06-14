@@ -20,9 +20,9 @@
 		border-bottom: $border-bottom;
 		border-radius: $border-radius;
 		background: $background-gradient;
-		box-shadow: 0 1px 2px rgba(0,0,0,.1);
-		box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
-		text-shadow: 1px 1px #FFF;
+		/* box-shadow: 0 1px 2px rgba(0,0,0,.1); */
+		box-shadow: $box-shadow;
+		text-shadow: $font-shadow;
 
 		&:hover {
 			background: $background-gradient-hover;
