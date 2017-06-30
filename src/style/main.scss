@@ -1,5 +1,4 @@
 $pluginName: '%pluginName%';
-$prefix: '%classPrefix%';
 
 $color: #333;
 $color-disabled: #888;
@@ -37,7 +36,7 @@ $select-item-hover-color: #FFF;
 
 /* */
 
-@import 'mixins';
+@import '_mixins';
 
 /* checkbox */
 
