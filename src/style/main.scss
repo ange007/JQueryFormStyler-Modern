@@ -1,7 +1,15 @@
 $pluginName: '%pluginName%';
 
 $color: #333;
+$color-hover: #333;
+$color-active: #333;
 $color-disabled: #888;
+
+$font-size: 14px/32px;
+$font-shadow: 1px 1px #FFF;
+$font-weight: normal;
+
+$line-height: 20px;
 
 $background: #FFF;
 $background-hover: #FFF;
@@ -10,6 +18,9 @@ $background-disabled: #F5F5F5;
 $background-gradient: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
 $background-gradient-hover: linear-gradient(#F6F6F6, #E6E6E6), #E6E6E6;
 $background-gradient-active: #F5F5F5;
+
+$box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
+$font-shadow: none;
 
 $border-radius: 4px;
 $border: 1px solid #C3C3C3;

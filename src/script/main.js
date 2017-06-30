@@ -28,13 +28,7 @@
 		select: {
 			search: {
 				limit: 10,
-
-				/* @todo: Заготовка будущего функционала
-				ajax: {
-					delay: 250,
-					onSuccess: function( ) { }
-				}
-				*/
+				ajax: undefined
 			},
 			triggerHTML: '<div class="jq-selectbox__trigger-arrow"></div>',
 			visibleOptions: 0,
@@ -275,10 +269,10 @@
 			this.destroy( true ); 
 
 			// Перезаписываем настройки
-			$.extend( this.options, options );
+			this.options = $.extend( true, { }, this.options, options );
 			
 			// Расширяем текущий словарь словами переданными через настройки
-			$.extend( this.locales, this.options.locales );
+			this.locales = $.extend( true, { }, this.locales, this.options.locales );
 
 			// Снова инициализируем стилизацию
 			this.init( );
@@ -299,10 +293,6 @@
 				if( !$.data( this, '_' + pluginName ) )
 				{
 					$.data( this, '_' + pluginName, new Plugin( this, options ) );
-				}
-				else
-				{
-					$( this ).styler( 'reinitialize' );
 				}
 			} )
 			// Ожидаем полного прохода
