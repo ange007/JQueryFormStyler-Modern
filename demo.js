@@ -84,6 +84,11 @@
 				
 		// Обработка "изменения" елемента
 		$( 'input, select' ).on( 'change', checkState );
+		
+			
+		/*
+		 * input:checkbox
+		 */	
 				
 		// Состояние "неопределено" по умолчанию
 		$( '#checkbox-indeterminate' ).prop( 'indeterminate', 'true' )
@@ -93,16 +98,22 @@
 		$( '#checkbox-indeterminate-change' ).prop( 'indeterminate', 'true' )
 											.styler( 'reinitialize', { checkbox: { indeterminate: true } } );
 			
+		/*
+		 * input:password
+		 */	
+			
 		// input:password без <button>
 		$( '#p-2' ).styler( 'reinitialize', { password: { switchHTML: '' } } );		
 		
 		// input:password со своим текстом
-		$( '#p-3' ).styler( 'reinitialize', { locales: { 
-													password: { 
-														show: 'Показать', 
-														hide: 'Скрыть' 
-													} 
-											} } );	
+		$( '#p-3' ).styler( 'reinitialize', {
+			locales: {
+				password: {
+					show: 'Показать',
+					hide: 'Скрыть'
+				}
+			}
+		} );	
 											
 		// input:password без кнопки
 		$( '#p-4' ).styler( 'reinitialize', { password: { switchHTML: undefined } } );										
@@ -123,6 +134,48 @@
 		{
 			e.preventDefault( );
 		} );
+
+		/*
+		 * 
+		 */
+		
+		$( '#s-11' ).styler( 'reinitialize' );
+		
+		// input:password без кнопки
+		$( '#s-12' ).styler( 'reinitialize', {
+			select: {
+				search: {
+					ajax: {
+						delay: 250,
+						cache: true,		
+		
+						url: 'https://api.github.com/search/repositories',
+						data: function( params ) {
+							return {
+							  q: params.term,
+							  page: params.page
+							};
+						},
+
+						processResults: function( data, params ) 
+						{
+							params.page = params.page || 1;
+							
+							return { 
+								items: data.items,
+								pagination: {
+									more: ( params.page * 30 ) < data.total_count
+								}
+							}
+						},
+					}
+				}
+			}
+		} );		
+
+		/*
+		 * 
+		 */
 
 		// Добавить input:checkbox
 		$( 'button.add-checkbox' ).on( 'click', function( )
@@ -216,6 +269,10 @@
 					.find( 'select' )
 					.each( function( ) { $( this ).append( options ); } );
 		} );
+		
+		/*
+		 * 
+		 */
 
 		//
 		$( 'button.check' ).on( 'click', function( )
