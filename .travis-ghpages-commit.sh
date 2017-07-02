@@ -1,6 +1,11 @@
 #!/bin/bash
 # encoding: utf-8
 
+if [ "$TRAVIS_BRANCH" != "master" ] 
+then 
+	exit 0;
+fi
+
 DIST_PATH=${TRAVIS_BUILD_DIR}/actual-gh-pages
 # переходим в директорию
 cd ${TRAVIS_BUILD_DIR};

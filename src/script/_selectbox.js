@@ -48,12 +48,9 @@ let SelectBox =
 		// Разбираем на составляющие 
 		this.selectboxSelect = $( 'div.jq-selectbox__select', this.selectbox );
 		this.selectboxText = $( 'div.jq-selectbox__select-text', this.selectbox );
-		
-		
-				
+			
 		// Скрываем ненужные элементы 
 		// this.searchBlock.hide( );
-			
 			
 		// Загрузка выпадающего списка
 		this.loadDropdown( );
@@ -146,6 +143,32 @@ let SelectBox =
 			}
 			
 			return this;
+		},
+		
+		// Закрыватие списка
+		closeDropdown: function( )
+		{		
+			const element = this.element,
+				options = this.options,
+				selectbox = this.selectbox,
+				dropdown = this.dropdown;
+		
+			// Прячем список
+			dropdown.hide( );
+			selectbox.removeClass( 'opened dropup dropdown' );
+
+			// Колбек при закрытии селекта
+			options.onClosed.call( selectbox );	
+
+			/*
+			
+			// Колбек при закрытии селекта
+			if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
+			{
+				options.onClosed.call( selectbox );
+			}
+			
+			*/
 		},
 		
 		// Расчёт ширины
@@ -322,6 +345,7 @@ let SelectBox =
 			const dropdownUl = $( 'ul', dropdown ),
 				dropdownLi = $( 'li', dropdown ),
 				notFound = $( 'div.jq-selectbox__not-found', dropdown ),
+				itemCount = dropdownLi.length,
 				selectHeight = selectbox.outerHeight( true ) || 0,
 				maxHeight = dropdownUl.css( 'max-height' ) || 0,
 				position = selectHeight || 0;
@@ -366,12 +390,8 @@ let SelectBox =
 					bottomOffset = $( window ).height( ) - selectHeight - ( topOffset - $( window ).scrollTop( ) ),
 					searchHeight = dropdownSearch.parent( ).outerHeight( true ) || 0,
 					newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible,
-					minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * 5;
-					
-				//
-				console.log( 'dropdown:hidden - ' +  dropdown.is( ':hidden' )  );
-				console.log( dropdown );
-				
+					minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * ( itemCount < 5 ? itemCount : 5 );
+
 				// Выпадающий список скрыт
 				if( dropdown.is( ':hidden' ) )
 				{
@@ -383,7 +403,7 @@ let SelectBox =
 					
 					// Добавляем классы
 					selectbox.addClass( 'opened focused' );		
-					
+										
 					// Отображаем список
 					dropdown.show( );
 					
@@ -405,18 +425,26 @@ let SelectBox =
 						dropdown.css( { left: 'auto', right: 0 } );
 					}
 
+					// Минимальная высота списка
+					if( itemCount <= 0 && dropdownUl.outerHeight( true ) < minHeight )
+					{
+						dropdownUl.css( 'min-height', minHeight );
+					}
+
 					// Поисковое поле
 					if( dropdownSearch.parent( ).is( ':visible' ) )
 					{
-						console.log( 'dropdownSearch:focus' );
-						
 						// Сбрасываем значение и начинаем поиск
 						dropdownSearch.val( '' )
-									.focus( )
+									.trigger( 'focus' )
 									/*.trigger( 'keyup' )*/;
 
 						// Прячем блок "не найдено"
 						notFound.hide( );
+					}
+					else 
+					{
+
 					}
 
 					// Колбек при открытии селекта
@@ -424,19 +452,7 @@ let SelectBox =
 				}
 				else
 				{
-					console.log( 'hide' );
-					
-					// Скрываем список
-					dropdown.hide( );
-
-					// Удаляем классы
-					selectbox.removeClass( 'opened dropup dropdown' );
-
-					// Колбек при закрытии селекта
-					if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
-					{
-						options.onClosed.call( selectbox );
-					}
+					context.closeDropdown( );
 				}
 				
 				// Прокручиваем до выбранного пункта при открытии списка
@@ -469,15 +485,13 @@ let SelectBox =
 			{
 				const query = $( this ).val( );
 
-				console.log( 'dropdownSearch.keyUp' );
-
 				// 
 				if( ajaxOptions !== undefined && ajaxOptions.url !== '' )
 				{
 					if( query !== '' )
 					{
 						if( context.ajaxTimeout ) { window.clearTimeout( context.ajaxTimeout ); }
-						context.ajaxTimeout = window.setTimeout( function( ) { context.ajaxSearch( query, true ) }, ajaxOptions.delay || 100 );
+						context.ajaxTimeout = window.setTimeout( function( ) { context.ajaxSearch( query, true ); }, ajaxOptions.delay || 100 );
 					}
 					// Очищаем список
 					else
@@ -513,16 +527,15 @@ let SelectBox =
 			//
 			dropdown.on( 'mouseout', function( )
 			{
-				$( 'li.sel', dropdown ).addClass( 'selected' );
-			} );
-
+				$( 'li.sel', this ).addClass( 'selected' );
+			} )
 			// При наведении курсора на пункт списка
-			dropdownLi.on( 'hover', function( )
+			.on( 'hover', 'li', function( )
 			{
 				$( this ).siblings( ).removeClass( 'selected' );
 			} )	
 			// При клике на пункт визуального списка
-			.on( 'click', function( )
+			.on( 'click', 'li', function( )
 			{
 				const selected = $( this );
 
@@ -548,33 +561,12 @@ let SelectBox =
 					element.change( );
 				}
 
-				selectbox.triggerHandle( 'click' );
+				// 
+				selectbox.triggerHandler( 'click' );
 				
-				/*
-
 				// Прячем список
-				dropdown.hide( );
-				selectbox.removeClass( 'opened dropup dropdown' );
-
-				// Колбек при закрытии селекта
-				options.onClosed.call( selectbox );
-				
-				*/
-
+				context.closeDropdown( );
 			} );
-
-			// Расфокус с поля ввода
-			dropdownSearch.on( 'blur', function( event )
-			{
-				if( $( event.relatedTarget ).parents( 'div.jqselect' ).get( 0 ) === selectbox.get( 0 ) )
-				{
-					return;
-				}
-				
-				selectbox.removeClass( 'focused opened dropup dropdown' )
-						.find( 'div.jq-selectbox__dropdown' ).hide( );
-			} );
-
 
 			// Реакция на смену пункта оригинального селекта
 			element.on( 'change.' + pluginName, function( )
@@ -584,28 +576,26 @@ let SelectBox =
 			// Фокусировка
 			.on( 'focus.' + pluginName, function( )
 			{
+				//
+				/*$( 'div.jqselect' ).not( '.focused' ).removeClass( 'opened dropup dropdown' )
+									.find( 'div.jq-selectbox__dropdown' ).hide( );*/
+				
 				// Добавляем фокус на текущий элемент
 				selectbox.addClass( 'focused' );
 			} )
 			// Расфокусировка
 			.on( 'blur.' + pluginName, function( event )
 			{
-				// 
-				if( $( event.relatedTarget ).length <= 0 || $( event.relatedTarget ).parents( 'div.jqselect' ).get( 0 ) === selectbox.get( 0 ) )
-				{
-					return;
-				}
-				
-				selectbox.removeClass( 'focused opened dropup dropdown' )
-						.find( 'div.jq-selectbox__dropdown' ).hide( );
+				//
+				selectbox.removeClass( 'focused' );
 			} )
 			// Изменение селекта с клавиатуры
-			.on( 'keydown.' + pluginName + ' keyup.' + pluginName, function( e )
+			.on( 'keydown.' + pluginName + ' keyup.' + pluginName, function( event )
 			{
 				let liHeight = dropdownLi.data( 'li-height' );
 
 				// Вверх, влево, Page Up, Home
-				if( e.which === 38 || e.which === 37 || e.which === 33 || e.which === 36 )
+				if( event.which === 38 || event.which === 37 || event.which === 33 || event.which === 36 )
 				{
 					if( element.val( ) === '' )
 					{
@@ -617,32 +607,38 @@ let SelectBox =
 					}
 				}
 				// Вниз, вправо, Page Down, End
-				if( e.which === 40 || e.which === 39 || e.which === 34 || e.which === 35 )
+				if( event.which === 40 || event.which === 39 || event.which === 34 || event.which === 35 )
 				{
 					dropdownUl.scrollTop( dropdownUl.scrollTop( ) + dropdownLi.filter( '.selected' ).position( ).top - dropdownUl.innerHeight( ) + liHeight );
 				}
 
 				// Закрываем выпадающий список при нажатии Enter
-				if( e.which === 13 )
+				if( event.which === 13 )
 				{
-					e.preventDefault( );
+					event.preventDefault( );
 					
-					dropdown.hide( );
-					selectbox.removeClass( 'opened dropup dropdown' );
-
-					// Колбек при закрытии селекта
-					options.onClosed.call( selectbox );
+					// Прячем список
+					context.closeDropdown( );
 				}
 			} )
 			//
-			.on( 'keydown.' + pluginName, function( e )
+			.on( 'keydown.' + pluginName, function( event )
 			{
 				// Открываем выпадающий список при нажатии Space
-				if( e.which === 32 )
+				if( event.which === 32 )
 				{
-					e.preventDefault( );
+					event.preventDefault( );
+					
 					selectboxSelect.trigger( 'click' );
 				}
+			} );
+			
+			//
+			$( document ).on( 'focus', 'select', function( event )
+			{
+				//
+				$( 'div.jqselect' ).not( '.focused' ).removeClass( 'opened dropup dropdown' )
+									.find( 'div.jq-selectbox__dropdown' ).hide( );
 			} );
 			
 			return this;
@@ -651,9 +647,6 @@ let SelectBox =
 		// Поиск на сервере
 		ajaxSearch: function( term, clear )
 		{
-			console.log( 'ajaxSearch' );
-			
-			
 			const context = this,
 				element = this.element,
 				options = this.options,
@@ -680,7 +673,10 @@ let SelectBox =
 						context.loadDropdown( );
 					}
 					
-					console.error( 'ERROR' );
+					if( context.options.debug && window.console && console.error ) 
+					{
+						console.error( 'JQuery.FormStyler-Modern: Ошибка при запросе!' );
+					}
 				} 
 			};
 
@@ -719,7 +715,7 @@ let SelectBox =
 			{
 				if( !results || !results.items || !$.isArray( results.items ) )
 				{
-					console.error( 'JQuery.FormStyler-Modern: The AJAX results did not return an array in the `items` key of the response.' );
+					console.error( 'JQuery.FormStyler-Modern: В ответе не найдены данные по ключу - `items`.' );
 				}
 			}
 			
@@ -733,7 +729,7 @@ let SelectBox =
 			$( items ).each( function( index, item ) 
 			{
 				$( '<option>' ).attr( 'value', ( item.value || item.id || index ) )
-								.text( item.caption || item.name || item.text )
+								.text( item.caption || item.name || item.text || item )
 								.appendTo( element );
 			} );
 

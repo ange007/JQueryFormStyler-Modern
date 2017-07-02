@@ -138,13 +138,13 @@
 		/*
 		 * 
 		 */
-		
-		$( '#s-11' ).styler( 'reinitialize' );
-		
+
 		// input:password без кнопки
 		$( '#s-12' ).styler( 'reinitialize', {
 			select: {
-				search: {
+				visibleOptions: 10,
+									
+				search: {					
 					ajax: {
 						delay: 250,
 						cache: true,		
@@ -158,16 +158,19 @@
 						},
 
 						processResults: function( data, params ) 
-						{
-							params.page = params.page || 1;
+						{						
+							var items = [ ];
+							
+							$( data.items ).each( function( index, value )
+							{
+								items.push( { 'value': value.html_url, 
+												'caption': value.owner.login + '/' + value.name } );
+							} );
 							
 							return { 
-								items: data.items,
-								pagination: {
-									more: ( params.page * 30 ) < data.total_count
-								}
-							}
-						},
+								items: items
+							};
+						}
 					}
 				}
 			}

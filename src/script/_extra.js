@@ -36,7 +36,8 @@ function onDocumentClick( e )
 			//
 			if( search.length )
 			{
-				search.val( '' ).keyup( );
+				search.val( '' )
+						.keyup( );
 			}
 
 			//
