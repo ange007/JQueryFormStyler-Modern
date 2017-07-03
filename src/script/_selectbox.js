@@ -48,19 +48,13 @@ let SelectBox =
 		// Разбираем на составляющие 
 		this.selectboxSelect = $( 'div.jq-selectbox__select', this.selectbox );
 		this.selectboxText = $( 'div.jq-selectbox__select-text', this.selectbox );
-			
-		// Скрываем ненужные элементы 
-		// this.searchBlock.hide( );
-			
+
 		// Загрузка выпадающего списка
 		this.loadDropdown( );
 		
 		// Скрываем список
 		this.dropdown.hide( );
 		
-		// 
-		// const selectedText = li.filter( '.selected' ).text( );
-
 		//
 		this.setEvents( )
 			.repaint( );
@@ -245,11 +239,19 @@ let SelectBox =
 		// Расчёт высоты
 		calculateDropdownHeight: function( )
 		{
-			const selectbox = this.selectbox,
+			const element = this.element,
+				options = this.options,
+				selectbox = this.selectbox,
 				dropdown = this.dropdown;
 				
 			//
-			const dropdownLi = $( 'li', dropdown );
+			const dropdownUl = $( 'ul', dropdown ),
+				dropdownLi = $( 'li', dropdown ),
+				liHeight = dropdownLi.data( 'li-height' ) || 0,
+				itemCount = dropdownLi.length,
+				visible = element.data( 'visible-options' ) || options.visibleOptions,
+				newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible,
+				minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * ( itemCount < 5 ? itemCount : 5 );
 			
 			//
 			if( dropdownLi.data( 'li-height' ) === undefined )
@@ -262,8 +264,91 @@ let SelectBox =
 			{
 				dropdown.css( { top: selectbox.outerHeight( true ) || 0 } );
 			}
-						
+				
 			return this;
+		},
+		
+		// Умное позиционирование
+		smartPosition: function( )
+		{
+			const element = this.element,
+				options = this.options,
+				ajaxOptions = this.ajaxOptions,
+				selectbox = this.selectbox,
+				dropdown = this.dropdown,
+				dropdownSearch = this.searchBlock.find( 'input' );
+			
+			//
+			const optionList = $( 'option', this.element ),
+				selectSmartPosition = element.data( 'smart-position' ) || options.smartPosition;
+			
+			// Разбираем на составляющие выпадающий список
+			const dropdownUl = $( 'ul', dropdown ),
+				dropdownLi = $( 'li', dropdown ),
+				notFound = $( 'div.jq-selectbox__not-found', dropdown ),
+				itemCount = dropdownLi.length,
+				selectHeight = selectbox.outerHeight( true ) || 0,
+				maxHeight = dropdownUl.css( 'max-height' ) || 0,
+				position = selectHeight || 0;
+			
+			// Умное позиционирование - переменные
+			let liHeight = dropdownLi.data( 'li-height' ) || 0;
+
+			// Умное позиционирование - константы
+			const visible = element.data( 'visible-options' ) || options.visibleOptions,
+				topOffset = selectbox.offset( ).top || 0,
+				bottomOffset = $( window ).height( ) - selectHeight - ( topOffset - $( window ).scrollTop( ) ),
+				searchHeight = dropdownSearch.parent( ).outerHeight( true ) || 0,
+				newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible,
+				minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * ( itemCount < 5 ? itemCount : 5 );
+
+			// Раскрытие вверх
+			if( selectSmartPosition && ( bottomOffset <= ( minHeight + searchHeight + liHeight ) ) )
+			{
+				this.dropUp( dropdownUl, topOffset, newHeight, liHeight, maxHeight );
+			}
+			// Раскрытие вниз
+			else 
+			{
+				this.dropDown( dropdownUl, bottomOffset, newHeight, liHeight, maxHeight );
+			}
+
+			// Если выпадающий список выходит за правый край окна браузера,
+			// то меняем позиционирование с левого на правое
+			if( selectbox.offset( ).left + dropdown.outerWidth( ) > $( window ).width( ) )
+			{
+				dropdown.css( { left: 'auto', right: 0 } );
+			}
+
+			// Минимальная высота списка
+			if( itemCount <= 0 && dropdownUl.outerHeight( true ) < minHeight )
+			{
+				dropdownUl.css( 'min-height', minHeight );
+			}
+
+			// Прокручиваем до выбранного пункта при открытии списка
+			if( dropdownLi.filter( '.selected' ).length )
+			{
+				if( element.val( ) === '' )
+				{
+					dropdownUl.scrollTop( 0 );
+				}
+				else
+				{
+					// Если нечетное количество видимых пунктов,
+					// то высоту пункта делим пополам для последующего расчета
+					if( ( dropdownUl.innerHeight( ) / liHeight ) % 2 !== 0 )
+					{
+						liHeight = liHeight / 2;
+					}
+
+					//
+					dropdownUl.scrollTop( dropdownUl.scrollTop( ) + dropdownLi.filter( '.selected' ).position( ).top - dropdownUl.innerHeight( ) / 2 + liHeight );
+				}
+			}
+
+			//
+			SelectBoxExtra.preventScrolling( dropdownUl );
 		},
 		
 		// Выпадающее вниз меню
@@ -334,21 +419,12 @@ let SelectBox =
 				selectbox = this.selectbox,
 				dropdown = this.dropdown,
 				dropdownSearch = this.searchBlock.find( 'input' ),
-				selectboxSelect = this.selectboxSelect,
-				selectboxText = this.selectboxText;
-			
-			//
-			const optionList = $( 'option', this.element ),
-				selectSmartPosition = element.data( 'smart-position' ) || options.smartPosition;
-			
+				selectboxSelect = this.selectboxSelect;
+
 			// Разбираем на составляющие выпадающий список
 			const dropdownUl = $( 'ul', dropdown ),
 				dropdownLi = $( 'li', dropdown ),
-				notFound = $( 'div.jq-selectbox__not-found', dropdown ),
-				itemCount = dropdownLi.length,
-				selectHeight = selectbox.outerHeight( true ) || 0,
-				maxHeight = dropdownUl.css( 'max-height' ) || 0,
-				position = selectHeight || 0;
+				notFound = $( 'div.jq-selectbox__not-found', dropdown );
 			
 			// Необходимо "перерисовать" контрол
 			selectbox.on( 'repaint', function( )
@@ -381,19 +457,12 @@ let SelectBox =
 					return;
 				}
 
-				// Умное позиционирование - переменные
-				let liHeight = dropdownLi.data( 'li-height' ) || 0;
-
-				// Умное позиционирование - константы
-				const visible = element.data( 'visible-options' ) || options.visibleOptions,
-					topOffset = selectbox.offset( ).top || 0,
-					bottomOffset = $( window ).height( ) - selectHeight - ( topOffset - $( window ).scrollTop( ) ),
-					searchHeight = dropdownSearch.parent( ).outerHeight( true ) || 0,
-					newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible,
-					minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * ( itemCount < 5 ? itemCount : 5 );
-
 				// Выпадающий список скрыт
-				if( dropdown.is( ':hidden' ) )
+				if( dropdown.is( ':visible' ) )
+				{
+					context.closeDropdown( );
+				}
+				else
 				{
 					// 
 					$( 'div.jqselect' ).removeClass( 'opened' );
@@ -407,37 +476,14 @@ let SelectBox =
 					// Отображаем список
 					dropdown.show( );
 					
-					// Раскрытие вверх
-					if( selectSmartPosition && ( bottomOffset <= ( minHeight + searchHeight + liHeight ) ) )
-					{
-						context.dropUp( dropdownUl, topOffset, newHeight, liHeight, maxHeight );
-					}
-					// Раскрытие вниз
-					else 
-					{
-						context.dropDown( dropdownUl, bottomOffset, newHeight, liHeight, maxHeight );
-					}
-
-					// Если выпадающий список выходит за правый край окна браузера,
-					// то меняем позиционирование с левого на правое
-					if( selectbox.offset( ).left + dropdown.outerWidth( ) > $( window ).width( ) )
-					{
-						dropdown.css( { left: 'auto', right: 0 } );
-					}
-
-					// Минимальная высота списка
-					if( itemCount <= 0 && dropdownUl.outerHeight( true ) < minHeight )
-					{
-						dropdownUl.css( 'min-height', minHeight );
-					}
+					//
+					context.smartPosition( );
 
 					// Поисковое поле
 					if( dropdownSearch.parent( ).is( ':visible' ) )
 					{
 						// Сбрасываем значение и начинаем поиск
-						dropdownSearch.val( '' )
-									.trigger( 'focus' )
-									/*.trigger( 'keyup' )*/;
+						dropdownSearch.trigger( 'focus' );
 
 						// Прячем блок "не найдено"
 						notFound.hide( );
@@ -450,40 +496,13 @@ let SelectBox =
 					// Колбек при открытии селекта
 					options.onOpened.call( selectbox );
 				}
-				else
-				{
-					context.closeDropdown( );
-				}
-				
-				// Прокручиваем до выбранного пункта при открытии списка
-				if( dropdownLi.filter( '.selected' ).length )
-				{
-					if( element.val( ) === '' )
-					{
-						dropdownUl.scrollTop( 0 );
-					}
-					else
-					{
-						// Если нечетное количество видимых пунктов,
-						// то высоту пункта делим пополам для последующего расчета
-						if( ( dropdownUl.innerHeight( ) / liHeight ) % 2 !== 0 )
-						{
-							liHeight = liHeight / 2;
-						}
-
-						//
-						dropdownUl.scrollTop( dropdownUl.scrollTop( ) + dropdownLi.filter( '.selected' ).position( ).top - dropdownUl.innerHeight( ) / 2 + liHeight );
-					}
-				}
-
-				//
-				SelectBoxExtra.preventScrolling( dropdownUl );
 			} );
 			
 			// Начинаем поиск после "отжатия кнопки"
 			dropdownSearch.on( 'keyup', function( )
 			{
-				const query = $( this ).val( );
+				const query = $( this ).val( ),
+					optionList = $( 'option', context.element );
 
 				// 
 				if( ajaxOptions !== undefined && ajaxOptions.url !== '' )
@@ -493,11 +512,12 @@ let SelectBox =
 						if( context.ajaxTimeout ) { window.clearTimeout( context.ajaxTimeout ); }
 						context.ajaxTimeout = window.setTimeout( function( ) { context.ajaxSearch( query, true ); }, ajaxOptions.delay || 100 );
 					}
-					// Очищаем список
 					else
 					{
+						// Очищаем список
 						element.find( 'option' ).remove( );
 						
+						// Перезагружаем список
 						context.loadDropdown( );
 					}
 				}
@@ -537,7 +557,8 @@ let SelectBox =
 			// При клике на пункт визуального списка
 			.on( 'click', 'li', function( )
 			{
-				const selected = $( this );
+				const selected = $( this ),
+					optionList = $( 'option', context.element );
 
 				// Если пункт не активен или заголовок - не пускаем дальше
 				if( selected.is( '.disabled, .optgroup' ) )
@@ -633,7 +654,7 @@ let SelectBox =
 				}
 			} );
 			
-			//
+			// Скрытие выпадающего списка при фокусе на стороннем элементе
 			$( document ).on( 'focus', 'select', function( event )
 			{
 				//
@@ -728,13 +749,16 @@ let SelectBox =
 			// Выводим список
 			$( items ).each( function( index, item ) 
 			{
-				$( '<option>' ).attr( 'value', ( item.value || item.id || index ) )
+				$( '<option>' ).val( item.value || item.id || index )
 								.text( item.caption || item.name || item.text || item )
 								.appendTo( element );
 			} );
 
 			// Обновляем выпадающий список
 			this.loadDropdown( );
+			
+			//
+			this.smartPosition( );
 		},
 		
 		// Перерисовка
