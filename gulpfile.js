@@ -43,7 +43,6 @@ var paths =
 		style: './src/style/',
 		styles: {
 			default: '/',
-			flat: 'flat/',
 			bootstrap: 'bootstrap/'
 		}
 	},

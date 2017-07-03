@@ -1,81 +1,25 @@
 
 .jq-selectbox {
-	
-	li {
-		color: #231F20;
-
-		&:hover {
-			background-color: $select-item-hover-background;
-			color: $select-item-hover-color;
-		}
-		
-		&.sel,
-		&.selected {
-			background-color: $select-item-active-background;
-			color: $select-item-active-color;
-		}
-
-		&.disabled {
-			color: $color-disabled;
-		}
-
-		&.disabled:hover {
-			background: none;
-		}
-
-		&.optgroup {
-			font-weight: bold;
-		}
-
-		&.optgroup:hover {
-			background: none;
-			color: #231F20;
-			cursor: default;
-		}
+	.jq-selectbox__select {
+		@include base-element( true );	
 	}
 	
-	.placeholder {
-		color: $color-disabled;
-	}
-
 	&.focused .jq-selectbox__select {
-		border-color: $border-focus;
+		border: $border-focus;
 	}
 
 	&.disabled .jq-selectbox__select {
-		border-color: $border-disabled;
+		border: $border-disabled;
 		background: $background-disabled;
 		box-shadow: none;
 		color: $color-disabled;
-	}
-	
-	.jq-selectbox__select {
-		border: $border;
-		border-radius: $border-radius;
-		background: $background-gradient;
-		box-shadow: $box-shadow;
-		color: $color;
-		font-size: $font-size;
-		text-shadow: $font-shadow;
-	}
-	
-	&:not(.disabled) .jq-selectbox__select {
-		&:hover {
-			background: $background-gradient-hover;
-			border-color: $border-hover;
-		}
-
-		&:active {
-			background: $background-gradient-active;
-			box-shadow: inset 1px 1px 3px #DDD;
-		}
 	}
 
 	.jq-selectbox__dropdown {
 		border: $border;
 		border-radius: $border-radius;
 		background: $background;
-		box-shadow: 0 2px 10px rgba(0,0,0,.2);
+		box-shadow: $box-shadow;
 		font-size: 14px/18px;
 
 		li:first-child {
@@ -111,8 +55,45 @@
 		color: #333;
 	}
 
+	.placeholder {
+		color: $color-disabled;
+	}
+	
 	.jq-selectbox__not-found {
 		display: none;
 		background: #F0F0F0;
+	}
+	
+	li {
+		color: #231F20;
+
+		&:hover {
+			background-color: $select-item-hover-background;
+			color: $select-item-hover-color;
+		}
+		
+		&.sel,
+		&.selected {
+			background-color: $select-item-active-background;
+			color: $select-item-active-color;
+		}
+
+		&.disabled {
+			color: $color-disabled;
+		}
+
+		&.disabled:hover {
+			background: none;
+		}
+
+		&.optgroup {
+			font-weight: bold;
+		}
+
+		&.optgroup:hover {
+			background: none;
+			color: #231F20;
+			cursor: default;
+		}
 	}
 }

@@ -6,6 +6,8 @@ input[type='text'].#{$pluginName},
 input[type='url'].#{$pluginName},
 :not(.jq-password)>input[type='password'].#{$pluginName},
 textarea.#{$pluginName} {
+	@include base-element( false );	
+	
 	padding: 8px 9px;
 	border: $border;
 	border-bottom-color: #B3B3B3;
@@ -14,11 +16,11 @@ textarea.#{$pluginName} {
 	color: #333;
 
 	&:not([disabled]):hover {
-		border-color: $border-hover;
+		border: $border-hover;
 	}
 
 	&:not([disabled]):focus {
-		border-color: $border-focus;
+		border: $border-focus;
 		outline: none;
 		box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
 	}
@@ -37,16 +39,10 @@ button.#{$pluginName},
 input[type='button'].#{$pluginName},
 input[type='submit'].#{$pluginName},
 input[type='reset'].#{$pluginName} {
+	@include base-element( true );	
+	
 	overflow: visible;
 	padding: 8px 11px;
-	border: $border;
-	border-bottom-color: #B3B3B3;
-	border-radius: $border-radius;
-	outline: none;
-	background: $background-gradient;
-	box-shadow: $box-shadow;
-	color: $color;
-	text-shadow: $font-shadow;
 	text-decoration: none;
 	cursor: pointer;
 
@@ -55,23 +51,9 @@ input[type='reset'].#{$pluginName} {
 		border: 0;
 	}
 
-	&:not([disabled]):hover {
-		border-color: $border-hover;
-		background: $background-gradient-hover;
-	}
-
-	&:not([disabled]):active {
-		background: $background-gradient-active;
-		box-shadow: inset 1px 1px 3px #DDD;
-	}
-	
-	&:not([disabled]):focus {
-		border-color: $border-focus;
-	}
-
 	&[disabled] {
-		border-color: $border-disabled;
-		background: $background-disabled;
+		border: $border-disabled;
+		background: $background-button-disabled;
 		box-shadow: none;
 		color: $color-disabled;
 	}

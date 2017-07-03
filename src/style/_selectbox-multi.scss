@@ -11,13 +11,6 @@
 		border: 1px solid #5794BF;
 	}
 
-	&.disabled {
-		border-color: $border-disabled;
-		background: $background-disabled;
-		box-shadow: none;
-		color: $color-disabled;
-	}
-
 	li {
 		&:first-child {
 			border-radius: 3px 3px 0 0;

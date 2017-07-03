@@ -1,28 +1,40 @@
-@mixin base-element( ) {
+@mixin base-element( $button ) {
 	color: $color;
 	border: $border;
 	border-radius: $border-radius;
 	
-	background: $background;	
-	box-shadow: $box-shadow;
+	outline: none;
+	
+	background: if( $button, $background-button, $background );	
+	box-shadow: if( $button, $box-shadow-button, $box-shadow );	
 	font-shadow: $font-shadow;
 
-	&:hover {
+	&:not([disabled]):not(.disabled):hover {
 		border: $border-hover;
-		background: $background-hover;
-		box-shadow: $box-shadow-hover;
+		background: if( $button, $background-button-hover, $background-hover );	
+		box-shadow: if( $button, $box-shadow-button-hover, $box-shadow-hover );	
 		font-shadow: $font-shadow-hover;
 	}
 	
-	&:focus {
+	&:not([disabled]):not(.disabled):focus,
+	&:not([disabled]):not(.disabled).focused
+	{
 		border: $border-focus;
 	}
 	
-	&:active {
+	&:not([disabled]):not(.disabled):active {
 		/* border: $border-active; */
-		background: $background-active;
-		box-shadow: $box-shadow-active;
+		background: if( $button, $background-button-active, $background-active );	
+		box-shadow: if( $button, $box-shadow-button-active, $box-shadow-active );	
 		font-shadow: $font-shadow-active;
+	}
+	
+	&[disabled],
+	&.disabled {
+		border-color: $border-disabled;
+		background: $background-disabled;
+		box-shadow: none;
+		color: $color-disabled;
 	}
 }
 
