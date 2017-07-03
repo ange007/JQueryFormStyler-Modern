@@ -127,7 +127,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		}
 
 		this.title = element.attr('title');
-		this.classes = element.attr('class');
+		this.classes = (element.attr('class') || '') + ' ' + pluginName;
 		this.data = element.data();
 	}
 
@@ -1275,7 +1275,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 																// Прячем блок "не найдено"
 																notFound.hide();
-															} else {}
+															}
 
 															// Колбек при открытии селекта
 															options.onOpened.call(selectbox);
@@ -1340,9 +1340,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 															return;
 														}
 
-														// Фокусируем
-														// element.trigger( 'focus' );
-
 														//
 														if (!selected.is('.selected')) {
 															var index = selected.index() - selected.prevAll('.optgroup').length;
@@ -1367,16 +1364,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													})
 													// Фокусировка
 													.on('focus.' + pluginName, function () {
-														//
-														/*$( 'div.jqselect' ).not( '.focused' ).removeClass( 'opened dropup dropdown' )
-              					.find( 'div.jq-selectbox__dropdown' ).hide( );*/
-
-														// Добавляем фокус на текущий элемент
 														selectbox.addClass('focused');
 													})
 													// Расфокусировка
 													.on('blur.' + pluginName, function (event) {
-														//
 														selectbox.removeClass('focused');
 													})
 													// Изменение селекта с клавиатуры
@@ -1849,7 +1840,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				el.removeData('_' + pluginName);
 			}
 
-			// Убираем "невидимлсть" елемента
+			// Убираем "невидимость" елемента
 			el.removeClass('jq-hidden');
 
 			// Дополнительная пост-обработка checkbox и radio
