@@ -488,10 +488,6 @@ let SelectBox =
 						// Прячем блок "не найдено"
 						notFound.hide( );
 					}
-					else 
-					{
-
-					}
 
 					// Колбек при открытии селекта
 					options.onOpened.call( selectbox );
@@ -566,9 +562,6 @@ let SelectBox =
 					return;
 				}
 
-				// Фокусируем
-				// element.trigger( 'focus' );
-
 				//
 				if( !selected.is( '.selected' ) )
 				{
@@ -597,17 +590,11 @@ let SelectBox =
 			// Фокусировка
 			.on( 'focus.' + pluginName, function( )
 			{
-				//
-				/*$( 'div.jqselect' ).not( '.focused' ).removeClass( 'opened dropup dropdown' )
-									.find( 'div.jq-selectbox__dropdown' ).hide( );*/
-				
-				// Добавляем фокус на текущий элемент
 				selectbox.addClass( 'focused' );
 			} )
 			// Расфокусировка
 			.on( 'blur.' + pluginName, function( event )
 			{
-				//
 				selectbox.removeClass( 'focused' );
 			} )
 			// Изменение селекта с клавиатуры

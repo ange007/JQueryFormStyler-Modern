@@ -1,13 +1,14 @@
 
 .jq-number {
 	.jq-number__field {
+		@include base-element( );		
+		
 		border: $border;
-		border-bottom: $border-bottom;
 		border-radius: $border-radius;
 		box-shadow: inset 1px 1px #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
 
 		&:hover {
-			border-color: $border-color-hover;
+			border-color: $border-hover;
 		}
 
 		& input {
@@ -17,7 +18,6 @@
 
 	.jq-number__spin {
 		border: $border;
-		border-bottom: $border-bottom;
 		border-radius: $border-radius;
 		background: $background-gradient;
 		/* box-shadow: 0 1px 2px rgba(0,0,0,.1); */
@@ -56,13 +56,13 @@
 	}
 
 	&.focused .jq-number__field {
-		border-color: $border-color-focus;
+		border-color: $border-focus;
 	}
 
 	&.disabled {
 		.jq-number__field,
 		.jq-number__spin {
-			border-color: $border-color-disabled;
+			border-color: $border-disabled;
 			background: $background-disabled;
 			box-shadow: none;
 			color: $color-disabled;

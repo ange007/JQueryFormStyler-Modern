@@ -8,7 +8,7 @@
 				inset 1px -1px #FFF;	
 
 	&:not(.disabled):hover {
-		border-color: $border-color-hover;
+		border-color: $border-hover;
 	}
 
 	&.checked .jq-checkbox__div,
@@ -19,6 +19,6 @@
 	}
 
 	&.focused {
-		border-color: $border-color-focus;
+		border-color: $border-focus;
 	}
 }

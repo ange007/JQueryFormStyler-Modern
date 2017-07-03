@@ -1,3 +1,31 @@
+@mixin base-element( ) {
+	color: $color;
+	border: $border;
+	border-radius: $border-radius;
+	
+	background: $background;	
+	box-shadow: $box-shadow;
+	font-shadow: $font-shadow;
+
+	&:hover {
+		border: $border-hover;
+		background: $background-hover;
+		box-shadow: $box-shadow-hover;
+		font-shadow: $font-shadow-hover;
+	}
+	
+	&:focus {
+		border: $border-focus;
+	}
+	
+	&:active {
+		/* border: $border-active; */
+		background: $background-active;
+		box-shadow: $box-shadow-active;
+		font-shadow: $font-shadow-active;
+	}
+}
+
 @mixin button( $background, $color, $border, $lighten ) {
 	color: $color;
 	background-color: $background;
@@ -41,12 +69,12 @@
 	}
 }
 
-@mixin hi-light($background){
-	@if($style == light){
-		background-color: darken($background, 10%);
+@mixin hi-light( $background ) {
+	@if( $style == light ) {
+		background-color: darken( $background, 10% );
 	}
 	@else {
-		background-color: lighten($background, 5%);
+		background-color: lighten( $background, 5% );
 	}
 }
 

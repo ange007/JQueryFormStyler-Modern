@@ -14,11 +14,11 @@ textarea.#{$pluginName} {
 	color: #333;
 
 	&:not([disabled]):hover {
-		border-color: $border-color-hover;
+		border-color: $border-hover;
 	}
 
 	&:not([disabled]):focus {
-		border-color: $border-color-focus;
+		border-color: $border-focus;
 		outline: none;
 		box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
 	}
@@ -56,7 +56,7 @@ input[type='reset'].#{$pluginName} {
 	}
 
 	&:not([disabled]):hover {
-		border-color: $border-color-hover;
+		border-color: $border-hover;
 		background: $background-gradient-hover;
 	}
 
@@ -66,11 +66,11 @@ input[type='reset'].#{$pluginName} {
 	}
 	
 	&:not([disabled]):focus {
-		border-color: $border-color-focus;
+		border-color: $border-focus;
 	}
 
 	&[disabled] {
-		border-color: $border-color-disabled;
+		border-color: $border-disabled;
 		background: $background-disabled;
 		box-shadow: none;
 		color: $color-disabled;

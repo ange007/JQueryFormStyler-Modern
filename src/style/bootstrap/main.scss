@@ -1,8 +1,8 @@
 $pluginName: '%pluginName%';
 
-$color: #333;
-$color-hover: #333;
-$color-active: #333;
+$color: #555;
+$color-hover: #555;
+$color-active: #555;
 $color-disabled: #888;
 
 $font-size: 14px/32px;
@@ -12,8 +12,8 @@ $font-weight: normal;
 $line-height: 20px;
 
 $background: #FFF;
-$background-hover: #FFF;
-$background-active: #FFF;
+$background-hover: #ADADAD;
+$background-active: #D4D4D4;
 $background-disabled: #F5F5F5;
 
 $background-button: $background;
@@ -29,9 +29,9 @@ $font-shadow: none;
 $font-shadow-hover: none;
 $font-shadow-active: none;
 
-$border: 1px solid #C3C3C3;
-$border-hover: 1px solid gray;
-$border-focus: 1px solid #08C;
+$border: 1px solid #CCC;
+$border-hover: 1px solid #ADADAD;
+$border-focus: 1px solid #66afe9;
 $border-disabled: 1px solid #CCC;
 $border-radius: 4px;
 
@@ -41,14 +41,14 @@ $checkbox-radius: 3px;
 $checkbox-radius-checked: 2px;
 $radio-checkbox-checked-bg: #666;
 
-$select-arrow-size: 5px;
-$select-arrow-color: #999;
-$select-arrow-color-hover: #000;
+$select-arrow-size: 4px;
+$select-arrow-color: #333;
+$select-arrow-color-hover: #333;
 $select-arrow-rounded: false;
-$select-item-active-background: #08C;
+$select-item-active-background: #337ab7;
 $select-item-active-color: #FFF;
-$select-item-hover-background: lighten($select-item-active-background, 10%);
-$select-item-hover-color: #FFF;
+$select-item-hover-background: #F5F5F5;
+$select-item-hover-color: $color-hover;
 
 /* */
 

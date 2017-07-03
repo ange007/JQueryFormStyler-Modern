@@ -39,11 +39,11 @@
 	}
 
 	&.focused .jq-selectbox__select {
-		border-color: $border-color-focus;
+		border-color: $border-focus;
 	}
 
 	&.disabled .jq-selectbox__select {
-		border-color: $border-color-disabled;
+		border-color: $border-disabled;
 		background: $background-disabled;
 		box-shadow: none;
 		color: $color-disabled;
@@ -51,7 +51,6 @@
 	
 	.jq-selectbox__select {
 		border: $border;
-		border-bottom: $border-bottom;
 		border-radius: $border-radius;
 		background: $background-gradient;
 		box-shadow: $box-shadow;
@@ -63,7 +62,7 @@
 	&:not(.disabled) .jq-selectbox__select {
 		&:hover {
 			background: $background-gradient-hover;
-			border-color: $border-color-hover;
+			border-color: $border-hover;
 		}
 
 		&:active {

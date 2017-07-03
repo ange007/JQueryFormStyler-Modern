@@ -116,7 +116,7 @@
 		}
 
 		this.title = element.attr( 'title' );
-		this.classes = element.attr( 'class' );
+		this.classes = ( element.attr( 'class' ) || '' ) + ' ' + pluginName;
 		this.data = element.data( );
 	}
 
@@ -245,7 +245,7 @@
 				el.removeData( '_' + pluginName );
 			}
 			
-			// Убираем "невидимлсть" елемента
+			// Убираем "невидимость" елемента
 			el.removeClass( 'jq-hidden' );
 
 			// Дополнительная пост-обработка checkbox и radio

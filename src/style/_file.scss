@@ -31,13 +31,13 @@
 	}
 
 	&.focused .jq-file__name {
-		border-color: $border-color-focus;
+		border-color: $border-focus;
 	}
 
 	&.disabled,
 	&.disabled .jq-file__name,
 	&.disabled .jq-file__browse {
-		border-color: $border-color-disabled;
+		border-color: $border-disabled;
 		background: $background-disabled;
 		box-shadow: none;
 		color: $color-disabled;
