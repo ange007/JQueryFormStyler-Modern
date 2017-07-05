@@ -4,7 +4,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /**
  * jquery.formstyler-modern - JQuery HTML form styling plugin
- * @version v2.1.0
+ * @version v2.1.1
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
  * @author Borisenko Vladimir
@@ -55,6 +55,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		},
 		password: {
 			switchHTML: '<button type="button" class="' + pluginName + '"></button>'
+		},
+		number: {
+			horizontal: false
 		},
 
 		onFormStyled: function onFormStyled() {}
@@ -541,10 +544,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									//
 									this.number = $('<div class="jq-number">' + '<div class="jq-number__spin minus"></div>' + '<div class="jq-number__spin plus"></div>' + '</div>').attr({ 'id': attr.id, 'title': attr.title }).addClass(attr.classes).data(attr.data);
 
-									// Прячем оригинальную радиокнопку
+									// Прячем оригинальный элемент
 									this.element.after(this.number).prependTo(this.number).wrap('<div class="jq-number__field"></div>');
 
-									//
+									// При необходимости добавляем горизонтальный стиль отрисовки
+									if (this.options.horizontal) {
+										this.number.addClass('horizontal');
+									}
+
+									// Навешиваем события и отрисовываем
 									this.setEvents().repaint();
 								};
 
@@ -647,6 +655,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										} else {
 											element.val(newValue).change();
 										}
+
+										return this;
 									},
 
 									// Уничтожение
@@ -778,87 +788,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								}
 								// Список
 								else if (element.is('select')) {
-										var SelectBoxExtra = function () {
-											return {
-												// Запрещаем прокрутку страницы при прокрутке селекта
-												preventScrolling: function preventScrolling(selector) {
-													var scrollDiff = selector.prop('scrollHeight') - selector.outerHeight();
-
-													//
-													var wheelDelta = null,
-													    scrollTop = null;
-
-													// 
-													selector.off('mousewheel DOMMouseScroll').on('mousewheel DOMMouseScroll', function (e) {
-														wheelDelta = e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0 ? 1 : -1; // Направление прокрутки (-1 вниз, 1 вверх)
-														scrollTop = selector.scrollTop(); // Позиция скролла
-
-														if (scrollTop >= scrollDiff && wheelDelta < 0 || scrollTop <= 0 && wheelDelta > 0) {
-															e.stopPropagation();
-															e.preventDefault();
-														}
-													});
-
-													return this;
-												},
-
-												// Формируем список селекта
-												makeList: function makeList(opList) {
-													var list = $('<ul>');
-
-													// Перебираем список элементов
-													for (var i = 0; i < opList.length; i++) {
-														var op = opList.eq(i),
-														    id = (op.attr('id') || '') !== '' ? op.attr('id') + idSuffix : '',
-														    title = op.attr('title');
-
-														var liClass = op.attr('class') || '';
-
-														if (op.is(':selected')) {
-															liClass += (liClass !== '' ? ' ' : '') + 'selected sel';
-														}
-
-														if (op.is(':disabled')) {
-															liClass += (liClass !== '' ? ' ' : '') + 'disabled';
-														}
-
-														// Параметры по умолчанию
-														var defaultAttr = { 'title': title,
-															'data': op.data(),
-															'html': op.html() };
-
-														// Добавляем к пункту идентификатор если он есть
-														if (id !== '') {
-															defaultAttr['id'] = id;
-														}
-
-														// Если есть optgroup
-														if (op.parent().is('optgroup')) {
-															var optGroupClass = '';
-
-															//
-															if (op.parent().attr('class') !== undefined) {
-																optGroupClass = ' ' + op.parent().attr('class');
-															}
-
-															// Заголовок группы
-															if (op.is(':first-child')) {
-																$('<li>', { 'class': 'optgroup' + optGroupClass,
-																	'html': op.parent().attr('label') }).appendTo(list);
-															}
-
-															// Создаём пункт для группы
-															$('<li>', $.extend(defaultAttr, { 'class': 'option' })).addClass(liClass).addClass(optGroupClass).data('jqfs-class', op.attr('class')).appendTo(list);
-														} else {
-															// Создаём пункт
-															$('<li>', defaultAttr).addClass(liClass).data('jqfs-class', op.attr('class')).appendTo(list);
-														}
-													}
-
-													return list;
-												}
-											};
-										}();
 										var SelectBox = function () {
 											var Component = function Component(element, options, locale) {
 												//
@@ -901,12 +830,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 												// Прячем оригинальный селект
 												element.addClass('jq-hidden');
-
-												// Прячем выпадающий список при клике за пределами селекта
-												if (!onDocumentClick.registered) {
-													$(document).on('click', onDocumentClick);
-													onDocumentClick.registered = true;
-												}
 											};
 
 											Component.prototype = {
@@ -983,15 +906,48 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// Колбек при закрытии селекта
 													options.onClosed.call(selectbox);
 
-													/*
-             
-             // Колбек при закрытии селекта
-             if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
-             {
-             	options.onClosed.call( selectbox );
-             }
-             
-             */
+													return this;
+												},
+
+												//
+												openDropdown: function openDropdown() {
+													var element = this.element,
+													    options = this.options,
+													    selectbox = this.selectbox,
+													    dropdown = this.dropdown,
+													    dropdownSearch = this.searchBlock.find('input');
+
+													//
+													var notFound = $('div.jq-selectbox__not-found', dropdown);
+
+													// 
+													$('div.jqselect').removeClass('opened');
+
+													//
+													$('div.jq-selectbox__dropdown:visible').hide();
+
+													// Добавляем классы
+													selectbox.addClass('opened focused');
+
+													// Отображаем список
+													dropdown.show();
+
+													//
+													this.smartPosition();
+
+													// Поисковое поле
+													if (dropdownSearch.parent().is(':visible')) {
+														// Сбрасываем значение и начинаем поиск
+														dropdownSearch.trigger('focus');
+
+														// Прячем блок "не найдено"
+														notFound.hide();
+													}
+
+													// Колбек при открытии селекта
+													options.onOpened.call(selectbox);
+
+													return this;
 												},
 
 												// Расчёт ширины
@@ -1063,13 +1019,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													    dropdown = this.dropdown;
 
 													//
-													var dropdownUl = $('ul', dropdown),
-													    dropdownLi = $('li', dropdown),
-													    liHeight = dropdownLi.data('li-height') || 0,
-													    itemCount = dropdownLi.length,
-													    visible = element.data('visible-options') || options.visibleOptions,
-													    newHeight = visible === 0 ? 'auto' : liHeight * visible,
-													    minHeight = visible > 0 && visible < 6 ? newHeight : liHeight * (itemCount < 5 ? itemCount : 5);
+													var dropdownLi = $('li', dropdown);
 
 													//
 													if (dropdownLi.data('li-height') === undefined) {
@@ -1133,7 +1083,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													}
 
 													// Минимальная высота списка
-													if (itemCount <= 0 && dropdownUl.outerHeight(true) < minHeight) {
+													if ( /*itemCount <= 0 &&*/dropdownUl.outerHeight(true) < minHeight) {
 														dropdownUl.css('min-height', minHeight);
 													}
 
@@ -1155,6 +1105,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 													//
 													SelectBoxExtra.preventScrolling(dropdownUl);
+
+													return this;
 												},
 
 												// Выпадающее вниз меню
@@ -1180,6 +1132,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													if (offset < this.dropdown.outerHeight() + liHeight) {
 														maxHeightBottom();
 													}
+
+													return this;
 												},
 
 												// Выпадающее вверх меню
@@ -1205,6 +1159,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													if (offset - $(window).scrollTop() - liHeight < this.dropdown.outerHeight() + liHeight) {
 														maxHeightTop();
 													}
+
+													return this;
 												},
 
 												// Обработка событий
@@ -1226,10 +1182,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// Необходимо "перерисовать" контрол
 													selectbox.on('repaint', function () {
 														context.repaint();
+													}
+													// Необходимо закрыть выпадающий список
+													).on('dropdown:close', function () {
+														context.closeDropdown();
+													}
+													// Необходимо открыть выпадающий список
+													).on('dropdown:open', function () {
+														context.openDropdown();
 													});
 
 													// Клик по псевдоблоку
-													selectboxSelect.on('click', function () {
+													selectboxSelect.on('click', function (event) {
 														// Клик должен срабатывать только при активном контроле
 														if (element.is(':disabled')) {
 															return;
@@ -1251,34 +1215,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 														// Выпадающий список скрыт
 														if (dropdown.is(':visible')) {
-															context.closeDropdown();
+															selectbox.triggerHandler('dropdown:close');
 														} else {
-															// 
-															$('div.jqselect').removeClass('opened');
-
-															//
-															$('div.jq-selectbox__dropdown:visible').hide();
-
-															// Добавляем классы
-															selectbox.addClass('opened focused');
-
-															// Отображаем список
-															dropdown.show();
-
-															//
-															context.smartPosition();
-
-															// Поисковое поле
-															if (dropdownSearch.parent().is(':visible')) {
-																// Сбрасываем значение и начинаем поиск
-																dropdownSearch.trigger('focus');
-
-																// Прячем блок "не найдено"
-																notFound.hide();
-															}
-
-															// Колбек при открытии селекта
-															options.onOpened.call(selectbox);
+															selectbox.triggerHandler('dropdown:open');
 														}
 													});
 
@@ -1351,11 +1290,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 															element.change();
 														}
 
-														// 
-														selectbox.triggerHandler('click');
-
 														// Прячем список
-														context.closeDropdown();
+														selectbox.triggerHandler('dropdown:close');
 													});
 
 													// Реакция на смену пункта оригинального селекта
@@ -1372,6 +1308,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													}
 													// Изменение селекта с клавиатуры
 													).on('keydown.' + pluginName + ' keyup.' + pluginName, function (event) {
+														//
 														var liHeight = dropdownLi.data('li-height');
 
 														// Вверх, влево, Page Up, Home
@@ -1392,23 +1329,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 															event.preventDefault();
 
 															// Прячем список
-															context.closeDropdown();
+															selectbox.triggerHandler('dropdown:close');
 														}
-													}
-													//
-													).on('keydown.' + pluginName, function (event) {
-														// Открываем выпадающий список при нажатии Space
+													}).on('keydown.' + pluginName, function (event) {
 														if (event.which === 32) {
-															event.preventDefault();
+															//
+															selectboxSelect.triggerHandler('click');
 
-															selectboxSelect.trigger('click');
+															return false;
 														}
-													});
-
-													// Скрытие выпадающего списка при фокусе на стороннем элементе
-													$(document).on('focus', 'select', function (event) {
-														//
-														$('div.jqselect').not('.focused').removeClass('opened dropup dropdown').find('div.jq-selectbox__dropdown').hide();
 													});
 
 													return this;
@@ -1459,6 +1388,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 													// Отправляем запрос
 													$.ajax(requestOptions);
+
+													return this;
 												},
 
 												// Обработка удачного ответа
@@ -1496,6 +1427,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 													//
 													this.smartPosition();
+
+													return this;
 												},
 
 												// Перерисовка
@@ -1514,7 +1447,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													var selectedItems = optionList.filter(':selected');
 
 													// Выводим в тексте выбранный элемент
-													if (selectedItems.val() === '') {
+													if (selectedItems.val() === undefined || selectedItems.val() === '') {
 														selectboxText.html(element.data('placeholder') || options.placeholder).addClass('placeholder');
 													} else {
 														selectboxText.html(selectedItems.html()).removeClass('placeholder');
@@ -1792,11 +1725,15 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 													// Активация/деактивация
 													selectbox.toggleClass('disabled', element.is(':disabled'));
+
+													return this;
 												},
 
 												// Уничтожение
 												destroy: function destroy() {
 													this.element.off('.' + pluginName + ', refresh').removeAttr('style').parent().before(this.element).remove();
+
+													return this;
 												}
 											};
 
@@ -1808,6 +1745,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 											this.customElement = new SelectBoxMulti(element, this.options.select, this.locales.select);
 										} else {
 											this.customElement = new SelectBox(element, this.options.select, this.locales.select);
+
+											// Инициализация спец.обработчиков
+											if (!SelectBoxExtra.initEvent) {
+												SelectBoxExtra.init();
+											}
 										}
 									}
 									// Другие компоненты
@@ -1847,10 +1789,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			if (this.customElement !== undefined) {
 				this.customElement.destroy();
 			}
-			// Дополнительная пост-обработка file и select
-			else if (el.is('select')) {
-					el.off('.' + pluginName + ', refresh').removeAttr('style').parent().before(el).remove();
-				}
 		},
 
 		// Переинициализация стилизованного элемента - с изменёнными параметрами
@@ -1911,6 +1849,116 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 			}
 	};
 
+	var SelectBoxExtra = function () {
+		return {
+			initEvent: false,
+
+			// Инициализация спец. обработчиков
+			init: function init() {
+				this.initEvent = true;
+
+				// Прячем выпадающий список при клике за пределами селекта
+				$(document).on('click', function (event) {
+					// e.target.nodeName != 'OPTION' - добавлено для обхода бага в Opera на движке Presto
+					// (при изменении селекта с клавиатуры срабатывает событие onclick)
+					if (!$(event.target).parents().hasClass('jq-selectbox') && event.target.nodeName !== 'OPTION' && $('.jq-selectbox.opened').length) {
+						$('.jq-selectbox.opened').triggerHandler('dropdown:close');
+					}
+				});
+
+				// Скрытие выпадающего списка при фокусе на стороннем элементе
+				$(document).on('focus', 'select, input, textarea, button, a', function (event) {
+					var focusedSelect = $('.jq-selectbox.opened'),
+					    currentSelect = $(event.currentTarget).parents('.jq-selectbox');
+
+					if (focusedSelect.get(0) === currentSelect.get(0)) {
+						return;
+					}
+
+					// Скрываем выпадающий список
+					focusedSelect.triggerHandler('dropdown:close');
+				});
+			},
+
+			// Запрещаем прокрутку страницы при прокрутке селекта
+			preventScrolling: function preventScrolling(selector) {
+				var scrollDiff = selector.prop('scrollHeight') - selector.outerHeight();
+
+				//
+				var wheelDelta = null,
+				    scrollTop = null;
+
+				// 
+				selector.off('mousewheel DOMMouseScroll').on('mousewheel DOMMouseScroll', function (e) {
+					wheelDelta = e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0 ? 1 : -1; // Направление прокрутки (-1 вниз, 1 вверх)
+					scrollTop = selector.scrollTop(); // Позиция скролла
+
+					if (scrollTop >= scrollDiff && wheelDelta < 0 || scrollTop <= 0 && wheelDelta > 0) {
+						e.stopPropagation();
+						e.preventDefault();
+					}
+				});
+
+				return this;
+			},
+
+			// Формируем список селекта
+			makeList: function makeList(opList) {
+				var list = $('<ul>');
+
+				// Перебираем список элементов
+				for (var i = 0; i < opList.length; i++) {
+					var op = opList.eq(i),
+					    id = (op.attr('id') || '') !== '' ? op.attr('id') + idSuffix : '',
+					    title = op.attr('title');
+
+					var liClass = op.attr('class') || '';
+
+					if (op.is(':selected')) {
+						liClass += (liClass !== '' ? ' ' : '') + 'selected sel';
+					}
+
+					if (op.is(':disabled')) {
+						liClass += (liClass !== '' ? ' ' : '') + 'disabled';
+					}
+
+					// Параметры по умолчанию
+					var defaultAttr = { 'title': title,
+						'data': op.data(),
+						'html': op.html() };
+
+					// Добавляем к пункту идентификатор если он есть
+					if (id !== '') {
+						defaultAttr['id'] = id;
+					}
+
+					// Если есть optgroup
+					if (op.parent().is('optgroup')) {
+						var optGroupClass = '';
+
+						//
+						if (op.parent().attr('class') !== undefined) {
+							optGroupClass = ' ' + op.parent().attr('class');
+						}
+
+						// Заголовок группы
+						if (op.is(':first-child')) {
+							$('<li>', { 'class': 'optgroup' + optGroupClass,
+								'html': op.parent().attr('label') }).appendTo(list);
+						}
+
+						// Создаём пункт для группы
+						$('<li>', $.extend(defaultAttr, { 'class': 'option' })).addClass(liClass).addClass(optGroupClass).data('jqfs-class', op.attr('class')).appendTo(list);
+					} else {
+						// Создаём пункт
+						$('<li>', defaultAttr).addClass(liClass).data('jqfs-class', op.attr('class')).appendTo(list);
+					}
+				}
+
+				return list;
+			}
+		};
+	}();
 	// Определяем общего родителя у радиокнопок с одинаковым name
 	// http://stackoverflow.com/a/27733847
 	$.fn.commonParents = function () {
@@ -1924,35 +1972,4 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	$.fn.commonParent = function () {
 		return $(this).commonParents().first();
 	};
-
-	// Прячем выпадающий список при клике за пределами селекта
-	function onDocumentClick(e) {
-		// e.target.nodeName != 'OPTION' - добавлено для обхода бага в Opera на движке Presto
-		// (при изменении селекта с клавиатуры срабатывает событие onclick)
-		if (!$(e.target).parents().hasClass('jq-selectbox') && e.target.nodeName !== 'OPTION') {
-			if ($('div.jq-selectbox.opened').length) {
-				//
-				var selectbox = $('div.jq-selectbox.opened'),
-				    search = $('div.jq-selectbox__search input', selectbox),
-				    dropdown = $('div.jq-selectbox__dropdown', selectbox),
-				    opt = selectbox.find('select').data('_' + pluginName).options.select || {};
-
-				// колбек при закрытии селекта
-				opt.onClosed.call(selectbox);
-
-				//
-				if (search.length) {
-					search.val('').keyup();
-				}
-
-				//
-				dropdown.hide().find('li.sel').addClass('selected');
-
-				//
-				selectbox.removeClass('focused opened dropup dropdown');
-			}
-		}
-	}
-
-	onDocumentClick.registered = false;
 });
