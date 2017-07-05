@@ -197,9 +197,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							// Необходимо "перерисовать" контрол 
 							checkbox.on('repaint', function () {
 								context.repaint();
-							})
+							}
 							// Клик по псевдоблоку ( смена состояния )
-							.on('click', function (e) {
+							).on('click', function (e) {
 								e.preventDefault();
 
 								// Обрабатываем только активный псевдобокс
@@ -240,22 +240,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							// Обработка изменений
 							element.on('change.' + pluginName, function () {
 								checkbox.triggerHandler('repaint');
-							})
+							}
 							// Обработка переключения при помощи клавиатуры
-							.on('keydown.' + pluginName, function (e) {
+							).on('keydown.' + pluginName, function (e) {
 								if (e.which === 32) {
 									e.preventDefault();
 									checkbox.triggerHandler('click');
 								}
-							})
+							}
 							// Обработка наведения фокуса
-							.on('focus.' + pluginName, function () {
+							).on('focus.' + pluginName, function () {
 								if (!checkbox.is('.disabled')) {
 									checkbox.addClass('focused');
 								}
-							})
+							}
 							// Обработка снятия фокуса
-							.on('blur.' + pluginName, function () {
+							).on('blur.' + pluginName, function () {
 								checkbox.removeClass('focused');
 							});
 
@@ -337,9 +337,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								// Необходимо "перерисовать" контрол 
 								radio.on('repaint', function () {
 									context.repaint();
-								})
+								}
 								// Клик по псевдоблоку
-								.on('click', function (e) {
+								).on('click', function (e) {
 									//
 									e.preventDefault();
 
@@ -367,22 +367,22 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 								// Обработка изменений
 								element.on('change.' + pluginName, function () {
 									radio.triggerHandler('repaint');
-								})
+								}
 								// Обработка переключения при помощи клавиатуры
-								.on('keydown.' + pluginName, function (e) {
+								).on('keydown.' + pluginName, function (e) {
 									if (e.which === 32) {
 										e.preventDefault();
 										radio.trigger('click');
 									}
-								})
+								}
 								// Обработка наведения фокуса
-								.on('focus.' + pluginName, function () {
+								).on('focus.' + pluginName, function () {
 									if (!radio.is('.disabled')) {
 										radio.addClass('focused');
 									}
-								})
+								}
 								// Обработка снятия фокуса
-								.on('blur.' + pluginName, function () {
+								).on('blur.' + pluginName, function () {
 									radio.removeClass('focused');
 								});
 
@@ -471,9 +471,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 									// Обработка "изменения" состояния
 									element.on('change.' + pluginName, function () {
 										file.triggerHandler('repaint');
-									})
+									}
 									// Работа с "фокусировкой"
-									.on('focus.' + pluginName, function () {
+									).on('focus.' + pluginName, function () {
 										file.addClass('focused');
 									}).on('blur.' + pluginName, function () {
 										file.removeClass('focused');
@@ -569,9 +569,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										// Необходимо "перерисовать" контрол
 										num.on('repaint', function () {
 											context.repaint();
-										})
+										}
 										//
-										.on('mousedown', 'div.jq-number__spin', function () {
+										).on('mousedown', 'div.jq-number__spin', function () {
 											if (element.is(':disabled')) {
 												return;
 											}
@@ -584,9 +584,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													context.changeValue(spin);
 												}, 40);
 											}, 350);
-										})
+										}
 										//
-										.on('mouseup mouseout', 'div.jq-number__spin', function () {
+										).on('mouseup mouseout', 'div.jq-number__spin', function () {
 											if (element.is(':disabled')) {
 												return;
 											}
@@ -598,9 +598,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 										// Фокусировка
 										element.on('focus.' + pluginName, function () {
 											num.addClass('focused');
-										})
+										}
 										// Расфокусировка
-										.on('blur.' + pluginName, function () {
+										).on('blur.' + pluginName, function () {
 											num.removeClass('focused');
 										});
 
@@ -721,9 +721,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 												// Активация/деактивация кнопки
 												button.prop('disabled', element.is(':disabled'));
-											})
+											}
 											// Реакция на клик по кнопке
-											.on('click', '.jq-password__switch', function () {
+											).on('click', '.jq-password__switch', function () {
 												var switcher = $(this),
 												    wrapper = switcher.closest('.jq-password'),
 												    seen = wrapper.is('.jq-password_seen');
@@ -743,9 +743,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 											// Фокусировка
 											element.on('focus.' + pluginName, function () {
 												password.addClass('focused');
-											})
+											}
 											// Расфокусировка
-											.on('blur.' + pluginName, function () {
+											).on('blur.' + pluginName, function () {
 												password.removeClass('focused');
 											});
 
@@ -1182,13 +1182,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// Необходимо "перерисовать" контрол
 													selectbox.on('repaint', function () {
 														context.repaint();
-													})
+													}
 													// Необходимо закрыть выпадающий список
-													.on('dropdown:close', function () {
+													).on('dropdown:close', function () {
 														context.closeDropdown();
-													})
+													}
 													// Необходимо открыть выпадающий список
-													.on('dropdown:open', function () {
+													).on('dropdown:open', function () {
 														context.openDropdown();
 													});
 
@@ -1264,13 +1264,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													//
 													dropdown.on('mouseout', function () {
 														$('li.sel', this).addClass('selected');
-													})
+													}
 													// При наведении курсора на пункт списка
-													.on('hover', 'li', function () {
+													).on('hover', 'li', function () {
 														$(this).siblings().removeClass('selected');
-													})
+													}
 													// При клике на пункт визуального списка
-													.on('click', 'li', function () {
+													).on('click', 'li', function () {
 														var selected = $(this),
 														    optionList = $('option', context.element);
 
@@ -1297,17 +1297,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// Реакция на смену пункта оригинального селекта
 													element.on('change.' + pluginName, function () {
 														selectbox.triggerHandler('repaint');
-													})
+													}
 													// Фокусировка
-													.on('focus.' + pluginName, function () {
+													).on('focus.' + pluginName, function () {
 														selectbox.addClass('focused');
-													})
+													}
 													// Расфокусировка
-													.on('blur.' + pluginName, function (event) {
+													).on('blur.' + pluginName, function (event) {
 														selectbox.removeClass('focused');
-													})
+													}
 													// Изменение селекта с клавиатуры
-													.on('keydown.' + pluginName + ' keyup.' + pluginName, function (event) {
+													).on('keydown.' + pluginName + ' keyup.' + pluginName, function (event) {
 														//
 														var liHeight = dropdownLi.data('li-height');
 
@@ -1672,13 +1672,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 													// Реакция на смену пункта оригинального селекта
 													element.on('change.' + pluginName, function () {
 														selectbox.triggerHandler('repaint');
-													})
+													}
 													// Фокусировка
-													.on('focus.' + pluginName, function () {
+													).on('focus.' + pluginName, function () {
 														selectbox.addClass('focused');
-													})
+													}
 													// Расфокусировка
-													.on('blur.' + pluginName, function () {
+													).on('blur.' + pluginName, function () {
 														selectbox.removeClass('focused');
 													});
 
@@ -1818,11 +1818,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				if (!$.data(this, '_' + pluginName)) {
 					$.data(this, '_' + pluginName, new Plugin(this, options));
 				}
-			})
+			}
 			// Ожидаем полного прохода
-			.promise()
+			).promise
 			// Колбек после выполнения плагина
-			.done(function () {
+			().done(function () {
 				var opt = $(this[0]).data('_' + pluginName);
 
 				if (opt) {
