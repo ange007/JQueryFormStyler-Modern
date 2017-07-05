@@ -1,3 +1,29 @@
+.#{$pluginName} {
+	@at-root input[type='email']#{&} { @include base-element( false ); }
+	@at-root input[type='tel']#{&} { @include base-element( false ); }
+	@at-root input[type='text']#{&} { @include base-element( false ); }
+	@at-root input[type='url']#{&} { @include base-element( false ); }
+	@at-root :not(.jq-password)>input[type='password']#{&} { @include base-element( false ); }
+	
+	@at-root input[type='search']#{&} 
+	{ 
+		@include base-element( false ); 
+		
+		-webkit-appearance: none;
+	}
+	
+	@at-root textarea#{&} {
+		@include base-element( false );	
+		
+		overflow: auto;
+	}
+
+	@at-root a.button#{&} { @include base-element( true ); }
+	@at-root button#{&}  { @include base-element( true ); }
+	@at-root input[type='button']#{&} { @include base-element( true ); }
+	@at-root input[type='submit']#{&} { @include base-element( true ); }
+	@at-root input[type='reset']#{&} { @include base-element( true ); }
+}
 
 input[type='email'].#{$pluginName},
 input[type='search'].#{$pluginName},
@@ -6,32 +32,7 @@ input[type='text'].#{$pluginName},
 input[type='url'].#{$pluginName},
 :not(.jq-password)>input[type='password'].#{$pluginName},
 textarea.#{$pluginName} {
-	@include base-element( false );	
-	
 	padding: 8px 9px;
-	border: $border;
-	border-bottom-color: #B3B3B3;
-	border-radius: $border-radius;
-	box-shadow: inset 1px 1px #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
-	color: #333;
-
-	&:not([disabled]):hover {
-		border: $border-hover;
-	}
-
-	&:not([disabled]):focus {
-		border: $border-focus;
-		outline: none;
-		box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
-	}
-}
-
-input[type='search'].#{$pluginName} {
-	-webkit-appearance: none;
-}
-
-textarea.#{$pluginName} {
-	overflow: auto;
 }
 
 a.button.#{$pluginName},
@@ -39,22 +40,12 @@ button.#{$pluginName},
 input[type='button'].#{$pluginName},
 input[type='submit'].#{$pluginName},
 input[type='reset'].#{$pluginName} {
-	@include base-element( true );	
-	
 	overflow: visible;
 	padding: 8px 11px;
-	text-decoration: none;
 	cursor: pointer;
-
+	
 	&::-moz-focus-inner {
 		padding: 0;
 		border: 0;
-	}
-
-	&[disabled] {
-		border: $border-disabled;
-		background: $background-button-disabled;
-		box-shadow: none;
-		color: $color-disabled;
 	}
 }

@@ -1,11 +1,7 @@
 
 .jq-number {
-	.jq-number__field {
+	.jq-number__field input {
 		@include base-element( false );		
-
-		& input {
-			color: #333;
-		}
 	}
 
 	.jq-number__spin {
@@ -33,24 +29,21 @@
 		}
 	}
 
-	&.focused .jq-number__field {
-		border: $border-focus;
-	}
-
-	&.disabled {
-		.jq-number__field,
-		.jq-number__spin {
-			border: $border-disabled;
-			background: $background-disabled;
-			box-shadow: none;
-			color: $color-disabled;
+	&.disabled .jq-number__spin {
+		&,
+		&:hover,
+		&:focus,
+		&:active {
+			@extend .jq-number__spin[disabled];
+			 
+			border: $border-disabled !important;
 		}
 
-		.jq-number__spin.plus:after {
+		&.plus:after {
 			border-bottom-color: #AAA;
 		}
 
-		.jq-number__spin.minus:after {
+		&.minus:after {
 			border-top-color: #AAA;
 		}
 	}

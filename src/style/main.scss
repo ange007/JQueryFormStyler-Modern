@@ -13,29 +13,35 @@ $line-height: 20px;
 
 $background: #F5F5F5;
 $background-hover: $background;
+$background-focus: $background;
 $background-active: $background;
 $background-disabled: #F5F5F5;
 
 $background-button: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
 $background-button-hover: linear-gradient(#F6F6F6, #E6E6E6), #E6E6E6;
+$background-button-focus: initial;
 $background-button-active: linear-gradient(#F6F6F6, #FFF), #FFF;
 $background-button-disabled: $background-disabled;
 
 $box-shadow: inset 1px -1px #F1F1F1, inset -1px 0 #F1F1F1, 0 1px 2px rgba(0,0,0,.1);
 $box-shadow-hover: none;
+$box-shadow-focus: none;
 $box-shadow-active: none;
 
 $box-shadow-button: none;
 $box-shadow-button-hover: none;
+$box-shadow-button-focus: none;
 $box-shadow-button-active: inset 0 3px 5px rgba(0,0,0,.125);
 
 $font-shadow: none;
 $font-shadow-hover: none;
+$font-shadow-focus: none;
 $font-shadow-active: none;
 
 $border: 1px solid #C3C3C3;
 $border-hover: 1px solid gray;
-$border-focus: 1px solid #08C;
+$border-active: 1px solid #08C;
+$border-focus: $border-active;
 $border-disabled: 1px solid #CCC;
 $border-radius: 4px;
 

@@ -117,7 +117,7 @@ let File =
 			
 			return this;
 		}
-	}
+	};
 	
 	return Component;
 } )( );

@@ -277,6 +277,8 @@ let SelectBoxMulti =
 
 			// Активация/деактивация
 			selectbox.toggleClass( 'disabled', element.is( ':disabled' ) );
+			
+			return this;
 		},
 		
 		// Уничтожение
@@ -285,6 +287,8 @@ let SelectBoxMulti =
 			this.element.off( '.' + pluginName + ', refresh' )
 						.removeAttr( 'style' )
 						.parent( ).before( this.element ).remove( );
+				
+			return this;
 		}
 	};
 	

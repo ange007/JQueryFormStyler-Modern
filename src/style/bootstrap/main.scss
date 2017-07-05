@@ -13,30 +13,35 @@ $line-height: 20px;
 
 $background: #FFF;
 $background-hover: $background;
+$background-focus: $background;
 $background-active: $background;
 $background-disabled: #F5F5F5;
 
 $background-button: $background;
 $background-button-hover: #e6e6e6;
-$background-button-active: #e6e6e6;
+$background-button-focus: $background-button-hover;
+$background-button-active: $background-button-hover;
 $background-button-disabled: $background-disabled;
 
 $box-shadow: none;
-$box-shadow-hover: none;
-$box-shadow-active: none;
+$box-shadow-hover: initial;
+$box-shadow-focus: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+$box-shadow-active: $box-shadow-focus;
 
 $box-shadow-button: none;
 $box-shadow-button-hover: none;
+$box-shadow-button-focus: none;
 $box-shadow-button-active: inset 0 3px 5px rgba(0,0,0,.125);
 
 $font-shadow: none;
 $font-shadow-hover: none;
+$font-shadow-focus: none;
 $font-shadow-active: none;
 
 $border: 1px solid #CCC;
 $border-hover: 1px solid #ADADAD;
-$border-active: 1px solid #adadad;
 $border-focus: 1px solid #66afe9;
+$border-active: $border-focus;
 $border-disabled: 1px solid #CCC;
 $border-radius: 4px;
 

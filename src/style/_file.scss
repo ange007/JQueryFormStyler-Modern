@@ -5,27 +5,16 @@
 	.jq-file__browse {
 		@include base-element( true );	
 			
-		border: none;
-		border-left: 1px solid #CCC;
-		border-radius: 0 4px 4px 0;
-		
-		&:not([disabled]):not(.disabled):hover {
-			border-top: none;
-			border-bottom: none;
-			border-right: none;
-		}
-		
-		&:not([disabled]):not(.disabled):active {
-			border-top: none;
-			border-bottom: none;
-			border-right: none;
-		}
-		
+		&,
+		&:not([disabled]):not(.disabled):hover,
+		&:not([disabled]):not(.disabled):active,
 		&:not([disabled]):not(.disabled):focus,
-		&:not([disabled]):not(.disabled).focused {
-			border-top: none;
-			border-bottom: none;
-			border-right: none;
+		&:not([disabled]):not(.disabled).focused
+		{
+			border-radius: 0px;
+			border-top: none !important;
+			border-bottom: none !important;
+			border-right: none !important;
 		}
 	}
 	
@@ -48,13 +37,8 @@
 	&:not([disabled]):not(.disabled).focused {
 		background: $background;
 	}
-
-	&.disabled,
-	&.disabled .jq-file__name,
+	
 	&.disabled .jq-file__browse {
-		border: $border-disabled;
-		background: $background-disabled;
-		box-shadow: none;
-		color: $color-disabled;
+		@extend .jq-file__browse[disabled];
 	}
 }

@@ -20,11 +20,17 @@ let Number =
 						.addClass( attr.classes )
 						.data( attr.data );
 
-		// Прячем оригинальную радиокнопку
+		// Прячем оригинальный элемент
 		this.element.after( this.number ).prependTo( this.number )
 					.wrap( '<div class="jq-number__field"></div>' );						
-			
-		//
+		
+		// При необходимости добавляем горизонтальный стиль отрисовки
+		if( this.options.horizontal )
+		{
+			this.number.addClass( 'horizontal' );
+		}
+		
+		// Навешиваем события и отрисовываем
 		this.setEvents( )
 			.repaint( );
 	};
@@ -151,6 +157,8 @@ let Number =
 				element.val( newValue )
 						.change( );
 			}
+			
+			return this;
 		},
 		
 		// Уничтожение

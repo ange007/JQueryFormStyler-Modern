@@ -2,6 +2,40 @@ let SelectBoxExtra =
 ( function( )
 {
 	return {
+		initEvent: false,
+		
+		// Инициализация спец. обработчиков
+		init: function( )
+		{
+			this.initEvent = true;
+						
+			// Прячем выпадающий список при клике за пределами селекта
+			$( document ).on( 'click', function( event )
+			{
+				// e.target.nodeName != 'OPTION' - добавлено для обхода бага в Opera на движке Presto
+				// (при изменении селекта с клавиатуры срабатывает событие onclick)
+				if( !$( event.target ).parents( ).hasClass( 'jq-selectbox' ) && event.target.nodeName !== 'OPTION' && $( '.jq-selectbox.opened' ).length )
+				{
+					$( '.jq-selectbox.opened' ).triggerHandler( 'dropdown:close' );
+				}
+			} );
+			
+			// Скрытие выпадающего списка при фокусе на стороннем элементе
+			$( document ).on( 'focus', 'select, input, textarea, button, a', function( event )
+			{
+				var focusedSelect = $( '.jq-selectbox.opened' ),
+					currentSelect = $( event.currentTarget ).parents( '.jq-selectbox' );
+
+				if( focusedSelect.get( 0 ) === currentSelect.get( 0 ) )
+				{
+					return;
+				}
+
+				// Скрываем выпадающий список
+				focusedSelect.triggerHandler( 'dropdown:close' );
+			} );			
+		},
+
 		// Запрещаем прокрутку страницы при прокрутке селекта
 		preventScrolling: function( selector )
 		{

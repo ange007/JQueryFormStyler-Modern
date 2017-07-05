@@ -42,6 +42,9 @@
 		password: {
 			switchHTML: '<button type="button" class="' + pluginName + '"></button>'
 		},
+		number: {
+			horizontal: false
+		},
 
 		onFormStyled: function( ) { },
 	};
@@ -196,7 +199,6 @@
 			// Список
 			else if( element.is( 'select' ) )
 			{
-				//= _selectbox-extra.js
 				//= _selectbox.js
 				//= _selectbox-multi.js
 				
@@ -208,6 +210,12 @@
 				else
 				{
 					this.customElement = new SelectBox( element, this.options.select, this.locales.select );
+
+					// Инициализация спец.обработчиков
+					if( !SelectBoxExtra.initEvent )
+					{
+						SelectBoxExtra.init( );
+					}
 				}
 			}
 			// Другие компоненты
@@ -252,13 +260,6 @@
 			if( this.customElement !== undefined )
 			{
 				this.customElement.destroy( );
-			}
-			// Дополнительная пост-обработка file и select
-			else if( el.is( 'select' ) )
-			{
-				el.off( '.' + pluginName + ', refresh' )
-					.removeAttr( 'style' )
-					.parent( ).before( el ).remove( );
 			}
 		},
 
@@ -330,5 +331,6 @@
 		}
 	};
 	
+	//= _selectbox-extra.js
 	//= _extra.js
 } ) );

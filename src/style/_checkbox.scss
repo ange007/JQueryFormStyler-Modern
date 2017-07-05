@@ -1,11 +1,8 @@
 
 .jq-checkbox {
-	@include base-element( false );
+	@include base-element( );
 	
 	border-radius: $checkbox-radius;
-	/*box-shadow: 0 1px 1px rgba(0,0,0,.05), 
-				inset -1px -1px #FFF, 
-				inset 1px -1px #FFF;*/
 
 	&.checked .jq-checkbox__div,
 	&.indeterminate .jq-checkbox__div {

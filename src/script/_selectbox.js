@@ -61,13 +61,6 @@ let SelectBox =
 
 		// Прячем оригинальный селект
 		element.addClass( 'jq-hidden' );
-	
-		// Прячем выпадающий список при клике за пределами селекта
-		if( !onDocumentClick.registered )
-		{
-			$( document ).on( 'click', onDocumentClick );
-			onDocumentClick.registered = true;
-		}
 	};
 	
 	Component.prototype = 
@@ -153,16 +146,51 @@ let SelectBox =
 
 			// Колбек при закрытии селекта
 			options.onClosed.call( selectbox );	
+		   
+			return this;
+		},
+		
+		//
+		openDropdown: function( )
+		{
+			const element = this.element,
+				options = this.options,
+				selectbox = this.selectbox,
+				dropdown = this.dropdown,
+				dropdownSearch = this.searchBlock.find( 'input' );
+			
+			//
+			const notFound = $( 'div.jq-selectbox__not-found', dropdown );
+			
+			// 
+			$( 'div.jqselect' ).removeClass( 'opened' );
 
-			/*
-			
-			// Колбек при закрытии селекта
-			if( $( 'div.jq-selectbox' ).filter( '.opened' ).length )
+			//
+			$( 'div.jq-selectbox__dropdown:visible' ).hide( );
+
+			// Добавляем классы
+			selectbox.addClass( 'opened focused' );		
+
+			// Отображаем список
+			dropdown.show( );
+
+			//
+			this.smartPosition( );
+
+			// Поисковое поле
+			if( dropdownSearch.parent( ).is( ':visible' ) )
 			{
-				options.onClosed.call( selectbox );
+				// Сбрасываем значение и начинаем поиск
+				dropdownSearch.trigger( 'focus' );
+
+				// Прячем блок "не найдено"
+				notFound.hide( );
 			}
+
+			// Колбек при открытии селекта
+			options.onOpened.call( selectbox );
 			
-			*/
+			return this;
 		},
 		
 		// Расчёт ширины
@@ -245,13 +273,7 @@ let SelectBox =
 				dropdown = this.dropdown;
 				
 			//
-			const dropdownUl = $( 'ul', dropdown ),
-				dropdownLi = $( 'li', dropdown ),
-				liHeight = dropdownLi.data( 'li-height' ) || 0,
-				itemCount = dropdownLi.length,
-				visible = element.data( 'visible-options' ) || options.visibleOptions,
-				newHeight = ( visible === 0 ) ? 'auto' : liHeight * visible,
-				minHeight = ( visible > 0 && visible < 6 ) ? newHeight : liHeight * ( itemCount < 5 ? itemCount : 5 );
+			const dropdownLi = $( 'li', dropdown );
 			
 			//
 			if( dropdownLi.data( 'li-height' ) === undefined )
@@ -321,7 +343,7 @@ let SelectBox =
 			}
 
 			// Минимальная высота списка
-			if( itemCount <= 0 && dropdownUl.outerHeight( true ) < minHeight )
+			if( /*itemCount <= 0 &&*/dropdownUl.outerHeight( true ) < minHeight )
 			{
 				dropdownUl.css( 'min-height', minHeight );
 			}
@@ -349,6 +371,8 @@ let SelectBox =
 
 			//
 			SelectBoxExtra.preventScrolling( dropdownUl );
+			
+			return this;
 		},
 		
 		// Выпадающее вниз меню
@@ -378,6 +402,8 @@ let SelectBox =
 			{
 				maxHeightBottom( );
 			}
+			
+			return this;
 		},
 
 		// Выпадающее вверх меню
@@ -407,6 +433,8 @@ let SelectBox =
 			{
 				maxHeightTop( );
 			}
+			
+			return this;
 		},
 			
 		// Обработка событий
@@ -430,10 +458,20 @@ let SelectBox =
 			selectbox.on( 'repaint', function( )
 			{
 				context.repaint( );
+			} )
+			// Необходимо закрыть выпадающий список
+			.on( 'dropdown:close', function( )
+			{
+				context.closeDropdown( );
+			} )
+			// Необходимо открыть выпадающий список
+			.on( 'dropdown:open', function( )
+			{
+				context.openDropdown( );
 			} );
 			
 			// Клик по псевдоблоку
-			selectboxSelect.on( 'click', function( )
+			selectboxSelect.on( 'click', function( event )
 			{
 				// Клик должен срабатывать только при активном контроле
 				if( element.is( ':disabled' ) )
@@ -456,41 +494,15 @@ let SelectBox =
 				{
 					return;
 				}
-
+								
 				// Выпадающий список скрыт
 				if( dropdown.is( ':visible' ) )
 				{
-					context.closeDropdown( );
+					selectbox.triggerHandler( 'dropdown:close' );
 				}
 				else
 				{
-					// 
-					$( 'div.jqselect' ).removeClass( 'opened' );
-					
-					//
-					$( 'div.jq-selectbox__dropdown:visible' ).hide( );
-					
-					// Добавляем классы
-					selectbox.addClass( 'opened focused' );		
-										
-					// Отображаем список
-					dropdown.show( );
-					
-					//
-					context.smartPosition( );
-
-					// Поисковое поле
-					if( dropdownSearch.parent( ).is( ':visible' ) )
-					{
-						// Сбрасываем значение и начинаем поиск
-						dropdownSearch.trigger( 'focus' );
-
-						// Прячем блок "не найдено"
-						notFound.hide( );
-					}
-
-					// Колбек при открытии селекта
-					options.onOpened.call( selectbox );
+					selectbox.triggerHandler( 'dropdown:open' );
 				}
 			} );
 			
@@ -575,11 +587,8 @@ let SelectBox =
 					element.change( );
 				}
 
-				// 
-				selectbox.triggerHandler( 'click' );
-				
 				// Прячем список
-				context.closeDropdown( );
+				selectbox.triggerHandler( 'dropdown:close' );
 			} );
 
 			// Реакция на смену пункта оригинального селекта
@@ -600,6 +609,7 @@ let SelectBox =
 			// Изменение селекта с клавиатуры
 			.on( 'keydown.' + pluginName + ' keyup.' + pluginName, function( event )
 			{
+				//
 				let liHeight = dropdownLi.data( 'li-height' );
 
 				// Вверх, влево, Page Up, Home
@@ -626,29 +636,20 @@ let SelectBox =
 					event.preventDefault( );
 					
 					// Прячем список
-					context.closeDropdown( );
+					selectbox.triggerHandler( 'dropdown:close' );
 				}
 			} )
-			//
 			.on( 'keydown.' + pluginName, function( event )
-			{
-				// Открываем выпадающий список при нажатии Space
+			{				
 				if( event.which === 32 )
 				{
-					event.preventDefault( );
+					//
+					selectboxSelect.triggerHandler( 'click' );
 					
-					selectboxSelect.trigger( 'click' );
+					return false;
 				}
 			} );
-			
-			// Скрытие выпадающего списка при фокусе на стороннем элементе
-			$( document ).on( 'focus', 'select', function( event )
-			{
-				//
-				$( 'div.jqselect' ).not( '.focused' ).removeClass( 'opened dropup dropdown' )
-									.find( 'div.jq-selectbox__dropdown' ).hide( );
-			} );
-			
+
 			return this;
 		},
 		
@@ -705,6 +706,8 @@ let SelectBox =
 
 			// Отправляем запрос
 			$.ajax( requestOptions );
+			
+			return this;
 		},
 		
 		// Обработка удачного ответа
@@ -746,6 +749,8 @@ let SelectBox =
 			
 			//
 			this.smartPosition( );
+			
+			return this;
 		},
 		
 		// Перерисовка
@@ -765,7 +770,7 @@ let SelectBox =
 			const selectedItems = optionList.filter( ':selected' );
 
 			// Выводим в тексте выбранный элемент
-			if( selectedItems.val( ) === '' )
+			if( selectedItems.val( ) === undefined || selectedItems.val( ) === '' )
 			{
 				selectboxText.html( element.data( 'placeholder' ) || options.placeholder )
 							.addClass( 'placeholder' );

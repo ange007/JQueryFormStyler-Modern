@@ -1,11 +1,7 @@
 
 .jq-selectbox {
 	.jq-selectbox__select {
-		@include base-element( true );	
-	}
-	
-	&.focused .jq-selectbox__select {
-		border: $border-focus;
+		@include base-element( true, '.jq-selectbox', '.jq-selectbox__select' );	
 	}
 
 	&.disabled .jq-selectbox__select {
@@ -41,6 +37,11 @@
 	
 	&:hover .jq-selectbox__trigger-arrow {
 		@include arrow($select-arrow-size, $select-arrow-color-hover, $select-arrow-rounded);
+	}
+	
+	&.opened .jq-selectbox__trigger-arrow {
+		transform: rotate(180deg);
+		transition: 0.3s ease;
 	}
 
 	&.disabled .jq-selectbox__trigger-arrow {
