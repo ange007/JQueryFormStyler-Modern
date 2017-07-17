@@ -4,9 +4,11 @@
   "description": "JQuery HTML form styling plugin",
   "license": "MIT",
   "authors": [
-    "Dimox <http://dimox.name/>",
-    "Yunus Gaziev <https://github.com/yunusga>",
-    "Evgen <https://github.com/osben>"
+	{
+      "name": "Borisenko Vladimir",
+      "email": "ange007@users.noreply.github.com",
+      "url": "https://github.com/ange007/JQueryFormStyler-Modern/"
+	}
   ],
   "keywords": [
     "jquery-plugin",
