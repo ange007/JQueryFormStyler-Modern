@@ -154,7 +154,8 @@
 
 			// Определение мобильного браузера
 			const iOS = ( navigator.userAgent.match( /(iPad|iPhone|iPod)/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
-				Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) );
+					Android = ( navigator.userAgent.match( /Android/i ) && !navigator.userAgent.match( /(Windows\sPhone)/i ) ),
+					IE = ( navigator.userAgent.match( /(MSI|Windows\sPhone|Trident(?=\/))/i ) );
 
 			// Чекбокс
 			if( element.is( ':checkbox' ) )
@@ -225,13 +226,23 @@
 				// Добавляем класс
 				element.addClass( pluginName );
 				
-				// Обработка кнопки сброса
+				// Обработка кнопки сброса для стилизованных елементов
 				if( element.is( 'input[type="reset"]' ) )
 				{
-					element.on( 'click', function( )
+					element.on( 'click', function( ) 
 					{
-						setTimeout( function( ) { element.closest( 'form' ).children( ).trigger( 'repaint' ); }, 1 );
+						element.closest( 'form' ).children( ).trigger( 'repaint' ); 
 					} );
+				}
+
+				// Хак для input[type="range"] в IE
+				// @todo: Найти лучшее решение
+				if( element.is( 'input[type="range"]' ) && IE )
+				{
+					let cssDisplay = element.css( 'display' );
+
+					element.css( 'display', 'block' );
+					setTimeout( function( ) { element.css( 'display', cssDisplay ); }, 1 );
 				}
 			}
 

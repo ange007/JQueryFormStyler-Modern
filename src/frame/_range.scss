@@ -1,0 +1,53 @@
+input[type=range].#{$pluginName} {
+	-webkit-appearance: none;
+
+	&:focus {
+		outline: none;
+	}
+	
+	/* WebKit */
+	
+	&::-webkit-slider-runnable-track {
+		width: 100%;
+		height: 12.8px;
+		cursor: pointer;
+	}
+	&::-webkit-slider-thumb {
+		height: 16px;
+		width: 16px;
+		-webkit-appearance: none;
+		margin-top: -1.6px;
+		cursor: pointer;
+	}
+		
+	/* FireFox */
+
+	&::-moz-range-track {
+		width: 100%;
+		height: 12.8px;
+		cursor: pointer;
+	}
+	&::-moz-range-thumb {
+		height: 16px;
+		width: 16px;
+		cursor: pointer;
+	}
+	
+	&::-moz-focus-outer {
+		border: none;
+	}
+	
+	/* MS */
+
+	&::-ms-track {
+		height: 12.8px;
+		background: transparent;
+		border-color: transparent;
+		border-width: 6px 0;
+		color: transparent;
+	}
+	&::-ms-thumb {
+		height: 16px;
+		width: 16px;
+	}
+}

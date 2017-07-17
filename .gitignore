@@ -4,3 +4,4 @@ build
 bower_components
 npm-debug.log
 TODO.txt
+package-lock.json

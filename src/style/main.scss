@@ -19,7 +19,7 @@ $background-disabled: #F5F5F5;
 
 $background-button: linear-gradient(#FFF, #E6E6E6), #F5F5F5;
 $background-button-hover: linear-gradient(#F6F6F6, #E6E6E6), #E6E6E6;
-$background-button-focus: initial;
+$background-button-focus: $background-button;
 $background-button-active: linear-gradient(#F6F6F6, #FFF), #FFF;
 $background-button-disabled: $background-disabled;
 
@@ -91,6 +91,10 @@ $select-item-hover-color: #FFF;
 /* selectbox-multi */
 
 @import '_selectbox-multi';
+
+/* range */
+
+@import '_range';
 
 /* other */
 

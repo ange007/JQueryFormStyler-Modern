@@ -103,7 +103,8 @@ let SelectBox =
 			this.calculateDropdownHeight( );
 
 			// Добавляем поле поиска
-			if( ( dropdownLi.length > searchLimit || ( this.ajaxOptions !== undefined && this.ajaxOptions.url !== '' ) ) )
+			if( searchEnabled 
+				&& ( dropdownLi.length > searchLimit || ( this.ajaxOptions !== undefined && this.ajaxOptions.url !== '' ) ) )
 			{
 				searchBlock.show( );
 				
@@ -227,7 +228,7 @@ let SelectBox =
 			// от ширины плейсхолдера или самого широкого пункта
 			if( selectboxText.is( '.placeholder' ) && ( selectboxText.width( ) > liWidthInner ) )
 			{
-				selectboxText.width( selectboxText.width( ) );
+				selectbox.width( selectboxText.width( ) );
 			}
 			else
 			{
@@ -244,7 +245,7 @@ let SelectBox =
 				// 
 				if( selCloneWidth === selectbox.outerWidth( ) )
 				{
-					selectboxText.width( liWidth );
+					selectbox.width( liWidth );
 				}
 			}
 
@@ -301,8 +302,7 @@ let SelectBox =
 				dropdownSearch = this.searchBlock.find( 'input' );
 			
 			//
-			const optionList = $( 'option', this.element ),
-				selectSmartPosition = element.data( 'smart-position' ) || options.smartPosition;
+			const selectSmartPosition = element.data( 'smart-position' ) || options.smartPosition;
 			
 			// Разбираем на составляющие выпадающий список
 			const dropdownUl = $( 'ul', dropdown ),
@@ -433,6 +433,9 @@ let SelectBox =
 			{
 				maxHeightTop( );
 			}
+			
+			//
+			this.dropdown.css( { top: 'auto' } );
 			
 			return this;
 		},
