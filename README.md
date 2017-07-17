@@ -1,13 +1,15 @@
-# jQuery FormStyler Modern <sup>[2.x](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGELOG.md)</sup> 
+# jQuery FormStyler Modern <sup>[2.x](CHANGELOG.md)</sup> 
 [![Latest Stable Version](https://poser.pugx.org/ange007/jquery-formstyler-modern/v/stable)](https://packagist.org/packages/ange007/jquery-formstyler-modern)
 [![Total Downloads](https://poser.pugx.org/ange007/jquery-formstyler-modern/downloads)](https://packagist.org/packages/ange007/jquery-formstyler-modern)
 [![License](https://poser.pugx.org/ange007/jquery-formstyler-modern/license)](https://packagist.org/packages/ange007/jquery-formstyler-modern)
-[![Build Status](https://travis-ci.org/ange007/JQueryFormStyler-Modern.svg?branch=dev)](https://travis-ci.org/ange007/JQueryFormStyler-Modern)
+[![Build Status](https://travis-ci.org/ange007/JQueryFormStyler-Modern.svg?branch=master)](https://travis-ci.org/ange007/JQueryFormStyler-Modern)
 
 > Самостоятельное ответвление от плагина **[jQueryFormStyler](https://github.com/Dimox/jQueryFormStyler)** 
 
+![jQuery FormStyler Modern](https://github.com/ange007/jquery-formstyler-modern/blob/master/screenshot.png)
+
 - [Demo](http://ange007.github.io/JQueryFormStyler-Modern/)
-- [Changelog](https://github.com/ange007/JQueryFormStylerModern/blob/dev/CHANGELOG.md)
+- [Changelog](CHANGELOG.md)
 - [Download](https://github.com/ange007/JQueryFormStyler-Modern/releases)
 
 ## Info
