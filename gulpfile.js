@@ -91,11 +91,7 @@ gulp.task( 'config:sync', function( )
 			'description',
 			'keywords',
 			'repository',
-			'license',
-			{
-				from: 'contributors',
-				to: 'authors'
-			}
+			'license'
 		],
 		space: '  '
 	};
