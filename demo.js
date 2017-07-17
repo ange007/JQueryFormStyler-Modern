@@ -84,7 +84,7 @@
 				
 		// Обработка "изменения" елемента
 		$( 'input, select' ).on( 'change', checkState );
-		
+	
 			
 		/*
 		 * input:checkbox
