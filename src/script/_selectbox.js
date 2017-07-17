@@ -433,6 +433,10 @@ let SelectBox =
 			{
 				maxHeightTop( );
 			}
+
+			this.dropdown.css({
+				top: 'auto'
+			});
 			
 			//
 			this.dropdown.css( { top: 'auto' } );
