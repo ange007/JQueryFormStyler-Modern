@@ -6,7 +6,7 @@
 
 > Самостоятельное ответвление от плагина **[jQueryFormStyler](https://github.com/Dimox/jQueryFormStyler)** 
 
-![jQuery FormStyler Modern](https://github.com/ange007/jquery-formstyler-modern/blob/master/screenshot.png)
+![jQuery FormStyler Modern](https://github.com/ange007/JQueryFormStyler-Modern/blob/master/screenshot.png)
 
 - [Demo](http://ange007.github.io/JQueryFormStyler-Modern/)
 - [Changelog](CHANGELOG.md)
