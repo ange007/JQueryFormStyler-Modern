@@ -437,6 +437,179 @@
     background: #CCC;
     color: #888; }
 
+/* range */
+input[type=range].styler {
+  /* WebKit */
+  /*&:focus::-webkit-slider-runnable-track {
+		background: #ac51b5;
+	}*/
+  /* FireFox */
+  /* MS */ }
+  input[type=range].styler::-webkit-slider-runnable-track {
+    color: #555;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    outline: none;
+    background: #FFF;
+    box-shadow: none;
+    font-shadow: none; }
+    :not([disabled]):not(.disabled):hover::-webkit-slider-runnable-track {
+      border: 1px solid #ADADAD;
+      background: #FFF;
+      box-shadow: initial;
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):focus::-webkit-slider-runnable-track,
+    :not([disabled]):not(.disabled).focused::-webkit-slider-runnable-track {
+      border: 1px solid #66afe9;
+      background: #FFF;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):active::-webkit-slider-runnable-track {
+      border: 1px solid #66afe9;
+      background: #FFF;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+      font-shadow: none; }
+    [disabled]::-webkit-slider-runnable-track,
+    .disabled::-webkit-slider-runnable-track {
+      border: 1px solid #CCC;
+      background: #F5F5F5 !important;
+      box-shadow: none !important;
+      color: #888 !important; }
+  input[type=range].styler::-webkit-slider-thumb {
+    color: #555;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    outline: none;
+    background: #FFF;
+    box-shadow: none;
+    font-shadow: none; }
+    :not([disabled]):not(.disabled):hover::-webkit-slider-thumb {
+      border: 1px solid #ADADAD;
+      background: #e6e6e6;
+      box-shadow: none;
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):focus::-webkit-slider-thumb,
+    :not([disabled]):not(.disabled).focused::-webkit-slider-thumb {
+      border: 1px solid #66afe9;
+      background: #e6e6e6;
+      box-shadow: none;
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):active::-webkit-slider-thumb {
+      border: 1px solid #66afe9;
+      background: #e6e6e6;
+      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+      font-shadow: none; }
+    [disabled]::-webkit-slider-thumb,
+    .disabled::-webkit-slider-thumb {
+      border: 1px solid #CCC;
+      background: #F5F5F5 !important;
+      box-shadow: none !important;
+      color: #888 !important; }
+  input[type=range].styler::-moz-range-track {
+    color: #555;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    outline: none;
+    background: #FFF;
+    box-shadow: none;
+    font-shadow: none; }
+    :not([disabled]):not(.disabled):hover::-moz-range-track {
+      border: 1px solid #ADADAD;
+      background: #FFF;
+      box-shadow: initial;
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):focus::-moz-range-track,
+    :not([disabled]):not(.disabled).focused::-moz-range-track {
+      border: 1px solid #66afe9;
+      background: #FFF;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):active::-moz-range-track {
+      border: 1px solid #66afe9;
+      background: #FFF;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+      font-shadow: none; }
+    [disabled]::-moz-range-track,
+    .disabled::-moz-range-track {
+      border: 1px solid #CCC;
+      background: #F5F5F5 !important;
+      box-shadow: none !important;
+      color: #888 !important; }
+  input[type=range].styler::-moz-range-thumb {
+    color: #555;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    outline: none;
+    background: #FFF;
+    box-shadow: none;
+    font-shadow: none; }
+    :not([disabled]):not(.disabled):hover::-moz-range-thumb {
+      border: 1px solid #ADADAD;
+      background: #e6e6e6;
+      box-shadow: none;
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):focus::-moz-range-thumb,
+    :not([disabled]):not(.disabled).focused::-moz-range-thumb {
+      border: 1px solid #66afe9;
+      background: #e6e6e6;
+      box-shadow: none;
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):active::-moz-range-thumb {
+      border: 1px solid #66afe9;
+      background: #e6e6e6;
+      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+      font-shadow: none; }
+    [disabled]::-moz-range-thumb,
+    .disabled::-moz-range-thumb {
+      border: 1px solid #CCC;
+      background: #F5F5F5 !important;
+      box-shadow: none !important;
+      color: #888 !important; }
+  input[type=range].styler::-ms-fill-lower {
+    background: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 4px; }
+  input[type=range].styler::-ms-fill-upper {
+    background: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 4px; }
+  input[type=range].styler::-ms-thumb {
+    color: #555;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    outline: none;
+    background: #FFF;
+    box-shadow: none;
+    font-shadow: none; }
+    :not([disabled]):not(.disabled):hover::-ms-thumb {
+      border: 1px solid #ADADAD;
+      background: #e6e6e6;
+      box-shadow: none;
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):focus::-ms-thumb,
+    :not([disabled]):not(.disabled).focused::-ms-thumb {
+      border: 1px solid #66afe9;
+      background: #e6e6e6;
+      box-shadow: none;
+      font-shadow: none; }
+    :not([disabled]):not(.disabled):active::-ms-thumb {
+      border: 1px solid #66afe9;
+      background: #e6e6e6;
+      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+      font-shadow: none; }
+    [disabled]::-ms-thumb,
+    .disabled::-ms-thumb {
+      border: 1px solid #CCC;
+      background: #F5F5F5 !important;
+      box-shadow: none !important;
+      color: #888 !important; }
+  input[type=range].styler:focus::-ms-fill-lower {
+    background: #FFF;
+    border: 1px solid #66afe9; }
+  input[type=range].styler:focus::-ms-fill-upper {
+    background: #FFF;
+    border: 1px solid #66afe9; }
+
 /* other */
 input[type='email'].styler {
   color: #555;

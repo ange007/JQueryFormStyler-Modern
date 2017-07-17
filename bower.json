@@ -1,29 +1,28 @@
 {
   "name": "jquery.formstyler-modern",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "JQuery HTML form styling plugin",
   "license": "MIT",
   "authors": [
-    {
-      "name": "Borisenko Vladimir",
-      "email": "ange007@users.noreply.github.com",
-      "url": "https://github.com/ange007/JQueryFormStyler-Modern/"
-    }
+    "Dimox <http://dimox.name/>",
+    "Yunus Gaziev <https://github.com/yunusga>",
+    "Evgen <https://github.com/osben>"
   ],
   "keywords": [
-	"jquery-plugin",
+    "jquery-plugin",
     "javascript",
     "jquery",
     "formstyler",
     "form",
     "styler",
-	"style",
-	"input",
+    "style",
+    "input",
     "select",
     "checkbox",
     "radio",
     "file",
-	"password"
+    "password",
+    "range"
   ],
   "main": [
     "jquery.formStylerModern.min.js",

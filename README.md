@@ -16,8 +16,9 @@ JQuery HTML form styling and modernization plugin:
 - `<input type="radio">`
 - `<input type="file">`
 - `<input type="number">`
-- `<input type="password">` - styling and show/hide password button.
-- `<select>` - styling and function for search on server by AJAX requests.
+- `<input type="password">` *(styling and show/hide password button)*
+- `<select>` *(styling and function for search on server by AJAX requests)*
+- `<input type="range">`, `<textarea>`, `<button>` and other *(styling only with CSS)*
 
 ## Attention!
 Settings from plugin vesion **2.x** - differ from version **1.x**.
