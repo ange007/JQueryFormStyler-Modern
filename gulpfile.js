@@ -126,9 +126,9 @@ gulp.task( 'js:build', function( )
 				.pipe( debug( { title: 'js:' } ) ) // Вывод пофайлового лога
 				.pipe( replace( '%pluginName%', params.pluginName ) )
 				.pipe( rigger( ) ) // Подстановка исходного кода файлов на место переменных
-				.pipe( header( banner, { pkg : pkg } ) ) // Установка хидера
-				.pipe( babel( {	presets: [ 'es2015' ] } ) )
+				.pipe( babel( {	presets: [ 'env' ] } ) )
 				.pipe( gulpif( bundle.compress, uglify( { mangle: true, compress: false } ) ) ) //
+				.pipe( header( banner, { pkg : pkg } ) ) // Установка хидера
 				.pipe( rename( fileName ) ) // Переименовываем
 				.pipe( gulp.dest( path ) );
 } );

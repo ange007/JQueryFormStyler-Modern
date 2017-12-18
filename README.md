@@ -10,6 +10,7 @@
 
 - [Demo](http://ange007.github.io/JQueryFormStyler-Modern/)
 - [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md)
 - [Download](https://github.com/ange007/JQueryFormStyler-Modern/releases)
 
 ## Info
