@@ -63,6 +63,8 @@
 		// Стилизируем имеющиеся елементы
 		$( 'input, select:not(#style)' ).styler( 
 		{
+			locale: 'en-US',
+
 			onFormStyled: function( ) 
 			{ 
 				$( 'body' ).find( 'input, select' )
@@ -85,7 +87,6 @@
 		// Обработка "изменения" елемента
 		$( 'input, select' ).on( 'change', checkState );
 	
-			
 		/*
 		 * input:checkbox
 		 */	
@@ -109,8 +110,8 @@
 		$( '#p-3' ).styler( 'reinitialize', {
 			locales: {
 				password: {
-					show: 'Показать',
-					hide: 'Скрыть'
+					show: 'Show',
+					hide: 'Hide'
 				}
 			}
 		} );	
@@ -152,8 +153,8 @@
 						url: 'https://api.github.com/search/repositories',
 						data: function( params ) {
 							return {
-							  q: params.term,
-							  page: params.page
+								q: params.term,
+								page: params.page
 							};
 						},
 
@@ -186,7 +187,7 @@
 			var inputs = '';
 			for( var i = 1; i <= 5; i++ )
 			{
-				inputs += '<label><input type="checkbox" name="checkbox" /> чекбокс</label><br />';
+				inputs += '<label><input type="checkbox" name="checkbox" /> checkbox</label><br />';
 			}
 			$( this ).closest( 'div.section' )
 					.append( '<div>' + inputs + '</div>' );
@@ -200,7 +201,7 @@
 			var inputs = '';
 			for( var i = 1; i <= 5; i++ )
 			{
-				inputs += '<label><input type="radio" name="radio" /> радиокнопка</label><br />';
+				inputs += '<label><input type="radio" name="radio" /> radio</label><br />';
 			}
 			
 			$( this ).closest( 'div.section' )
@@ -246,7 +247,7 @@
 		$( 'button.add-select' ).on( 'click', function( )
 		{
 			var multiple = '',
-				select = $( '<select' + multiple + '><option>-- Выберите --</option><option>Пункт 1</option><option>Пункт 2</option><option>Пункт 3</option><option>Пункт 4</option><option>Пункт 5</option></select>' );
+				select = $( '<select' + multiple + '><option>-- Select --</option><option>Option 1</option><option>Option 2</option><option>Option 3</option><option>Option 4</option><option>Option 5</option></select>' );
 			
 			if( $( this ).is( '.multiple' ) )
 			{
@@ -265,7 +266,7 @@
 			var options = '';
 			for( i = 1; i <= 5; i++ )
 			{
-				options += '<option>Опция ' + i + '</option>';
+				options += '<option>Option ' + i + '</option>';
 			}
 			
 			$( this ).closest( 'div.section' )

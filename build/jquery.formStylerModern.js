@@ -1,7 +1,3 @@
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 /**
  * jquery.formstyler-modern - JQuery HTML form styling plugin
  * @version v2.1.2
@@ -9,6 +5,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * @license MIT
  * @author Borisenko Vladimir
  */
+
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 ;(function (factory) {
 	// AMD
@@ -27,7 +27,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	'use strict';
 
 	/* Имя плагина. Используется для вызова плагина, 
- * а так-же в качестве класса для 
+  * а так-же в качестве класса для 
   * стилизации без "псевдо-компонентов" */
 
 	var pluginName = 'styler';
@@ -676,7 +676,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							this.customElement = new _Number(element, this.options.number, this.locales.number);
 						}
 						// Пароль
-						else if (element.is('input[type="password"]') && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none') {
+						else if (element.is('input[type="password"]') && !element.is('[nobutton]') && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none') {
 								var Password = function () {
 									var Component = function Component(element, options, locale) {
 										//
