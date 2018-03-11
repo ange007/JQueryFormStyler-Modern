@@ -33,11 +33,11 @@ input[type="file"].jq-hidden {
   .jq-checkbox.checked .jq-checkbox__div {
     width: 12px;
     height: 12px;
-    margin: 2px 0 0 2px; }
+    margin: 1px 0 0 1px; }
   .jq-checkbox.indeterminate .jq-checkbox__div {
     width: 12px;
     height: 4px;
-    margin: 6px 0 0 2px; }
+    margin: 5px 0 0 1px; }
   .jq-checkbox.disabled {
     opacity: .55; }
 
@@ -58,7 +58,7 @@ input[type="file"].jq-hidden {
   .jq-radio.checked .jq-radio__div {
     width: 10px;
     height: 10px;
-    margin: 3px 0 0 3px; }
+    margin: 2px 0 0 2px; }
   .jq-radio.disabled {
     opacity: .55;
     cursor: default; }
@@ -128,7 +128,7 @@ input[type="file"].jq-hidden {
       content: '';
       position: absolute;
       top: 4px;
-      left: 11px;
+      left: 10px;
       width: 0;
       height: 0; }
     .jq-number .jq-number__spin.minus {
@@ -145,9 +145,25 @@ input[type="file"].jq-hidden {
     .jq-number.horizontal .jq-number__spin {
       left: 0;
       height: 32px; }
+      .jq-number.horizontal .jq-number__spin:before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 9px;
+        width: 12px;
+        height: 2px;
+        border: none; }
+      .jq-number.horizontal .jq-number__spin.minus:after {
+        display: none; }
       .jq-number.horizontal .jq-number__spin.plus {
         right: 0;
         left: auto; }
+        .jq-number.horizontal .jq-number__spin.plus:after {
+          top: 10px;
+          left: 14px;
+          width: 2px;
+          height: 12px;
+          border: none; }
 
 /* password */
 .jq-password {
@@ -308,7 +324,7 @@ input[type=range].styler {
     height: 16px;
     width: 16px;
     -webkit-appearance: none;
-    margin-top: -1.6px;
+    margin-top: -2px;
     cursor: pointer; }
   input[type=range].styler::-moz-range-track {
     width: 100%;

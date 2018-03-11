@@ -27,7 +27,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	'use strict';
 
 	/* Имя плагина. Используется для вызова плагина, 
- * а так-же в качестве класса для 
+  * а так-же в качестве класса для 
   * стилизации без "псевдо-компонентов" */
 
 	var pluginName = 'styler';
@@ -676,7 +676,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 							this.customElement = new _Number(element, this.options.number, this.locales.number);
 						}
 						// Пароль
-						else if (element.is('input[type="password"]') && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none') {
+						else if (element.is('input[type="password"]') && !element.is('[nobutton]') && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none') {
 								var Password = function () {
 									var Component = function Component(element, options, locale) {
 										//

@@ -1,19 +1,25 @@
-# История изменений
+# ChangeLog
+## v2.1.3 <sup>11.03.2018</sup>:
+* Partial translation DEMO to English *(this is the basis for further translation of sources into English)**(any help is welcome)*.
+* Modified stylized **input** and **buttons**.
+* Add styling for **input:[date, time, color]** and other.
+* Minor changes into styles.
+
 ## v2.1.2 <sup>17.07.2017</sup>:
-* Исправлена установка ширины **select** по выбранному пункту.
-* Добавлена стилизация **input:range**.
-* Исправлено ([#46](https://github.com/ange007/JQueryFormStyler-Modern/issues/46)) - [@yunusga](https://github.com/yunusga).
+* Fixed setting of the width **select** for the selected item.
+* Added styling **input:range**.
+* Fixed ([#46](https://github.com/ange007/JQueryFormStyler-Modern/issues/46)) - [@yunusga](https://github.com/yunusga).
 
 ## v2.1.1 <sup>05.07.2017</sup>:
-* Добавлена опция `number>horizontal` для **input:number** отрисовывающая кнопки по горизонтали *(аналог добавления класса horizontal)*.
-* Подправлены стили.
-* Оптимизировано скрытие выпадающего списка **select** при переключении фокуса на другие элементы и при клике мимо списка.
+* Add option `number>horizontal` for **input:number** - drawing buttons horizontally *(analogous to the addition of the class **horizontal**)*.
+* Minor changes into styles.
+* Optimized hiding the drop-down list **select** when switching focus to other items and clicking outside the list.
 
 ## v2.1.0 <sup>03.07.2017</sup>:
-* Исправлено объединение установленных настроек с настроеками передаваемыми при **reinitialize**.
-* Реализован поиск на сервере используя **select** *(параметр `search>ajax`)*.
-* Стиль **flat** заменён стилем **bootstrap**.
-* Доработаны **SCSS** файлы, добавлены новые переменные.
+* Fixed merging of settings with settings sent by **reinitialize**.
+* Implemented a search on the server using **select** *(option `search>ajax`)*.
+* Style **flat** changed to **bootstrap**.
+* Modified **SCSS** files, new variables added.
 
 ## v2.0.0 <sup>02.06.2017</sup>:
 * Изменёна структура настроек.
