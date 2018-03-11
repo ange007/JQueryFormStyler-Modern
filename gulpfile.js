@@ -200,5 +200,5 @@ gulp.task( 'default', function( )
 	 * * * * * * * * * * * * * */
 
 	gulp.watch( paths.src.script + '/*.js', [ 'js:build' ] ),
-	gulp.watch( paths.src.style + '/**/*.scss', [ 'scss:theme:build', 'scss:theme:concat' ] );
+	gulp.watch( [ paths.src.frame + '/**/*.scss', paths.src.style + '/**/*.scss' ], [ 'scss:theme:build', 'scss:theme:concat' ] );
 } );

@@ -3,6 +3,7 @@
 	border: $border;
 	border-radius: $border-radius;
 
+	box-sizing: border-box;
 	outline: none;
 
 	background: if( $button, $background-button, $background );	

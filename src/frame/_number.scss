@@ -39,7 +39,7 @@
 			content: '';
 			position: absolute;
 			top: 4px;
-			left: 11px;
+			left: 10px;
 			width: 0;
 			height: 0;
 		}
@@ -68,10 +68,32 @@
 		.jq-number__spin {
 			left: 0;
 			height: 32px;
-		
+
+			&:before {
+				content: '';
+				position: absolute;
+				top: 15px;
+				left: 9px;
+				width: 12px;
+				height: 2px;
+				border: none;
+			}
+
+			&.minus:after {
+				display: none;
+			}
+
 			&.plus {
 				right: 0;
 				left: auto;
+
+				&:after {
+					top: 10px;
+					left: 14px;
+					width: 2px;
+					height: 12px;
+					border: none;
+				}
 			}
 		}
 	}

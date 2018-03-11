@@ -13,10 +13,10 @@
 	'use strict';
 
 	/* Имя плагина. Используется для вызова плагина, 
-	* а так-же в качестве класса для 
+	 * а так-же в качестве класса для 
 	 * стилизации без "псевдо-компонентов" */
 	const pluginName = '%pluginName%';
-										
+
 	// Суффикс - который подставляется к ID "псевдо-компонента"
 	const idSuffix = '-' + pluginName;
 
@@ -48,7 +48,7 @@
 
 		onFormStyled: function( ) { },
 	};
-		
+
 	// Локализация
 	let locales = 
 	{
@@ -168,25 +168,25 @@
 			else if( element.is( ':radio' ) )
 			{
 				//= _radio.js
-
+				
 				this.customElement = new Radio( element, this.options.radio, this.locales.radio );
 			}
 			// Выбор файла
 			else if ( element.is( ':file' ) ) 
 			{
 				//= _file.js
-
+				
 				this.customElement = new File( element, this.options.file, this.locales.file );
 			}
 			// Номер
 			else if( element.is( 'input[type="number"]' ) )
 			{
 				//= _number.js
-
+				
 				this.customElement = new Number( element, this.options.number, this.locales.number );
 			} 
 			// Пароль
-			else if( element.is('input[type="password"]' ) && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none' ) 
+			else if( element.is('input[type="password"]' ) && !element.is( '[nobutton]' ) && this.options.password.switchHTML !== undefined && this.options.password.switchHTML !== 'none' ) 
 			{
 				//= _password.js
 
@@ -211,7 +211,7 @@
 				else
 				{
 					this.customElement = new SelectBox( element, this.options.select, this.locales.select );
-
+					
 					// Инициализация спец.обработчиков
 					if( !SelectBoxExtra.initEvent )
 					{

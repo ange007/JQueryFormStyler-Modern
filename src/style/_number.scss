@@ -9,23 +9,23 @@
 
 		&:after {
 			border-right: 5px solid transparent;
-			border-bottom: 5px solid #999;
+			border-bottom: 5px solid $select-arrow-color;
 			border-left: 5px solid transparent;
 		}
 
 		&.minus:after {
-			border-top: 5px solid #999;
+			border-top: 5px solid $select-arrow-color;
 			border-right: 5px solid transparent;
 			border-bottom: none;
 			border-left: 5px solid transparent;
 		}
 
 		&.minus:hover:after {
-			border-top-color: #000;
+			border-top-color: $select-arrow-color-hover;
 		}
 
 		&.plus:hover:after {
-			border-bottom-color: #000;
+			border-bottom-color: $select-arrow-color-hover;
 		}
 	}
 
@@ -35,51 +35,29 @@
 		&:focus,
 		&:active {
 			@extend .jq-number__spin[disabled];
-			 
+
 			border: $border-disabled !important;
 		}
 
 		&.plus:after {
-			border-bottom-color: #AAA;
+			border-bottom-color: $select-arrow-color;
 		}
 
 		&.minus:after {
-			border-top-color: #AAA;
+			border-top-color: $select-arrow-color;
 		}
 	}
 	
 	&.horizontal {
 		.jq-number__spin {
-			&:before {
-				content: '';
-				position: absolute;
-				top: 15px;
-				left: 10px;
-				width: 12px;
-				height: 2px;
-				border: none;
-			}
-
-			&.minus:after {
-				display: none;
-			}
-
-			&.plus:after {
-				top: 10px;
-				left: 15px;
-				width: 2px;
-				height: 12px;
-				border: none;
-			}
-			
 			&:before,
 			&.plus:after {
-				background: #999;
+				background: $select-arrow-color;
 			}
 			
 			&:hover:before,
 			&.plus:hover:after {
-				background: #000;
+				background: $select-arrow-color-hover;
 			}
 		}
 	}

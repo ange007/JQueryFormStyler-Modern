@@ -14,13 +14,13 @@
 	&.checked .jq-checkbox__div {
 		width: 12px;
 		height: 12px;
-		margin: 2px 0 0 2px;
+		margin: 1px 0 0 1px;
 	}
 
 	&.indeterminate .jq-checkbox__div {
 		width: 12px;
 		height: 4px;
-		margin: 6px 0 0 2px;
+		margin: 5px 0 0 1px;
 	}
 
 	&.focused {
