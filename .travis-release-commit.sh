@@ -30,7 +30,3 @@ then
 else
 	git push ${REPO_URL} release;
 fi
-
-#
-npm login
-npm publish

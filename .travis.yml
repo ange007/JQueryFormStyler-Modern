@@ -37,7 +37,7 @@ after_success:
 
 deploy:
   - provider: releases
-    api_key: $OAuth
+    api_key: ${OAuth}
     file:
       - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.js
       - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.css
@@ -49,8 +49,8 @@ deploy:
       branch: master
       tags: true
   - provider: npm
-    email: $EMAIL
-    api_key: $NPM_TOKEN
+    email: ${EMAIL}
+    api_key: ${NPM_TOKEN}
     skip_cleanup: true
     on:
       branch: production
