@@ -6,18 +6,17 @@ node_js:
 env:
   global:
     - GIT_NAME=ange007
-    - GIT_EMAIL=ange007@users.noreply.github.com
-    - GIT_DOMAIN=github.com
-    - REPO_URL=https://${OAuth}@${GIT_DOMAIN}/${TRAVIS_REPO_SLUG}.git
+    - EMAIL=2736539+ange007@users.noreply.github.com
+    - REPO_URL=https://${OAuth}@github.com/${TRAVIS_REPO_SLUG}.git
 
 # @todo: Попробовать реализовать скриншот демо страницы:
 # https://github.com/GregM/xvfb-screenshots/blob/master/README.md
 # https://atasteofsandwich.wordpress.com/2014/05/04/visual-regression-tests-with-travis-ci-and-github/
 # 
-before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+#before_install:
+#  - export CHROME_BIN=chromium-browser
+#  - export DISPLAY=:99.0
+#  - sh -e /etc/init.d/xvfb start
   
 after_failure:
   - npm ls --depth=1
@@ -37,18 +36,25 @@ after_success:
   - ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh
 
 deploy:
-  provider: releases
-  api_key: $OAuth
-  file:
-    - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.js
-    - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.css
-    - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.min.js
-    - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.min.css
-  skip_cleanup: true
-  on:
-    repo: ange007/JQueryFormStyler-Modern
-    branch: master
-    tags: true
+  - provider: releases
+    api_key: $OAuth
+    file:
+      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.js
+      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.css
+      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.min.js
+      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.min.css
+    skip_cleanup: true
+    on:
+      repo: ange007/JQueryFormStyler-Modern
+      branch: master
+      tags: true
+  - provider: npm
+    email: $EMAIL
+    api_key: $NPM_TOKEN
+    skip_cleanup: true
+    on:
+      branch: production
+      tags: true   
 
 sudo: false
 dist: trusty
@@ -57,8 +63,8 @@ cache:
   directories:
     - node_modules
     
-addons:
-  firefox: latest
-  apt:
-    packages:
-      - google-chrome-stable
+#addons:
+#  firefox: latest
+#  apt:
+#    packages:
+#      - google-chrome-stable

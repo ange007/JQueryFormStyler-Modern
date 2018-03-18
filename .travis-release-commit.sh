@@ -1,6 +1,6 @@
 #!/bin/bash
 # encoding: utf-8
- 
+
 DIST_PATH=${TRAVIS_BUILD_DIR}/actual-release
 VERS=$(cat package.json | jq --raw-output '.version')
 # переходим в директорию
@@ -30,3 +30,7 @@ then
 else
 	git push ${REPO_URL} release;
 fi
+
+#
+npm login
+npm publish
