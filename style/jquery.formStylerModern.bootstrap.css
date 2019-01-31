@@ -378,7 +378,7 @@
 .jq-selectbox .placeholder {
   color: #888; }
 
-.jq-selectbox .jq-selectbox__not-found {
+.jq-selectbox .jq-selectbox__search-status {
   display: none;
   background: #F0F0F0; }
 
@@ -1023,7 +1023,7 @@ textarea.styler {
 textarea.styler {
   overflow: auto; }
 
-input[type='search'].styler {
+input[type=search].styler {
   -webkit-appearance: none; }
 
 input[type=button].styler {
