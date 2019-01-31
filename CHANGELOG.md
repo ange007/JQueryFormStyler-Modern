@@ -1,5 +1,6 @@
 # ChangeLog
 ## v2.1.5 <sup>21.01.2019</sup>:
+* Optimized **select** auto-width.
 * Add status line to AJAX search in **select**.
 * Add "List is Empty" status to **select**.
 * Updated packages and `gulpfile.js`.

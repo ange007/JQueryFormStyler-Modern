@@ -85,7 +85,7 @@ gulp.task( 'clean', function( done )
 } );
 
 // Синхронизация изменений конфигураций для bower и сomposer
-gulp.task( 'config:sync', function( )
+gulp.task( 'config:sync', function( done )
 {
 	var options = 
 	{

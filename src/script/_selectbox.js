@@ -255,29 +255,20 @@ let SelectBox =
 			// Убираем инлайновый стиль
 			dropdownLi.css( { 'display': '' } );
 
-			// Подстраиваем ширину свернутого селекта в зависимости
-			// от ширины плейсхолдера или самого широкого пункта
-			if( selectboxText.is( '.placeholder' ) && ( selectboxText.width( ) > liWidthInner ) )
+			// Клонируем селектор и устанавливаем ему размер "авто"
+			let selClone = selectbox.clone( ).appendTo( 'body' )
+									.width( 'auto' );
+
+			// Записываем размер клона
+			let	selCloneWidth = selClone.outerWidth( );
+
+			// Удаляем клон
+			selClone.remove( );
+
+			// 
+			if( selCloneWidth === selectbox.outerWidth( ) && ( liWidth > 0 ) )
 			{
-				selectbox.width( selectboxText.width( ) );
-			}
-			else
-			{
-				// Клонируем селектор и устанавливаем ему размер "авто"
-				let selClone = selectbox.clone( ).appendTo( 'body' )
-										.width( 'auto' );
-
-				// Записываем размер клона
-				let	selCloneWidth = selClone.outerWidth( );
-
-				// Удаляем клон
-				selClone.remove( );
-
-				// 
-				if( selCloneWidth === selectbox.outerWidth( ) )
-				{
-					selectbox.width( liWidth );
-				}
+				selectboxText.width( liWidth );
 			}
 
 			// Подстраиваем ширину выпадающего списка в зависимости от самого широкого пункта
@@ -874,6 +865,9 @@ let SelectBox =
 			{
 				selectboxText.html( placeholder )
 							.addClass( 'placeholder' );
+
+				// Обновляем ширину
+				this.calculateDropdownWidth( );
 			}
 			else
 			{
