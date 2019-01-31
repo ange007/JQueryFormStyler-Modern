@@ -378,7 +378,7 @@
 .jq-selectbox .placeholder {
   color: #888; }
 
-.jq-selectbox .jq-selectbox__not-found {
+.jq-selectbox .jq-selectbox__search-status {
   display: none;
   background: #F0F0F0; }
 
@@ -1023,7 +1023,7 @@ textarea.styler {
 textarea.styler {
   overflow: auto; }
 
-input[type='search'].styler {
+input[type=search].styler {
   -webkit-appearance: none; }
 
 input[type=button].styler {
@@ -1573,7 +1573,8 @@ input[type="file"].jq-hidden {
     .jq-selectbox .jq-selectbox__search input::-webkit-search-cancel-button,
     .jq-selectbox .jq-selectbox__search input::-webkit-search-decoration {
       -webkit-appearance: none; }
-  .jq-selectbox .jq-selectbox__not-found {
+  .jq-selectbox .jq-selectbox__search-status,
+  .jq-selectbox .jq-selectbox__empty {
     margin: 5px;
     padding: 5px 8px 6px;
     -webkit-user-select: none;

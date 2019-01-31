@@ -3,6 +3,21 @@
 	$( function( )
 	{
 		var activeStyle = undefined;
+
+		// Переключение страниц
+		$( 'ul.menu' ).on( 'click', 'li:not(.current)', function( )
+		{
+			$( this ).addClass( 'current' )
+					.siblings( ).removeClass( 'current' )
+					.parents( 'div.wrapper' ).find( 'div.box' ).removeClass( 'visible' ).eq( $( this ).index( ) ).addClass( 'visible' );
+			
+			window.location.hash = $( this ).data( 'hash' );
+			$( 'input' ).blur( );
+		} );
+		
+		//
+		hash = window.location.hash.replace( /#(.+)/, '$1' );
+		if( hash !== '' ) {	$( 'ul.menu>li[data-hash=' + hash + ']' ).trigger( 'click' ); }
 		
 		// Проверка состояния
 		var checkState = function( )
@@ -115,20 +130,9 @@
 				}
 			}
 		} );	
-											
+
 		// input:password без кнопки
 		$( '#p-4' ).styler( 'reinitialize', { password: { switchHTML: undefined } } );										
-				
-		//
-		$( 'ul.menu' ).on( 'click', 'li:not(.current)', function( )
-		{
-			$( this ).addClass( 'current' )
-					.siblings( ).removeClass( 'current' )
-					.parents( 'div.wrapper' ).find( 'div.box' ).removeClass( 'visible' ).eq( $( this ).index( ) ).addClass( 'visible' );
-			
-			window.location.hash = $( this ).data( 'hash' );
-			$( 'input' ).blur( );
-		} );
 				
 		// Игнорируем действие по умолчанию для кнопок
 		$( 'button' ).on( 'click', function( e )
@@ -145,7 +149,9 @@
 			select: {
 				visibleOptions: 10,
 									
-				search: {					
+				search: {
+					limit: 10,
+
 					ajax: {
 						delay: 250,
 						cache: true,		
@@ -343,11 +349,6 @@
 					} );
 		} );
 
-
-		//
-		hash = window.location.hash.replace( /#(.+)/, '$1' );
-		if( hash !== '' ) {	$( 'ul.menu>li[data-hash=' + hash + ']' ).trigger( 'click' ); }
-		
 		//
 		$( '#style' ).trigger( 'change' );
 	} );
