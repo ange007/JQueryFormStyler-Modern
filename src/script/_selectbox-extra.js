@@ -3,8 +3,10 @@ let SelectBoxExtra =
 {
 	return {
 		initEvent: false,
-		
-		// Инициализация спец. обработчиков
+
+		/**
+		 * Инициализация спец. обработчиков
+		 */
 		init: function( )
 		{
 			this.initEvent = true;
@@ -36,7 +38,11 @@ let SelectBoxExtra =
 			} );			
 		},
 
-		// Запрещаем прокрутку страницы при прокрутке селекта
+		/**
+		 * Запрещаем прокрутку страницы при прокрутке селекта
+		 * 
+		 * @param {*} selector 
+		 */
 		preventScrolling: function( selector )
 		{
 			const scrollDiff = selector.prop( 'scrollHeight' ) - selector.outerHeight( );
@@ -62,7 +68,11 @@ let SelectBoxExtra =
 			return this;
 		},
 
-		// Формируем список селекта
+		/**
+		 * Формируем список селекта
+		 * 
+		 * @param {*} opList 
+		 */
 		makeList: function( opList )
 		{
 			let list = $( '<ul>' );

@@ -61,9 +61,12 @@
 			},
 			select: {
 				placeholder: 'Select...',
+				empty: 'List is Empty!',
 				search: {
 					notFound: 'No matches found',
-					placeholder: 'Search...'
+					placeholder: 'Search...',
+					loading: 'Loading...',
+					error: 'Error!'
 				}
 			},
 			password: {
@@ -81,9 +84,12 @@
 			},
 			select: {
 				placeholder: 'Выберите...',
+				empty: 'Список пуст!',
 				search: {
 					notFound: 'Совпадений не найдено',
-					placeholder: 'Поиск...'
+					placeholder: 'Поиск...',
+					loading: 'Идёт поиск...',
+					error: 'Ошибка!'
 				}
 			}
 		},
@@ -97,9 +103,12 @@
 			},
 			select: {
 				placeholder: 'Виберіть...',
+				empty: 'Список пустий!',
 				search: {
 					notFound: 'Збігів не знайдено',
-					placeholder: 'Пошук...'
+					placeholder: 'Пошук...',
+					loading: 'Йде пошук...',
+					error: 'Помилка!'
 				}
 			}
 		}
@@ -123,7 +132,12 @@
 		this.data = element.data( );
 	}
 
-	// Конструктор плагина
+	/**
+	 * Конструктор плагина
+	 * 
+	 * @param {*} element 
+	 * @param {*} options 
+	 */
 	function Plugin( element, options )
 	{
 		// Запоминаем єлемент
@@ -146,7 +160,9 @@
 	// Расширение функционала плагина
 	Plugin.prototype = 
 	{
-		// Инициализация
+		/**
+		 * Инициализация
+		 */
 		init: function( )
 		{
 			const context = this,
@@ -253,7 +269,11 @@
 			} );
 		},
 		
-		// Убрать стилизацию елемент(а/ов) 
+		/**
+		 * Убрать стилизацию елемент(а/ов)
+		 * 
+		 * @param {*} reinitialize 
+		 */
 		destroy: function( reinitialize )
 		{
 			const el = $( this.element );
@@ -274,7 +294,11 @@
 			}
 		},
 
-		// Переинициализация стилизованного элемента - с изменёнными параметрами
+		/**
+		 * Переинициализация стилизованного элемента - с изменёнными параметрами
+		 * 
+		 * @param {*} options 
+		 */
 		reinitialize: function( options )
 		{
 			// Убираем стилизацию елементов
@@ -291,7 +315,9 @@
 		}
 	};
 
-	// Прописываем плагин в JQuery
+	/**
+	 * Прописываем плагин в JQuery
+	 */
 	$.fn[ pluginName ] = function( options )
 	{
 		const args = arguments;

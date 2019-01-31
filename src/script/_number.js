@@ -1,6 +1,12 @@
 let Number = 
 ( function( )
 {
+	/**
+	 * 
+	 * @param {*} element 
+	 * @param {*} options 
+	 * @param {*} locale 
+	 */
 	let Component = function( element, options, locale ) 
 	{		
 		//
@@ -37,7 +43,9 @@ let Number =
 	
 	Component.prototype = 
 	{
-		// Обработка событий
+		/**
+		 * Обработка событий
+		 */
 		setEvents: function( )
 		{
 			const context = this,
@@ -91,7 +99,9 @@ let Number =
 			return this;
 		},
 		
-		// Перерисовка
+		/**
+		 * Перерисовка
+		 */
 		repaint: function( )
 		{
 			this.number.toggleClass( 'disabled', this.element.is( ':disabled' ) );
@@ -99,7 +109,10 @@ let Number =
 			return this;
 		},
 		
-		//
+		/**
+		 * 
+		 * @param {*} button 
+		 */
 		changeValue: function( button )
 		{
 			const element = this.element;
@@ -160,8 +173,10 @@ let Number =
 			
 			return this;
 		},
-		
-		// Уничтожение
+
+		/**
+		 * Уничтожение
+		 */
 		destroy: function( )
 		{
 			const element = this.element;

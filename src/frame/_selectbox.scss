@@ -100,7 +100,8 @@
 		}
 	}
 
-	.jq-selectbox__not-found {
+	.jq-selectbox__search-status,
+	.jq-selectbox__empty {
 		margin: 5px;
 		padding: 5px 8px 6px;
 		user-select: none;

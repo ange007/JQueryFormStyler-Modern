@@ -1,6 +1,12 @@
 let File = 
 ( function( )
 {
+	/**
+	 * 
+	 * @param {*} element 
+	 * @param {*} options 
+	 * @param {*} locale 
+	 */
 	let Component = function( element, options, locale ) 
 	{		
 		//
@@ -35,7 +41,9 @@ let File =
 	
 	Component.prototype = 
 	{
-		// Обработка событий
+		/**
+		 * Обработка событий
+		 */
 		setEvents: function( )
 		{
 			const context = this,
@@ -70,7 +78,9 @@ let File =
 			return this;
 		},
 		
-		// Перерисовка
+		/**
+		 * Перерисовка
+		 */
 		repaint: function( )
 		{
 			const element = this.element,
@@ -106,7 +116,9 @@ let File =
 			return this;
 		},
 		
-		// Уничтожение
+		/**
+		 * Уничтожение
+		 */
 		destroy: function( )
 		{
 			const element = this.element;

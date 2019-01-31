@@ -1,4 +1,9 @@
 # ChangeLog
+## v2.1.5 <sup>21.01.2019</sup>:
+* Add status line to AJAX search in **select**.
+* Add "List is Empty" status to **select**.
+* Updated packages and `gulpfile.js`.
+
 ## v2.1.3 <sup>11.03.2018</sup>:
 * Partial translation DEMO to English *(this is the basis for further translation of sources into English)**(any help is welcome)*.
 * Modified stylized **input** and **buttons**.

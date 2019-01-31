@@ -1,6 +1,12 @@
 let SelectBox = 
 ( function( )
 {
+	/**
+	 * 
+	 * @param {*} element 
+	 * @param {*} options 
+	 * @param {*} locale 
+	 */
 	let Component = function( element, options, locale ) 
 	{
 		//
@@ -18,14 +24,15 @@ let SelectBox =
 		
 		// Поле поиска
 		this.searchBlock = $( '<div class="jq-selectbox__search">'
-									+ '<input type="search" autocomplete="off" placeholder="' + ( element.data( 'search-placeholder' ) || locale.search[ 'placeholder' ] ) + '">'
+									+ '<input type="search" autocomplete="off" placeholder="' + ( element.attr( 'placeholder' ) || element.data( 'placeholder' ) || locale.search[ 'placeholder' ] ) + '">'
 								+ '</div>'
-								+ '<div class="jq-selectbox__not-found">' + ( element.data( 'search-not-found' ) || locale.search[ 'notFound' ] ) + '</div>' )
+								+ '<div class="jq-selectbox__search-status">' + ( element.data( 'search-not-found' ) || locale.search[ 'notFound' ] ) + '</div>' )
 							.hide( );
 	
 		// Выпадающий список
 		this.dropdown = $( '<div class="jq-selectbox__dropdown" style="position: absolute">'
 								+ '<ul></ul>'
+								+ '<div class="jq-selectbox__empty">' + locale[ 'empty' ] + '</div>'
 							+ '</div>' )
 							.prepend( this.searchBlock );
 	
@@ -65,7 +72,9 @@ let SelectBox =
 	
 	Component.prototype = 
 	{
-		// Загрузка выпадающего списка
+		/**
+		 * Загрузка выпадающего списка
+		 */
 		loadDropdown: function( )
 		{
 			const element = this.element,
@@ -73,15 +82,17 @@ let SelectBox =
 				locale = this.locale,
 				selectbox = this.selectbox,
 				dropdown = this.dropdown,
-				searchBlock = this.searchBlock;
+				searchBlock = this.searchBlock,
+				dropdownSearch = this.searchBlock.find( 'input' );
 		
 			//
 			const optionList = $( 'option', element ),
 				optionSelected = optionList.filter( ':selected' ),
 				ulList = SelectBoxExtra.makeList( optionList ),
-				searchEnabled = !element.data( 'search' ) || options.search,
+				searchEnabled = element.data( 'search' ) || options.search,
 				searchLimit = element.data( 'search-limit' ) || ( options.search || {} ).limit,
-				notFound = $( 'div.jq-selectbox__not-found', dropdown );
+				searchStatusMsg = $( 'div.jq-selectbox__search-status', dropdown ),
+				listEmptyMsg = $( 'div.jq-selectbox__empty', dropdown );
 		
 			// Заменяем содержимое списка
 			dropdown.find( 'ul' ).replaceWith( ulList );
@@ -95,26 +106,37 @@ let SelectBox =
 			{
 				dropdown.css( {	left: 0 } );
 			}
-		
-			// Обновляем ширину
-			this.calculateDropdownWidth( );
 
-			// Обновляем высоту
-			this.calculateDropdownHeight( );
+			// Список пуст или нет
+			if( dropdownLi.filter( ':visible' ).length <= 0 && dropdownSearch.val( ) === '' )
+			{
+				listEmptyMsg.show( );
+			}
+			else
+			{
+				listEmptyMsg.hide( );
+			}
 
 			// Добавляем поле поиска
 			if( searchEnabled 
 				&& ( dropdownLi.length > searchLimit || ( this.ajaxOptions !== undefined && this.ajaxOptions.url !== '' ) ) )
 			{
 				searchBlock.show( );
-				
+
 				// "Не найдено"
-				notFound.toggle( dropdownLi.filter( ':visible' ).length < 1 );
+				searchStatusMsg.html( locale.search[ 'notFound' ] )
+								.toggle( dropdownLi.filter( ':visible' ).length <= 0 );
 			}
 			else
 			{
 				searchBlock.hide( );
 			}
+		
+			// Обновляем ширину
+			this.calculateDropdownWidth( );
+
+			// Обновляем высоту
+			this.calculateDropdownHeight( );
 
 			// Если выбран не дефолтный пункт
 			if( liSelected.length )
@@ -133,7 +155,9 @@ let SelectBox =
 			return this;
 		},
 		
-		// Закрыватие списка
+		/**
+		 * Сворачивание списка
+		 */
 		closeDropdown: function( )
 		{		
 			const element = this.element,
@@ -147,11 +171,13 @@ let SelectBox =
 
 			// Колбек при закрытии селекта
 			options.onClosed.call( selectbox );	
-		   
+
 			return this;
 		},
 		
-		//
+		/**
+		 * Разворачивание списка
+		 */
 		openDropdown: function( )
 		{
 			const element = this.element,
@@ -161,7 +187,7 @@ let SelectBox =
 				dropdownSearch = this.searchBlock.find( 'input' );
 			
 			//
-			const notFound = $( 'div.jq-selectbox__not-found', dropdown );
+			const searchStatusMsg = $( 'div.jq-selectbox__search-status', dropdown );
 			
 			// 
 			$( 'div.jqselect' ).removeClass( 'opened' );
@@ -184,8 +210,8 @@ let SelectBox =
 				// Сбрасываем значение и начинаем поиск
 				dropdownSearch.trigger( 'focus' );
 
-				// Прячем блок "не найдено"
-				notFound.hide( );
+				// Прячем блок "статуса"
+				searchStatusMsg.hide( );
 			}
 
 			// Колбек при открытии селекта
@@ -194,13 +220,18 @@ let SelectBox =
 			return this;
 		},
 		
-		// Расчёт ширины
+		/**
+		 * Расчёт ширины
+		 */
 		calculateDropdownWidth: function( )
 		{
 			const element = this.element,
 				selectbox = this.selectbox,
 				selectboxText = this.selectboxText,
 				dropdown = this.dropdown;
+
+			// Настройки
+			const placeholder = element.attr( 'placeholder' ) || element.data( 'placeholder' ) || this.placeholder;
 		
 			// Разбираем на составляющие выпадающий список
 			const dropdownLi = $( 'li', dropdown );
@@ -257,7 +288,7 @@ let SelectBox =
 
 			// Прячем 1-ю пустую опцию, если она есть и если атрибут data-placeholder не пустой
 			// если все же нужно, чтобы первая пустая опция отображалась, то указываем у селекта: data-placeholder=""
-			if( $( 'option', element ).first( ).text( ) === '' && element.data( 'placeholder' ) !== '' )
+			if( $( 'option', element ).first( ).text( ) === '' && placeholder !== '' )
 			{
 				dropdownLi.first( ).hide( );
 			}
@@ -265,7 +296,9 @@ let SelectBox =
 			return this;
 		},
 		
-		// Расчёт высоты
+		/**
+		 * Расчёт высоты
+		 */
 		calculateDropdownHeight: function( )
 		{
 			const element = this.element,
@@ -291,7 +324,9 @@ let SelectBox =
 			return this;
 		},
 		
-		// Умное позиционирование
+		/**
+		 * Умное позиционирование
+		 */
 		smartPosition: function( )
 		{
 			const element = this.element,
@@ -307,7 +342,7 @@ let SelectBox =
 			// Разбираем на составляющие выпадающий список
 			const dropdownUl = $( 'ul', dropdown ),
 				dropdownLi = $( 'li', dropdown ),
-				notFound = $( 'div.jq-selectbox__not-found', dropdown ),
+				searchStatusMsg = $( 'div.jq-selectbox__search-status', dropdown ),
 				itemCount = dropdownLi.length,
 				selectHeight = selectbox.outerHeight( true ) || 0,
 				maxHeight = dropdownUl.css( 'max-height' ) || 0,
@@ -375,8 +410,16 @@ let SelectBox =
 			return this;
 		},
 		
-		// Выпадающее вниз меню
-		// @todo: Как-то тут много "магии"
+		/**
+		 * Выпадающее вниз меню
+		 * @todo: Как-то тут много "магии"
+		 * 
+		 * @param {*} menu 
+		 * @param {*} offset 
+		 * @param {*} newHeight 
+		 * @param {*} liHeight 
+		 * @param {*} maxHeight 
+		 */
 		dropDown: function( menu, offset, newHeight, liHeight, maxHeight )
 		{	
 			const searchHeight = $( 'input', this.dropdown ).parent( ).outerHeight( true ) || 0;
@@ -406,8 +449,16 @@ let SelectBox =
 			return this;
 		},
 
-		// Выпадающее вверх меню
-		// @todo: Как-то тут много "магии"
+		/**
+		 * Выпадающее вверх меню
+		 * @todo: Как-то тут много "магии"
+		 *
+		 * @param {*} menu 
+		 * @param {*} offset 
+		 * @param {*} newHeight 
+		 * @param {*} liHeight 
+		 * @param {*} maxHeight 
+		 */
 		dropUp: function( menu, offset, newHeight, liHeight, maxHeight )
 		{
 			const searchHeight = $( 'input', this.dropdown ).parent( ).outerHeight( true ) || 0;
@@ -440,12 +491,15 @@ let SelectBox =
 			return this;
 		},
 			
-		// Обработка событий
+		/**
+		 * Обработка событий
+		 */
 		setEvents: function( )
 		{
 			const context = this,
 				element = this.element,
 				options = this.options,
+				locale = this.locale,
 				ajaxOptions = this.ajaxOptions,
 				selectbox = this.selectbox,
 				dropdown = this.dropdown,
@@ -455,7 +509,7 @@ let SelectBox =
 			// Разбираем на составляющие выпадающий список
 			const dropdownUl = $( 'ul', dropdown ),
 				dropdownLi = $( 'li', dropdown ),
-				notFound = $( 'div.jq-selectbox__not-found', dropdown );
+				searchStatusMsg = $( 'div.jq-selectbox__search-status', dropdown );
 			
 			// Необходимо "перерисовать" контрол
 			selectbox.on( 'repaint', function( )
@@ -513,13 +567,19 @@ let SelectBox =
 			dropdownSearch.on( 'keyup', function( )
 			{
 				const query = $( this ).val( ),
-					optionList = $( 'option', context.element );
+					optionList = $( 'option', context.element ),
+					placeholder = element.attr( 'placeholder' ) || element.data( 'placeholder' ) || options.placeholder,
+					searchStatusMsg = $( 'div.jq-selectbox__search-status', dropdown );
 
 				// 
 				if( ajaxOptions !== undefined && ajaxOptions.url !== '' )
 				{
 					if( query !== '' )
 					{
+						//
+						searchStatusMsg.html( locale.search[ 'loading' ] );
+
+						//
 						if( context.ajaxTimeout ) { window.clearTimeout( context.ajaxTimeout ); }
 						context.ajaxTimeout = window.setTimeout( function( ) { context.ajaxSearch( query, true ); }, ajaxOptions.delay || 100 );
 					}
@@ -546,13 +606,20 @@ let SelectBox =
 				}
 
 				// Прячем 1-ю пустую опцию
-				if( optionList.first( ).text( ) === '' && element.data( 'placeholder' ) !== '' )
+				if( optionList.first( ).text( ) === '' && placeholder !== '' )
 				{
 					dropdownLi.first( ).hide( );
 				}
 
-				// Видимость блока "не найдено"
-				notFound.toggle( dropdownLi.filter( ':visible' ).length < 1 );
+				// Видимость блока "состояние поиска"
+				if( query !== '' )
+				{
+					searchStatusMsg.toggle( dropdownLi.filter( ':visible' ).length <= 0 );
+				}
+				else
+				{
+					searchStatusMsg.hide( );
+				}
 			} );
 
 			//
@@ -655,15 +722,28 @@ let SelectBox =
 
 			return this;
 		},
-		
-		// Поиск на сервере
+
+		/**
+		 * Поиск на сервере
+		 * 
+		 * @param {*} term 
+		 * @param {*} clear 
+		 */
 		ajaxSearch: function( term, clear )
 		{
 			const context = this,
 				element = this.element,
+				dropdown = this.dropdown,
 				options = this.options,
+				locale = this.locale,
 				ajaxOptions = this.ajaxOptions;
-		
+
+			//
+			const searchStatusMsg = $( 'div.jq-selectbox__search-status', dropdown );
+
+			//
+			searchStatusMsg.html( locale.search[ 'loading' ] );
+
 			// Добавляем в данные поисковый запрос
 			this.ajaxData.term = term;
 
@@ -673,18 +753,25 @@ let SelectBox =
 
 				success: function( data, textStatus, jqXHR )
 				{
-					return context.ajaxSearchSuccess( data, clear );
+					//
+					searchStatusMsg.html( locale.search[ 'notFound' ] );
 
+					//
+					return context.ajaxSearchSuccess( data, clear );
 				},
 				error: function( data, textStatus, jqXHR )
 				{
 					// Очищаем при необходимости
 					if( clear ) 
 					{ 
+						// Очищаем список
 						element.find( 'option' ).remove( );
+						
+						// Перезагружаем список
 						context.loadDropdown( );
 					}
 					
+					//
 					if( context.options.debug && window.console && console.error ) 
 					{
 						console.error( 'JQuery.FormStyler-Modern: Ошибка при запросе!' );
@@ -713,7 +800,12 @@ let SelectBox =
 			return this;
 		},
 		
-		// Обработка удачного ответа
+		/**
+		 * Обработка удачного ответа при поиске на сервере
+		 * 
+		 * @param {*} data 
+		 * @param {*} clear 
+		 */
 		ajaxSearchSuccess: function( data, clear )
 		{
 			const context = this,
@@ -756,7 +848,9 @@ let SelectBox =
 			return this;
 		},
 		
-		// Перерисовка
+		/**
+		 * Перерисовка
+		 */
 		repaint: function( )
 		{
 			const element = this.element,
@@ -767,15 +861,18 @@ let SelectBox =
 			
 			//
 			const optionList = $( 'option', element ),
-				li = $( 'li', dropdown );
+					li = $( 'li', dropdown );
 			
 			//
 			const selectedItems = optionList.filter( ':selected' );
 
+			//
+			const placeholder = element.attr( 'placeholder' ) || element.data( 'placeholder' ) || options.placeholder;
+
 			// Выводим в тексте выбранный элемент
 			if( selectedItems.val( ) === undefined || selectedItems.val( ) === '' )
 			{
-				selectboxText.html( element.data( 'placeholder' ) || options.placeholder )
+				selectboxText.html( placeholder )
 							.addClass( 'placeholder' );
 			}
 			else
@@ -812,7 +909,9 @@ let SelectBox =
 			return this;
 		},
 		
-		// Уничтожение
+		/**
+		 * Уничтожение
+		 */
 		destroy: function( )
 		{
 			this.element.off( '.' + pluginName )

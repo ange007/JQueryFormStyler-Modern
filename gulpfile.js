@@ -11,7 +11,7 @@ var gulp = require( 'gulp' ),
 	watch = require( 'gulp-watch' ),
 	debug = require( 'gulp-debug' ),
 	sync = require( 'gulp-config-sync' ),
-	header = require('gulp-header'),
+	header = require( 'gulp-header' ),
 	rimraf = require( 'rimraf' ),
 	rigger = require( 'gulp-rigger' ),
 	concat = require( 'gulp-concat' ),
@@ -37,17 +37,17 @@ var params =
 var paths = 
 {
 	src: { 
-		main: './src/',
-		script: './src/script/',
-		frame: './src/frame/',
-		style: './src/style/',
+		main: 'src/',
+		script: 'src/script/',
+		frame: 'src/frame/',
+		style: 'src/style/',
 		styles: {
 			default: '/',
 			bootstrap: 'bootstrap/'
 		}
 	},
 	
-	build: './build/'
+	build: 'build/'
 };
 
 // Параметры сборок
@@ -76,9 +76,12 @@ var bundle = bundles[ 'dev' ];
  * * * * * * * * * * * * * */
 
 // Очищаем директорию сборки
-gulp.task( 'clean', function( )
+gulp.task( 'clean', function( done )
 {  
-    return rimraf.sync( paths.build.main + '/**' );
+	rimraf.sync( paths.build.main + '/**' );
+	
+	//
+	done( );
 } );
 
 // Синхронизация изменений конфигураций для bower и сomposer
@@ -100,10 +103,13 @@ gulp.task( 'config:sync', function( )
 	gulp.src( [ 'bower.json', 'composer.json' ] )
 		.pipe( sync( options ) ) // Синхронизируем данные
 		.pipe( gulp.dest( '.' ) );
+
+	//
+	done( );
 } );
 
 // Задача обработки скриптов библиотеки
-gulp.task( 'js:build', function( ) 
+gulp.task( 'js:build', function( done ) 
 {
 	// Основные параметры
 	var fileName = params.fileName + bundle.fileSuffix + '.js',
@@ -122,18 +128,27 @@ gulp.task( 'js:build', function( )
 					'' ].join( '\n' );
 	
 	// Собираем файл
-    return gulp.src( paths.src.script + 'main.js')
-				.pipe( debug( { title: 'js:' } ) ) // Вывод пофайлового лога
-				.pipe( replace( '%pluginName%', params.pluginName ) )
-				.pipe( rigger( ) ) // Подстановка исходного кода файлов на место переменных
-				.pipe( babel( {	presets: [ 'env' ] } ) )
-				.pipe( gulpif( bundle.compress, uglify( { mangle: true, compress: false } ) ) ) //
-				.pipe( header( banner, { pkg : pkg } ) ) // Установка хидера
-				.pipe( rename( fileName ) ) // Переименовываем
-				.pipe( gulp.dest( path ) );
+    gulp.src( paths.src.script + 'main.js')
+		.pipe( debug( { title: 'js:' } ) ) // Вывод пофайлового лога
+		.pipe( replace( '%pluginName%', params.pluginName ) )
+		.pipe( rigger( ) ) // Подстановка исходного кода файлов на место переменных
+		.pipe( babel( {	presets: [ '@babel/env' ] } ) )
+		.pipe( gulpif( bundle.compress, uglify( { mangle: true, compress: false } ) ) ) //
+		.pipe( header( banner, { pkg : pkg } ) ) // Установка хидера
+		.pipe( rename( fileName ) ) // Переименовываем
+		.pipe( gulp.dest( path ) );
+
+	//
+	done( );
 } );
 
-// Функция для сборки SASS/SCSS
+/**
+ *  Функция для сборки SASS/SCSS
+ * 
+ * @param {*} target 
+ * @param {*} fileName 
+ * @param {*} buildPath 
+ */
 var scssBuildFunc = function( target, fileName, buildPath )
 {
 	return gulp.src( target )
@@ -147,7 +162,7 @@ var scssBuildFunc = function( target, fileName, buildPath )
 };
 
 // Создаем SASS/SCSS задание
-gulp.task( 'scss:theme:build', function( ) 
+gulp.task( 'scss:theme:build', function( done ) 
 { 
 	var fileName = params.fileName,
 		themePath = paths.build + bundle.themePath;
@@ -160,10 +175,13 @@ gulp.task( 'scss:theme:build', function( )
 	{
 		scssBuildFunc( paths.src.style + paths.src.styles[ styleName ]  + 'main.scss', fileName + '.' + styleName, themePath );
 	}
+
+	//
+	done( );
 } );
 
 // Сборка общего файла с темой по умолчанию
-gulp.task( 'scss:theme:concat', function( )
+gulp.task( 'scss:theme:concat', function( done )
 {
 	var fileName = params.fileName,
 		mainPath = paths.build + bundle.mainPath;
@@ -171,34 +189,31 @@ gulp.task( 'scss:theme:concat', function( )
 	// Собираем общий файл с темой по умолчанию
 	scssBuildFunc( [ paths.src.style + paths.src.styles[ 'default' ] + 'main.scss',
 					paths.src.frame + 'main.scss' ], 
-					fileName, mainPath );	
+					fileName, mainPath );
+					
+	//
+	done( );	
 } );
 
 // Задача по сборке
-gulp.task( 'build', function( ) 
-{
-	// Делаем обычную версию
-	gulp.start( 'js:build', 'scss:theme:build', 'scss:theme:concat' ); 
-} );
+gulp.task( 'build', gulp.series( 'js:build', 'scss:theme:build', 'scss:theme:concat' ) );
 
-// Задача по сборке
-gulp.task( 'build:min', function( ) 
-{
-	// Делаем минифицированную версию
+// Задача по сборке сжатой версии
+gulp.task( 'build:min', gulp.series( function( done ) 
+{ 
 	bundle = bundles[ 'min' ];
-	gulp.start( 'js:build', 'scss:theme:build', 'scss:theme:concat' ); 
-} );
+	done( );
+}, 
+'js:build', 'scss:theme:build', 'scss:theme:concat' ) );
 
 // Задача по умолчанию
-gulp.task( 'default', function( ) 
+gulp.task( 'default', gulp.series( 'clean', 'build', function( done ) 
 {  
-	// Запускаем основные задания
-	gulp.start( 'clean', 'build' );
+	gulp.watch( [ paths.src.script + '**/*.js' ], gulp.parallel( 'js:build' ) ),
 
-	/* * * * * * * * * * * * * *
-	 * Смотрители 
-	 * * * * * * * * * * * * * */
+	gulp.watch( [ paths.src.frame + '**/*.scss', 
+					paths.src.style + '**/*.scss' ], gulp.parallel( 'scss:theme:build', 'scss:theme:concat' ) );
 
-	gulp.watch( paths.src.script + '/*.js', [ 'js:build' ] ),
-	gulp.watch( [ paths.src.frame + '/**/*.scss', paths.src.style + '/**/*.scss' ], [ 'scss:theme:build', 'scss:theme:concat' ] );
-} );
+	//
+	done( );
+} ) );

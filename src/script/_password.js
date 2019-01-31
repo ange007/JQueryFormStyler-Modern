@@ -1,6 +1,12 @@
 let Password = 
 ( function( )
 {
+	/**
+	 * 
+	 * @param {*} element 
+	 * @param {*} options 
+	 * @param {*} locale 
+	 */
 	let Component = function( element, options, locale ) 
 	{		
 		//
@@ -37,6 +43,9 @@ let Password =
 	
 	Component.prototype = 
 	{
+		/**
+		 * 
+		 */
 		setEvents: function( )
 		{
 			const locale = this.locale,
@@ -86,8 +95,10 @@ let Password =
 			
 			return this;
 		},
-		
-		// Перерисовка
+
+		/**
+		 * Перерисовка
+		 */
 		repaint: function( )
 		{
 			const element = this.element,
@@ -103,7 +114,9 @@ let Password =
 			return this;
 		},
 		
-		// Уничтожение
+		/**
+		 * Уничтожение
+		 */
 		destroy: function( )
 		{
 			const element = this.element;

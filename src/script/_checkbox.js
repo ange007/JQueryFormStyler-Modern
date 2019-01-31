@@ -1,6 +1,12 @@
 let CheckBox = 
 ( function( )
 {
+	/**
+	 * 
+	 * @param {*} element 
+	 * @param {*} options 
+	 * @param {*} locale 
+	 */
 	let Component = function( element, options, locale ) 
 	{
 		//
@@ -28,7 +34,9 @@ let CheckBox =
 	
 	Component.prototype = 
 	{
-		// Обработка событий
+		/**
+		 * Обработка событий
+		 */
 		setEvents: function( )
 		{
 			const context = this,
@@ -124,7 +132,9 @@ let CheckBox =
 			return this;
 		},
 
-		// Перерисовка
+		/**
+		 * Перерисовка
+		 */
 		repaint: function( ) 
 		{
 			const element = this.element,
@@ -157,7 +167,9 @@ let CheckBox =
 			return this;
 		},
 
-		// Уничтожение
+		/**
+		 * Уничтожение
+		 */
 		destroy: function( )
 		{
 			const element = this.element;

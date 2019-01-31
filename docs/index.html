@@ -344,9 +344,9 @@
 						<div class="section">
 
 							<div class="sec">
-								<p>Tested change event: <code>onchange="alert(this.value)"</code>.</p>
-								<select id="s-6" onchange="alert( this.value )">
-									<option>-- Select --</option>
+								<p>Custom placeholder. Text "-- Select --" set in attr <code>placeholder</code>.</p>
+								<select id="s-7" placeholder="-- Select --">
+									<option label="-"></option>
 									<option>Option 1</option>
 									<option>Option 2</option>
 									<option>Option 3</option>
@@ -356,14 +356,8 @@
 							</div><!-- .sec -->
 
 							<div class="sec">
-								<p>Custom placeholder. Text "-- Select --" set in attr <code>data-placeholder</code>.</p>
-								<select id="s-7" data-placeholder="-- Select --">
-									<option label="-"></option>
-									<option>Option 1</option>
-									<option>Option 2</option>
-									<option>Option 3</option>
-									<option>Option 4</option>
-									<option>Option 5</option>
+								<p>Empty List. Text "-- Select --" set in attr <code>placeholder</code>.</p>
+								<select id="s-15" placeholder="-- Select --">
 								</select>
 							</div><!-- .sec -->
 
@@ -438,8 +432,20 @@
 						<div class="section">
 
 							<div class="sec">
+								<p>Tested change event: <code>onchange="alert(this.value)"</code>.</p>
+								<select id="s-6" onchange="alert( this.value )">
+									<option>-- Select --</option>
+									<option>Option 1</option>
+									<option>Option 2</option>
+									<option>Option 3</option>
+									<option>Option 4</option>
+									<option>Option 5</option>
+								</select>
+							</div><!-- .sec -->
+
+							<div class="sec">
 								<p>Search from <code>ajax</code>.</p>
-								<select id="s-12" data-placeholder="-- Select --">
+								<select id="s-12" placeholder="-- Select --">
 								</select>
 							</div><!-- .sec -->
 

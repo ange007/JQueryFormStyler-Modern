@@ -1,6 +1,12 @@
 let Radio = 
 ( function( )
 {
+	/**
+	 * 
+	 * @param {*} element 
+	 * @param {*} options 
+	 * @param {*} locale 
+	 */
 	let Component = function( element, options, locale ) 
 	{
 		//
@@ -28,7 +34,9 @@ let Radio =
 	
 	Component.prototype = 
 	{
-		// Обработка событий
+		/**
+		 * Обработка событий
+		 */
 		setEvents: function( )
 		{
 			const context = this,
@@ -117,7 +125,9 @@ let Radio =
 			return this;
 		},
 		
-		// Перерисовка
+		/**
+		 * Перерисовка
+		 */
 		repaint: function( )
 		{
 			const element = this.element,
@@ -132,7 +142,9 @@ let Radio =
 			return this;
 		},
 		
-		// Уничтожение
+		/**
+		 * Уничтожение
+		 */
 		destroy: function( )
 		{
 			const element = this.element;

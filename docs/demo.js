@@ -115,7 +115,7 @@
 				}
 			}
 		} );	
-											
+
 		// input:password без кнопки
 		$( '#p-4' ).styler( 'reinitialize', { password: { switchHTML: undefined } } );										
 				
@@ -145,7 +145,9 @@
 			select: {
 				visibleOptions: 10,
 									
-				search: {					
+				search: {
+					limit: 10,
+
 					ajax: {
 						delay: 250,
 						cache: true,		

@@ -1,6 +1,12 @@
 let SelectBoxMulti = 
 ( function( )
 {
+	/**
+	 * 
+	 * @param {*} element 
+	 * @param {*} options 
+	 * @param {*} locale 
+	 */
 	let Component = function( element, options, locale ) 
 	{
 		//
@@ -56,7 +62,9 @@ let SelectBoxMulti =
 	
 	Component.prototype = 
 	{
-		// Загрузка списка
+		/**
+		 * Загрузка списка
+		 */
 		loadList: function( )
 		{
 			const element = this.element,
@@ -72,8 +80,10 @@ let SelectBoxMulti =
 			//
 			return this;
 		},
-		
-		// Обработка событий
+
+		/**
+		 * Обработка событий
+		 */
 		setEvents: function( )
 		{
 			const context = this,
@@ -249,7 +259,9 @@ let SelectBoxMulti =
 			return this;
 		},
 		
-		// Перерисовка
+		/**
+		 * Перерисовка
+		 */
 		repaint: function( )
 		{
 			const element = this.element,
@@ -280,8 +292,10 @@ let SelectBoxMulti =
 			
 			return this;
 		},
-		
-		// Уничтожение
+
+		/**
+		 * Уничтожение
+		 */
 		destroy: function( )
 		{
 			this.element.off( '.' + pluginName + ', refresh' )
