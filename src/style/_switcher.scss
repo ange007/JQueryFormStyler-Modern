@@ -1,0 +1,69 @@
+.jq-switcher {
+	@include base-element( );
+
+	border-radius: $checkbox-radius;
+	transition: border-color .6s  ease-out;
+
+	.toggle-button {
+		position: absolute;
+		top: 1px;
+		width: 50%;
+		/*width: 28px;*/
+		bottom: 1px;
+		left: 1px;
+		background: $switcher-off-background;
+		border-radius: $checkbox-radius-checked; 
+		cursor: pointer;
+		transition: all .3s .1s, width .1s, top .1s, bottom .1s;
+	}
+
+	.toggle-text {
+		display: inline;
+		position: absolute;
+		text-align: center;
+		font-size: 12px;
+		width: 50%;
+		line-height: 18px;
+		transition: all .2s .1s, right .1s;
+	}
+
+	.toggle-text-off {
+		font-weight: normal;
+		color: $switcher-off-color;
+		left: 1px;
+	}
+
+	.toggle-text-on {
+		font-weight: bold;
+		color: rgba(0,0,0,0);
+		right: 1px;
+	}
+	
+	&.checked {
+		border: $border-active;
+		transition: all .5s .15s ease-out;
+
+		.toggle-button {
+			top: 1px;
+			bottom: 1px;
+			left: 100%;
+			margin-left: calc(-50% - 1px);
+			background: $switcher-on-background;
+			/*box-shadow: 0 0 16px #4b7a8d;*/
+			transition: all .2s .1s, right .1s;
+		}
+
+		.toggle-text {
+			
+		}
+
+		.toggle-text-on {
+			color: $switcher-on-color;
+			transition: color .3s .15s ;
+		}
+
+		.toggle-text-off {
+			color: rgba(0,0,0,0);
+		}
+	}
+}

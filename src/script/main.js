@@ -192,7 +192,7 @@
 			{
 				//= _switcher.js
 
-				this.customElement = new CheckBox( element, this.options.switcher, this.locales.switcher );
+				this.customElement = new Switcher( element, this.options.switcher, this.locales.switcher );
 			}
 			// Выбор файла
 			else if ( element.is( ':file' ) )

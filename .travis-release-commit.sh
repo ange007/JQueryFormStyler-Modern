@@ -19,11 +19,11 @@ cp -rp ${TRAVIS_BUILD_DIR}/README.md ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/CHANGELOG.md ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/LICENSE ${DIST_PATH};
 # переходим в директорию добавляе коммит
-cd ${DIST_PATH} && git add -A && git commit -am "Автоматическая сборка (${TRAVIS_BUILD_NUMBER})";
+cd ${DIST_PATH} && git add -A && git commit -am "Auto Build (${TRAVIS_BUILD_NUMBER})";
 
 # создаём тег и отправляем коммит
-if [ "$TRAVIS_BRANCH" == "master" ] 
+if [ "${TRAVIS_BRANCH}" == "master" ] 
 then 
-	git tag -a "v${VERS}" -m "Релиз версии ${VERS}"; 
+	git tag -a "v${VERS}" -m "Version ${VERS} Release"; 
 	git push ${REPO_URL} release --tags;
 fi
