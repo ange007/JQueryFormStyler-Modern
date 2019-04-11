@@ -26,7 +26,4 @@ if [ "$TRAVIS_BRANCH" == "master" ]
 then 
 	git tag -a "v${VERS}" -m "Релиз версии ${VERS}"; 
 	git push ${REPO_URL} release --tags;
-# или просто отправляем коммит
-else
-	git push ${REPO_URL} release;
 fi
