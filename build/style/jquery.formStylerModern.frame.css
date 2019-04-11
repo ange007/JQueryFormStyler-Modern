@@ -30,11 +30,11 @@ input[type="file"].jq-hidden {
   display: inline-block;
   position: relative;
   overflow: hidden; }
-  .jq-checkbox.checked .jq-checkbox__div {
+  .jq-checkbox.checked .jq-checkbox__flag {
     width: 12px;
     height: 12px;
     margin: 1px 0 0 1px; }
-  .jq-checkbox.indeterminate .jq-checkbox__div {
+  .jq-checkbox.indeterminate .jq-checkbox__flag {
     width: 12px;
     height: 4px;
     margin: 5px 0 0 1px; }
@@ -62,6 +62,24 @@ input[type="file"].jq-hidden {
   .jq-radio.disabled {
     opacity: .55;
     cursor: default; }
+
+/* switcher */
+.jq-switcher {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 20px; }
+  .jq-switcher .toggle-text {
+    cursor: pointer;
+    -webkit-user-select: none;
+    /* Chrome/Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+ */
+    vertical-align: middle;
+    height: 100%;
+    line-height: 20px; }
 
 /* file */
 .jq-file {

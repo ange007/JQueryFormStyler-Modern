@@ -24,7 +24,7 @@
 		</div>
 
 		<form method="post">
-			<div class="wrapper">				
+			<div class="wrapper">
 				<div class="left">
 					<div class="style-menu">
 						Style:
@@ -33,9 +33,10 @@
 							<option value="jquery.formStylerModern.bootstrap.css">Bootstrap</option>
 						</select>
 					</div>
-					
+
 					<ul class="menu">
 						<li class="current" data-hash="checkbox">CheckBox</li>
+						<li data-hash="switcher">Switcher</li>
 						<li data-hash="radio">RadioButton</li>
 						<li data-hash="file">File</li>
 						<li data-hash="number">Number</li>
@@ -67,6 +68,19 @@
 					</div><!-- .box -->
 
 					<div class="box">
+						<h2>Switcher</h2>
+
+						<div class="section lh">
+							<div class="buttons">
+								<button type="submit" class="button add-radio">Add</button>
+								<button type="submit" class="button disable-input">Toggle activity</button>
+							</div>
+							<input type="switcher" id="switcher0" /> without <code>label</code><br />
+							<input type="switcher" id="switcher1" /> <label for="switcher1"> only text in <code>label</code></label><br />
+						</div><!-- .section -->
+					</div><!-- .box -->
+
+					<div class="box">
 						<h2>RadioButton</h2>
 
 						<div class="section lh">
@@ -86,8 +100,8 @@
 
 						<div class="section">
 							<div class="buttons">
-								<button type="submit" class="button  add-file">Add</button>
-								<button type="submit" class="button  disable-input">Toggle activity</button>
+								<button type="submit" class="button add-file">Add</button>
+								<button type="submit" class="button disable-input">Toggle activity</button>
 							</div>
 							<input type="file" />
 						</div><!-- .section -->

@@ -10,22 +10,22 @@
 			$( this ).addClass( 'current' )
 					.siblings( ).removeClass( 'current' )
 					.parents( 'div.wrapper' ).find( 'div.box' ).removeClass( 'visible' ).eq( $( this ).index( ) ).addClass( 'visible' );
-			
+
 			window.location.hash = $( this ).data( 'hash' );
 			$( 'input' ).blur( );
 		} );
-		
+
 		//
 		hash = window.location.hash.replace( /#(.+)/, '$1' );
 		if( hash !== '' ) {	$( 'ul.menu>li[data-hash=' + hash + ']' ).trigger( 'click' ); }
-		
+
 		// Проверка состояния
 		var checkState = function( )
 		{
 			var section = $( this ).closest( 'div.section' ),
 				stateBlock = section.children( '[data-checkbox="' + this.id + '"]' ),
 				state = '';
-						
+
 			if( !$( this ).is( ':checkbox' ) )
 			{
 				return;
@@ -52,7 +52,7 @@
 			// Установка состояния
 			stateBlock.html( state );
 		};
-		
+
 		// Переключить активность
 		$.fn.toggleDisabled = function( repaint )
 		{
