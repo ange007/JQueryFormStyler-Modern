@@ -1,4 +1,4 @@
-let CheckBox = 
+let Switcher = 
 ( function( )
 {
 	/**
@@ -18,14 +18,19 @@ let CheckBox =
 		const attr = new Attributes( this.element );
 
 		//
-		this.checkbox = $( '<div class="jq-checkbox"><div class="jq-checkbox__flag"></div></div>' )
+		this.switcher = $( '<div class="jq-switcher">'
+								+ '<div class="toggle-text-off">OFF</div>'
+								+ '<div class="glow-comp"></div>'
+								+ '<div class="toggle-button"></div>'
+								+ '<div class="toggle-text-on">ON</div>'
+							+ '</div>' )
 							.attr( { 'id': attr.id, 'title': attr.title, 'unselectable': 'on' } )
 							.addClass( attr.classes )
 							.data( attr.data );
 
 		// Прячем оригинальный чекбокс
 		this.element.addClass( 'jq-hidden' )
-					.after( this.checkbox ).prependTo( this.checkbox );
+					.after( this.switcher ).prependTo( this.switcher );
 
 		//
 		this.setEvents( )
@@ -60,7 +65,7 @@ let CheckBox =
 					// Текущее состояние: "Отмечено"
 					if( element.is( ':checked' ) || element.is( ':indeterminate' ) )
 					{
-						// ... если работаем через 3 состояния - отмечаем "не определено",  или просто снимаем отметку
+						// ... если работаем через 3 состояния - отмечаем "не определено", или просто снимаем отметку
 						element.prop( 'checked', ( options.indeterminate && element.is( ':indeterminate' ) ) );
 
 						// "Неопределено" в любом случае снимаем
@@ -92,7 +97,7 @@ let CheckBox =
 
 			// Клик по label привязанному к данному checkbox
 			element.closest( 'label' ).add( 'label[for="' + this.element.attr( 'id' ) + '"]' )
-								.on( 'click.' + pluginName, function( e )
+										.on( 'click.' + pluginName, function( e )
 			{
 				if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( checkbox ).length )
 				{

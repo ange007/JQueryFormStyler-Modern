@@ -113,7 +113,7 @@
 			}
 		}
 	};
-		
+
 	// Добавляем синонимы языковых кодов
 	locales[ 'en' ] = locales[ 'en-US' ];
 	locales[ 'ru' ] = locales[ 'ru-RU' ];
@@ -143,16 +143,16 @@
 		// Запоминаем єлемент
 		this.element = element;
 		this.customElement = undefined;
-		
+
 		// Настройки
 		this.options = $.extend( true, { }, defaults, options );
-		
+
 		// Расширяем английскую локализацию - выборанной локализацией из параметров
 		let mainLocale = $.extend( true, { }, locales[ 'en-US' ], locales[ this.options.locale ] );
 
 		// Расширяем полученный словарь словами переданными через настройки
 		this.locales = $.extend( true, { }, mainLocale, this.options.locales );
-		
+
 		// Инициаплизация
 		this.init( );
 	}
@@ -184,21 +184,28 @@
 			else if( element.is( ':radio' ) )
 			{
 				//= _radio.js
-				
+
 				this.customElement = new Radio( element, this.options.radio, this.locales.radio );
 			}
+			// Переключатель
+			if( element.is( 'input[type="switcher"]' ) )
+			{
+				//= _switcher.js
+
+				this.customElement = new CheckBox( element, this.options.switcher, this.locales.switcher );
+			}
 			// Выбор файла
-			else if ( element.is( ':file' ) ) 
+			else if ( element.is( ':file' ) )
 			{
 				//= _file.js
-				
+
 				this.customElement = new File( element, this.options.file, this.locales.file );
 			}
 			// Номер
 			else if( element.is( 'input[type="number"]' ) )
 			{
 				//= _number.js
-				
+
 				this.customElement = new Number( element, this.options.number, this.locales.number );
 			} 
 			// Пароль
@@ -218,7 +225,7 @@
 			{
 				//= _selectbox.js
 				//= _selectbox-multi.js
-				
+
 				// Стилизируем компонент
 				if( element.is( '[multiple]' ) || element.attr( 'size' ) > 1 )
 				{
@@ -227,7 +234,7 @@
 				else
 				{
 					this.customElement = new SelectBox( element, this.options.select, this.locales.select );
-					
+
 					// Инициализация спец.обработчиков
 					if( !SelectBoxExtra.initEvent )
 					{
@@ -241,7 +248,7 @@
 			{
 				// Добавляем класс
 				element.addClass( pluginName );
-				
+
 				// Обработка кнопки сброса для стилизованных елементов
 				if( element.is( 'input[type="reset"]' ) )
 				{
@@ -268,7 +275,7 @@
 				context.reinitialize( );
 			} );
 		},
-		
+
 		/**
 		 * Убрать стилизацию елемент(а/ов)
 		 * 
@@ -277,13 +284,13 @@
 		destroy: function( reinitialize )
 		{
 			const el = $( this.element );
-			
+
 			// Если происходит уничтожение для переинициализации - data удалять не нужно
 			if( !reinitialize )
 			{
 				el.removeData( '_' + pluginName );
 			}
-			
+
 			// Убираем "невидимость" елемента
 			el.removeClass( 'jq-hidden' );
 
@@ -306,7 +313,7 @@
 
 			// Перезаписываем настройки
 			this.options = $.extend( true, { }, this.options, options );
-			
+
 			// Расширяем текущий словарь словами переданными через настройки
 			this.locales = $.extend( true, { }, this.locales, this.options.locales );
 
@@ -321,7 +328,7 @@
 	$.fn[ pluginName ] = function( options )
 	{
 		const args = arguments;
-		
+
 		// Если параметры это объект
 		if( options === undefined || typeof options === 'object' )
 		{
@@ -339,35 +346,35 @@
 			.done( function( )
 			{
 				let opt = $( this[0] ).data( '_' + pluginName );
-				
+
 				if( opt )
 				{
 					opt.options.onFormStyled.call( );
 				}
 			} );
-					
+
 			return this;
 		}
 		// Если параметры это строка
 		else if( typeof options === 'string' && options[0] !== '_' && options !== 'init' )
 		{
 			let returns = undefined;
-			
+
 			//
 			this.each( function( )
 			{
 				const instance = $.data( this, '_' + pluginName );
-				
+
 				if( instance instanceof Plugin && typeof instance[ options ] === 'function' )
 				{
 					returns = instance[ options ].apply( instance, Array.prototype.slice.call( args, 1 ) );
 				}
 			} );
-			
+
 			return returns !== undefined ? returns : this;
 		}
 	};
-	
+
 	//= _selectbox-extra.js
 	//= _extra.js
 } ) );
