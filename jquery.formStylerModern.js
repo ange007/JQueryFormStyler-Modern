@@ -168,7 +168,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           IE = navigator.userAgent.match(/(MSI|Windows\sPhone|Trident(?=\/))/i); // Чекбокс
 
       if (element.is(':checkbox')) {
-        var _CheckBox = function () {
+        var CheckBox = function () {
           /**
            * 
            * @param {*} element 
@@ -298,7 +298,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return Component;
         }();
 
-        this.customElement = new _CheckBox(element, this.options.checkbox, this.locales.checkbox);
+        this.customElement = new CheckBox(element, this.options.checkbox, this.locales.checkbox);
       } // Радиокнопка
       else if (element.is(':radio')) {
           var Radio = function () {
@@ -435,13 +435,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
             var attr = new Attributes(this.element); //
 
-            this.switcher = $('<div class="jq-switcher">' + '<div class="toggle-text-off">OFF</div>' + '<div class="glow-comp"></div>' + '<div class="toggle-button"></div>' + '<div class="toggle-text-on">ON</div>' + '</div>').attr({
+            this.switcher = $('<div class="jq-switcher">' + '<div class="toggle-button"></div>' + '<div class="toggle-text toggle-text-off">OFF</div>' + '<div class="toggle-text toggle-text-on">ON</div>' + '</div>').attr({
               'id': attr.id,
               'title': attr.title,
               'unselectable': 'on'
             }).addClass(attr.classes).data(attr.data); // Прячем оригинальный чекбокс
 
-            this.element.addClass('jq-hidden').after(this.switcher).prependTo(this.switcher); //
+            this.element.attr('type', 'checkbox').addClass('jq-hidden').after(this.switcher).prependTo(this.switcher); //
 
             this.setEvents().repaint();
           };
@@ -454,60 +454,45 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               var context = this,
                   options = this.options,
                   element = this.element,
-                  checkbox = this.checkbox; // Необходимо "перерисовать" контрол 
+                  switcher = this.switcher; // Необходимо "перерисовать" контрол 
 
-              checkbox.on('repaint', function () {
+              switcher.on('repaint', function () {
                 context.repaint();
               }) // Клик по псевдоблоку ( смена состояния )
               .on('click', function (e) {
                 e.preventDefault(); // Обрабатываем только активный псевдобокс
 
-                if (!checkbox.is('.disabled')) {
-                  // Текущее состояние: "Отмечено"
-                  if (element.is(':checked') || element.is(':indeterminate')) {
-                    // ... если работаем через 3 состояния - отмечаем "не определено", или просто снимаем отметку
-                    element.prop('checked', options.indeterminate && element.is(':indeterminate')); // "Неопределено" в любом случае снимаем
-
-                    element.prop('indeterminate', false);
-                  } // Текущее состояние: "Не отмечено"
-                  else {
-                      // ... если работаем через 3 состояния - отмечаем "не определено"
-                      if (options.indeterminate) {
-                        element.prop('checked', false).prop('indeterminate', true);
-                      } // ... или просто отмечаем
-                      else {
-                          element.prop('checked', true).prop('indeterminate', false);
-                        }
-                    } // Фокусируем и изменяем вызываем состояние изменения
-
+                if (!switcher.is('.disabled')) {
+                  //
+                  element.prop('checked', !element.is(':checked')); // Фокусируем и изменяем вызываем состояние изменения
 
                   element.focus().trigger('change').triggerHandler('click');
                 }
-              }); // Клик по label привязанному к данному checkbox
+              }); // Клик по label привязанному к данному switcher
 
               element.closest('label').add('label[for="' + this.element.attr('id') + '"]').on('click.' + pluginName, function (e) {
-                if (!$(e.target).is('a') && !$(e.target).closest(checkbox).length) {
-                  checkbox.triggerHandler('click');
+                if (!$(e.target).is('a') && !$(e.target).closest(switcher).length) {
+                  switcher.triggerHandler('click');
                   e.preventDefault();
                 }
               }); // Обработка изменений
 
               element.on('change.' + pluginName, function () {
-                checkbox.triggerHandler('repaint');
+                switcher.triggerHandler('repaint');
               }) // Обработка переключения при помощи клавиатуры
               .on('keydown.' + pluginName, function (e) {
                 if (e.which === 32) {
                   e.preventDefault();
-                  checkbox.triggerHandler('click');
+                  switcher.triggerHandler('click');
                 }
               }) // Обработка наведения фокуса
               .on('focus.' + pluginName, function () {
-                if (!checkbox.is('.disabled')) {
-                  checkbox.addClass('focused');
+                if (!switcher.is('.disabled')) {
+                  switcher.addClass('focused');
                 }
               }) // Обработка снятия фокуса
               .on('blur.' + pluginName, function () {
-                checkbox.removeClass('focused');
+                switcher.removeClass('focused');
               });
               return this;
             },
@@ -517,21 +502,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
              */
             repaint: function repaint() {
               var element = this.element,
-                  checkbox = this.checkbox; // Отмечено
+                  switcher = this.switcher; //
 
-              if (element.is(':checked') || element.is(':indeterminate')) {
-                if (element.is(':indeterminate')) {
-                  checkbox.removeClass('checked').addClass('indeterminate');
-                } else {
-                  checkbox.removeClass('indeterminate').addClass('checked');
-                }
-              } // Не отмечено
-              else {
-                  checkbox.removeClass('indeterminate').removeClass('checked');
-                } // Активация/деактивация
+              switcher.toggleClass('checked', element.is(':checked')); // Активация/деактивация
 
-
-              checkbox.toggleClass('disabled', element.is(':disabled'));
+              switcher.toggleClass('disabled', element.is(':disabled'));
               return this;
             },
 
@@ -550,7 +525,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return Component;
         }();
 
-        this.customElement = new CheckBox(element, this.options.switcher, this.locales.switcher);
+        this.customElement = new Switcher(element, this.options.switcher, this.locales.switcher);
       } // Выбор файла
       else if (element.is(':file')) {
           var File = function () {
