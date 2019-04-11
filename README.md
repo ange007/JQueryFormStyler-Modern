@@ -32,9 +32,9 @@ Composer:
 ```sh
 $ php composer.phar require "ange007/jquery-formstyler-modern"
 ```
-Bower:
+NPM:
 ```sh
-$ bower install --save-dev ange007/jquery-formstyler-modern
+$ npm i jquery.formstyler-modern
 ```
 
 ## Getting Started
@@ -43,13 +43,8 @@ Connection of styles is possible in two ways:
 - `jquery.formStylerModern.css` *(frame and default style)*
 - Frame file - `/style/jquery.formStylerModern.frame.css` and style file - `/style/jquery.formStylerModern.(default|bootstrap|etc).css`
 
-> Сам плагин подключается посредством файла `jquery.formStylerModern.js`.
-> Подключение стилей возможно в 2х вариантах:
-> - Подключение `jquery.formStylerModern.css` - который в себе содержит каркас и тему по умолчанию *(default)*
-> - Подключение файлов из директории `/style/` - `jquery.formStylerModern.frame.css` *(каркас)* и одной из тем в той-же директории *(например `jquery.formStylerModern.bootstrap.css`)*
-
 ## Works
-Stylish elements. `/ Стилизация элементов.`
+Stylish elements.
 ```javascript
 $( 'input, select, button' ).styler( 
 {
@@ -66,30 +61,30 @@ $( 'input, select, button' ).styler(
 } );
 ```
 
-Reload plugin with certain settings. `/ Перезагрузка элементов с определёнными настройками.`
+Reload plugin with certain settings.
 ```javascript
 $( '#checkbox-indeterminate-change' ).styler( 'reinitialize', { checkbox: { indeterminate: true } } );
 ```
 
-Clean style. `/ Убрать стилизацию.`
+Clean style.
 ```javascript
 $( 'input, select, button' ).styler( 'destroy' );
 ```
 
-Repaint after "manual" change. `/ Перерисовка компонента после "ручного" изменения состояния.`
+Repaint after "manual" change.
 ```javascript
 $( this ).prop( 'disabled', true )
 	.trigger( 'repaint' );
 ```
 
-Search from server `/ Поиск на сервере используя select`
+Search from server.
 ```javascript
 $( '#search' ).styler( 'reinitialize', {
 	select: {
-		search: {					
+		search: {
 			ajax: {
 				delay: 250,
-				cache: true,		
+				cache: true,
 
 				url: 'https://api.github.com/search/repositories',
 				data: function( params ) {
@@ -99,17 +94,17 @@ $( '#search' ).styler( 'reinitialize', {
 					};
 				},
 
-				processResults: function( data, params ) 
-				{						
+				processResults: function( data, params )
+				{
 					var items = [ ];
 
 					$( data.items ).each( function( index, value )
 					{
-						items.push( { 'value': value.html_url, 
+						items.push( { 'value': value.html_url,
 									'caption': value.owner.login + '/' + value.name } );
 					} );
 
-					return { 
+					return {
 						items: items
 					};
 				}

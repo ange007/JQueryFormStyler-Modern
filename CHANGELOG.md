@@ -1,4 +1,7 @@
 # ChangeLog
+## v2.1.6 <sup>21.01.2019</sup>:
+* Add **switcher** component.
+
 ## v2.1.5 <sup>21.01.2019</sup>:
 * Optimized **select** auto-width.
 * Add status line to AJAX search in **select**.
