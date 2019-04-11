@@ -19,17 +19,17 @@ let Switcher =
 
 		//
 		this.switcher = $( '<div class="jq-switcher">'
-								+ '<div class="toggle-text-off">OFF</div>'
-								+ '<div class="glow-comp"></div>'
 								+ '<div class="toggle-button"></div>'
-								+ '<div class="toggle-text-on">ON</div>'
+								+ '<div class="toggle-text toggle-text-off">OFF</div>'
+								+ '<div class="toggle-text toggle-text-on">ON</div>'
 							+ '</div>' )
 							.attr( { 'id': attr.id, 'title': attr.title, 'unselectable': 'on' } )
 							.addClass( attr.classes )
 							.data( attr.data );
 
 		// Прячем оригинальный чекбокс
-		this.element.addClass( 'jq-hidden' )
+		this.element.attr( 'type', 'checkbox' )
+					.addClass( 'jq-hidden' )
 					.after( this.switcher ).prependTo( this.switcher );
 
 		//
@@ -47,10 +47,10 @@ let Switcher =
 			const context = this,
 				options = this.options,
 				element = this.element,
-				checkbox = this.checkbox;
+				switcher = this.switcher;
 
 			// Необходимо "перерисовать" контрол 
-			checkbox.on( 'repaint', function( )
+			switcher.on( 'repaint', function( )
 			{
 				context.repaint( );
 			} )	
@@ -60,33 +60,10 @@ let Switcher =
 				e.preventDefault( );
 
 				// Обрабатываем только активный псевдобокс
-				if( !checkbox.is( '.disabled' ) )
+				if( !switcher.is( '.disabled' ) )
 				{
-					// Текущее состояние: "Отмечено"
-					if( element.is( ':checked' ) || element.is( ':indeterminate' ) )
-					{
-						// ... если работаем через 3 состояния - отмечаем "не определено", или просто снимаем отметку
-						element.prop( 'checked', ( options.indeterminate && element.is( ':indeterminate' ) ) );
-
-						// "Неопределено" в любом случае снимаем
-						element.prop( 'indeterminate', false );
-					}
-					// Текущее состояние: "Не отмечено"
-					else
-					{
-						// ... если работаем через 3 состояния - отмечаем "не определено"
-						if( options.indeterminate )
-						{
-							element.prop( 'checked', false )
-									.prop( 'indeterminate', true );
-						}
-						// ... или просто отмечаем
-						else
-						{
-							element.prop( 'checked', true )
-									.prop( 'indeterminate', false );
-						}
-					}
+					//
+					element.prop( 'checked', !element.is( ':checked' ) );
 
 					// Фокусируем и изменяем вызываем состояние изменения
 					element.focus( )
@@ -95,13 +72,13 @@ let Switcher =
 				}
 			} );
 
-			// Клик по label привязанному к данному checkbox
+			// Клик по label привязанному к данному switcher
 			element.closest( 'label' ).add( 'label[for="' + this.element.attr( 'id' ) + '"]' )
 										.on( 'click.' + pluginName, function( e )
 			{
-				if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( checkbox ).length )
+				if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( switcher ).length )
 				{
-					checkbox.triggerHandler( 'click' );
+					switcher.triggerHandler( 'click' );
 					e.preventDefault( );
 				}
 			} );
@@ -109,7 +86,7 @@ let Switcher =
 			// Обработка изменений
 			element.on( 'change.' + pluginName, function( )
 			{
-				checkbox.triggerHandler( 'repaint' );
+				switcher.triggerHandler( 'repaint' );
 			} )
 			// Обработка переключения при помощи клавиатуры
 			.on( 'keydown.' + pluginName, function( e )
@@ -117,21 +94,23 @@ let Switcher =
 				if( e.which === 32 )
 				{
 					e.preventDefault( );
-					checkbox.triggerHandler( 'click' );
+					switcher.triggerHandler( 'click' );
 				}
 			} )
 			// Обработка наведения фокуса
 			.on( 'focus.' + pluginName, function( )
 			{
-				if( !checkbox.is( '.disabled' ) )
+				if( switcher.is( '.disabled' ) )
 				{
-					checkbox.addClass( 'focused' );
+					return;
 				}
+
+				switcher.addClass( 'focused' );
 			} )
 			// Обработка снятия фокуса
 			.on( 'blur.' + pluginName, function( )
 			{
-				checkbox.removeClass( 'focused' );
+				switcher.removeClass( 'focused' );
 			} );
 
 			return this;
@@ -143,31 +122,13 @@ let Switcher =
 		repaint: function( ) 
 		{
 			const element = this.element,
-				checkbox = this.checkbox;
+				switcher = this.switcher;
 
-			// Отмечено
-			if( element.is( ':checked' ) || element.is( ':indeterminate' ) )
-			{
-				if( element.is( ':indeterminate' ) )
-				{
-					checkbox.removeClass( 'checked' )
-							.addClass( 'indeterminate' );
-				}
-				else
-				{
-					checkbox.removeClass( 'indeterminate' )
-							.addClass( 'checked' );
-				}
-			}
-			// Не отмечено
-			else
-			{
-				checkbox.removeClass( 'indeterminate' )
-						.removeClass( 'checked' );
-			}
+			//
+			switcher.toggleClass( 'checked', element.is( ':checked' ) );
 
 			// Активация/деактивация
-			checkbox.toggleClass( 'disabled', element.is( ':disabled' ) );
+			switcher.toggleClass( 'disabled', element.is( ':disabled' ) );
 
 			return this;
 		},

@@ -1,0 +1,16 @@
+.jq-switcher {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 25px;
+
+	.toggle-text {
+		cursor: pointer;
+		-webkit-user-select: none; /* Chrome/Safari */        
+		-moz-user-select: none; /* Firefox */
+		-ms-user-select: none; /* IE10+ */
+		vertical-align: middle;
+		height: 100%;
+		line-height: 25px;
+	}
+}

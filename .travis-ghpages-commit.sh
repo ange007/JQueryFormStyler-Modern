@@ -1,7 +1,7 @@
 #!/bin/bash
 # encoding: utf-8
 
-if [ "$TRAVIS_BRANCH" != "master" ] 
+if [ "${TRAVIS_BRANCH}" != "master" ] 
 then 
 	exit 0;
 fi
@@ -20,6 +20,6 @@ cp -rp ${TRAVIS_BUILD_DIR}/build/ ${DIST_PATH};
 sed -i -e "s/\.\.\//\.\//g" ${DIST_PATH}/index.html
 sed -i -e "s/\.\.\//\.\//g" ${DIST_PATH}/demo.js
 # переходим в директорию добавляе коммит
-cd ${DIST_PATH} && git add -A && git commit -am "Автоматическая сборка (${TRAVIS_BUILD_NUMBER})";
+cd ${DIST_PATH} && git add -A && git commit -am "Auto Build (${TRAVIS_BUILD_NUMBER})";
 # отправляем коммит
 git push ${REPO_URL} gh-pages;

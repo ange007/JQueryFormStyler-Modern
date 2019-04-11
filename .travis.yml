@@ -17,15 +17,12 @@ env:
 #  - export CHROME_BIN=chromium-browser
 #  - export DISPLAY=:99.0
 #  - sh -e /etc/init.d/xvfb start
-  
-after_failure:
-  - npm ls --depth=1
-  
+
 before_script:
   - npm install -g gulp
 
 script: 
-  - gulp clean && gulp build && gulp build:min
+  - ${TRAVIS_BUILD_DIR}/.travis-gulp-run.sh
 
 after_success: 
   - git config --global user.name "${GIT_NAME}"
@@ -39,22 +36,22 @@ deploy:
   - provider: releases
     api_key: ${OAuth}
     file:
-      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.js
-      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.css
-      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.min.js
-      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.min.css
+      - ${TRAVIS_BUILD_DIR}/jquery.formStylerModern.js
+      - ${TRAVIS_BUILD_DIR}/jquery.formStylerModern.css
+      - ${TRAVIS_BUILD_DIR}/jquery.formStylerModern.min.js
+      - ${TRAVIS_BUILD_DIR}/jquery.formStylerModern.min.css
     skip_cleanup: true
     on:
       repo: ange007/JQueryFormStyler-Modern
-      branch: master
+      branch: release
       tags: true
   - provider: npm
     email: ${EMAIL}
     api_key: ${NPM_TOKEN}
     skip_cleanup: true
     on:
-      branch: production
-      tags: true   
+      branch: release
+      tags: true
 
 sudo: false
 dist: trusty
