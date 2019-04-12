@@ -1,6 +1,6 @@
 /**
  * jquery.formstyler-modern - JQuery HTML form styling plugin
- * @version v2.1.5
+ * @version v2.1.6
  * @link https://github.com/ange007/JQueryFormStyler-Modern
  * @license MIT
  * @author Borisenko Vladimir
@@ -210,27 +210,29 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               .on('click', function (e) {
                 e.preventDefault(); // Обрабатываем только активный псевдобокс
 
-                if (!checkbox.is('.disabled')) {
-                  // Текущее состояние: "Отмечено"
-                  if (element.is(':checked') || element.is(':indeterminate')) {
-                    // ... если работаем через 3 состояния - отмечаем "не определено",  или просто снимаем отметку
-                    element.prop('checked', options.indeterminate && element.is(':indeterminate')); // "Неопределено" в любом случае снимаем
-
-                    element.prop('indeterminate', false);
-                  } // Текущее состояние: "Не отмечено"
-                  else {
-                      // ... если работаем через 3 состояния - отмечаем "не определено"
-                      if (options.indeterminate) {
-                        element.prop('checked', false).prop('indeterminate', true);
-                      } // ... или просто отмечаем
-                      else {
-                          element.prop('checked', true).prop('indeterminate', false);
-                        }
-                    } // Фокусируем и изменяем вызываем состояние изменения
+                if (checkbox.is('.disabled')) {
+                  return;
+                } // Текущее состояние: "Отмечено"
 
 
-                  element.focus().trigger('change').triggerHandler('click');
-                }
+                if (element.is(':checked') || element.is(':indeterminate')) {
+                  // ... если работаем через 3 состояния - отмечаем "не определено",  или просто снимаем отметку
+                  element.prop('checked', options.indeterminate && element.is(':indeterminate')); // "Неопределено" в любом случае снимаем
+
+                  element.prop('indeterminate', false);
+                } // Текущее состояние: "Не отмечено"
+                else {
+                    // ... если работаем через 3 состояния - отмечаем "не определено"
+                    if (options.indeterminate) {
+                      element.prop('checked', false).prop('indeterminate', true);
+                    } // ... или просто отмечаем
+                    else {
+                        element.prop('checked', true).prop('indeterminate', false);
+                      }
+                  } // Фокусируем и изменяем вызываем состояние изменения
+
+
+                element.focus().trigger('change').triggerHandler('click');
               }); // Клик по label привязанному к данному checkbox
 
               element.closest('label').add('label[for="' + this.element.attr('id') + '"]').on('click.' + pluginName, function (e) {
@@ -343,21 +345,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                   //
                   e.preventDefault(); // Обрабатываем только активную радиокнопку
 
-                  if (!radio.is('.disabled')) {
-                    // 
-                    var name = element.attr('name'); // Ищем нужный нам елемент по родителям
-
-                    var findElement = radio.closest('#' + name).find('input[name="' + name + '"]:radio'); // ... или же по всему документу
-
-                    if (findElement.length <= 0) {
-                      findElement = $('body').find('input[name="' + name + '"]:radio');
-                    } // Снимаем отметку с найденного блока
+                  if (radio.is('.disabled')) {
+                    return;
+                  } // Ищем общую группу элементов
 
 
-                    findElement.prop('checked', false).parent().removeClass('checked'); // Передаём фокус и вызываем событие - изменения
+                  var findElements = context.commonParent(element); // Снимаем отметку с найденного блока
 
-                    element.prop('checked', true).focus().trigger('change').triggerHandler('click');
-                  }
+                  findElements.prop('checked', false).trigger('change'); // Передаём фокус и вызываем событие - изменения
+
+                  element.prop('checked', true).focus().trigger('change').triggerHandler('click');
                 }); // Обработка изменений
 
                 element.on('change.' + pluginName, function () {
@@ -370,9 +367,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                   }
                 }) // Обработка наведения фокуса
                 .on('focus.' + pluginName, function () {
-                  if (!radio.is('.disabled')) {
-                    radio.addClass('focused');
+                  if (radio.is('.disabled')) {
+                    return;
                   }
+
+                  radio.addClass('focused');
                 }) // Обработка снятия фокуса
                 .on('blur.' + pluginName, function () {
                   radio.removeClass('focused');
@@ -388,11 +387,28 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               },
 
               /**
+               * 
+               */
+              commonParent: function commonParent(element) {
+                // Имя "якорь"
+                var name = element.attr('name'),
+                    selector = 'input[name="' + name + '"]:radio'; // Ищем нужный нам в родительской форме
+
+                var findElements = element.closest('.jq-radio').closest('form').find(selector); // ... или же по всему документу
+
+                if (findElements.length <= 0) {
+                  findElements = $('body').find(selector);
+                }
+
+                return findElements;
+              },
+
+              /**
                * Перерисовка
                */
               repaint: function repaint() {
                 var element = this.element,
-                    radio = this.radio; // Отметка
+                    radio = this.radio; // Отметка оригинального элемента
 
                 element.parent().toggleClass('checked', element.is(':checked')); // Активация/деактивация
 
@@ -487,9 +503,11 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 }
               }) // Обработка наведения фокуса
               .on('focus.' + pluginName, function () {
-                if (!switcher.is('.disabled')) {
-                  switcher.addClass('focused');
+                if (switcher.is('.disabled')) {
+                  return;
                 }
+
+                switcher.addClass('focused');
               }) // Обработка снятия фокуса
               .on('blur.' + pluginName, function () {
                 switcher.removeClass('focused');
