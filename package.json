@@ -1,0 +1,63 @@
+{
+  "name": "jquery.formstyler-modern",
+  "version": "2.1.6",
+  "author": "Borisenko Vladimir",
+  "description": "JQuery HTML form styling plugin",
+  "license": "MIT",
+  "homepage": "https://github.com/ange007/JQueryFormStyler-Modern",
+  "contributors": [
+    "Dimox <http://dimox.name/>",
+    "Yunus Gaziev <https://github.com/yunusga>",
+    "Evgen <https://github.com/osben>"
+  ],
+  "keywords": [
+    "jquery-plugin",
+    "javascript",
+    "jquery",
+    "formstyler",
+    "form",
+    "styler",
+    "style",
+    "input",
+    "select",
+    "checkbox",
+    "radio",
+    "file",
+    "password",
+    "range"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ange007/JQueryFormStyler-Modern.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ange007/jQueryFormStyler-Modern/issues"
+  },
+  "scripts": {},
+  "engine": {
+    "node": ">= 7.5"
+  },
+  "main": "jquery.formStylerModern.min.js",
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.3.1",
+    "autoprefixer": "^6.0.3",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-config-sync": "^1.0.2",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-debug": "^4.0.0",
+    "gulp-header": "^2.0.7",
+    "gulp-if": "~2.0.2",
+    "gulp-minify-css": "~1.2.4",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-rigger": "^0.5.8",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.1",
+    "gulp-watch": "^5.0.1",
+    "rimraf": "^2.6.3"
+  }
+}

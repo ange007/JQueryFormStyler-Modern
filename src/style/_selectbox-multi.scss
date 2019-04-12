@@ -1,0 +1,38 @@
+
+.jq-select-multiple {
+	border: $border;
+	border-bottom-color: #B3B3B3;
+	border-radius: $border-radius;
+	background: $background;
+	box-shadow: $box-shadow;
+	color: #333;
+
+	&.focused {
+		border: $border-focus;
+	}
+
+	li {
+		&:first-child {
+			border-radius: 3px 3px 0 0;
+		}
+
+		&:last-child {
+			border-radius: 0 0 3px 3px;
+		}
+
+		&.selected {
+			background: $select-item-active-background;
+			color: $select-item-active-color;
+		}
+
+		&.disabled {
+			color: $color-disabled;
+		}
+	}
+
+	&.disabled li.selected,
+	li.selected.disabled {
+		background: $background-disabled;
+		color: $color-disabled;
+	}
+}

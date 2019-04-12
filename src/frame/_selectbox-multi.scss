@@ -1,0 +1,31 @@
+
+.jq-select-multiple {
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	padding: 1px;
+	cursor: default;
+
+	ul {
+		position: relative;
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	li {
+		padding: 3px 9px 4px;
+		list-style: none;
+		user-select: none;
+		white-space: nowrap;
+	}
+
+	li.optgroup {
+		font-weight: bold;
+	}
+
+	li.option {
+		padding-left: 25px;
+	}
+}

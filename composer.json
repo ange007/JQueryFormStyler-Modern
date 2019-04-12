@@ -1,0 +1,42 @@
+{
+  "name": "ange007/jquery-formstyler-modern",
+  "version": "2.1.6",
+  "description": "JQuery HTML form styling plugin",
+  "homepage": "https://github.com/ange007/JQueryFormStyler-Modern",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Borisenko Vladimir",
+      "email": "ange007@users.noreply.github.com",
+      "url": "https://github.com/ange007/JQueryFormStyler-Modern/"
+    }
+  ],
+  "keywords": [
+    "jquery-plugin",
+    "javascript",
+    "jquery",
+    "formstyler",
+    "form",
+    "styler",
+    "style",
+    "input",
+    "select",
+    "checkbox",
+    "radio",
+    "file",
+    "password",
+    "range"
+  ],
+  "type": "library",
+  "support": {
+    "issues": "https://github.com/ange007/JQueryFormStyler-Modern/issues",
+    "source": "https://github.com/ange007/JQueryFormStyler-Modern"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ange007/JQueryFormStyler-Modern.git"
+  },
+  "require": {
+    "components/jquery": "^1.8.3 || ^2.0.0"
+  }
+}

@@ -1,0 +1,17 @@
+
+.jq-checkbox {
+	@include base-element( );
+	
+	border-radius: $checkbox-radius;
+
+	&.checked .jq-checkbox__flag,
+	&.indeterminate .jq-checkbox__flag {
+		border-radius: $checkbox-radius-checked;
+		background: $radio-checkbox-checked-bg;
+		box-shadow: $radio-checkbox-checked-shadow;
+	}
+
+	&.focused {
+		border: $border-focus;
+	}
+}

@@ -1,0 +1,44 @@
+
+.jq-file {
+	@include base-element( false );	
+	
+	.jq-file__browse {
+		@include base-element( true );	
+			
+		&,
+		&:not([disabled]):not(.disabled):hover,
+		&:not([disabled]):not(.disabled):active,
+		&:not([disabled]):not(.disabled):focus,
+		&:not([disabled]):not(.disabled).focused
+		{
+			border-radius: 0px;
+			border-top: none !important;
+			border-bottom: none !important;
+			border-right: none !important;
+		}
+	}
+	
+	&:not([disabled]):not(.disabled):active {
+		background: none;
+	}
+	
+	&:not([disabled]):not(.disabled):hover .jq-file__browse {
+		background: $background-button-hover;
+		box-shadow: $box-shadow-button-hover;
+	}
+
+	&:not([disabled]):not(.disabled):active .jq-file__browse {
+		background: $background-button-active;
+		box-shadow: $box-shadow-button-active;	
+	}
+
+	&:not([disabled]):not(.disabled):active,
+	&:not([disabled]):not(.disabled):focus,
+	&:not([disabled]):not(.disabled).focused {
+		background: $background;
+	}
+	
+	&.disabled .jq-file__browse {
+		@extend .jq-file__browse[disabled];
+	}
+}

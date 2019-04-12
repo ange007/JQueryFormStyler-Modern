@@ -1,0 +1,12 @@
+
+.jq-radio {
+	@include base-element( );
+	
+	border-radius: $radio-radius;
+
+	&.checked .jq-radio__div {
+		border-radius: $radio-radius-checked;
+		background: $radio-checkbox-checked-bg;
+		box-shadow: inset 1px 1px 1px rgba(0,0,0,.7);
+	}
+}

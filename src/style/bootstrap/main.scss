@@ -1,0 +1,111 @@
+$pluginName: '%pluginName%';
+
+$color: #555;
+$color-hover: #555;
+$color-active: #555;
+$color-disabled: #888;
+
+$font-size: 14px/32px;
+$font-shadow: 1px 1px #FFF;
+$font-weight: normal;
+
+$line-height: 20px;
+
+$background: #FFF;
+$background-hover: $background;
+$background-focus: $background;
+$background-active: $background;
+$background-disabled: #F5F5F5;
+
+$background-button: $background;
+$background-button-hover: #e6e6e6;
+$background-button-focus: $background-button-hover;
+$background-button-active: $background-button-hover;
+$background-button-disabled: $background-disabled;
+
+$box-shadow: none;
+$box-shadow-hover: initial;
+$box-shadow-focus: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+$box-shadow-active: $box-shadow-focus;
+
+$box-shadow-button: none;
+$box-shadow-button-hover: none;
+$box-shadow-button-focus: none;
+$box-shadow-button-active: inset 0 3px 5px rgba(0,0,0,.125);
+
+$font-shadow: none;
+$font-shadow-hover: none;
+$font-shadow-focus: none;
+$font-shadow-active: none;
+
+$border: 1px solid #CCC;
+$border-hover: 1px solid #ADADAD;
+$border-focus: 1px solid #66afe9;
+$border-active: $border-focus;
+$border-disabled: 1px solid #CCC;
+$border-radius: 4px;
+
+$radio-radius: 50%;
+$radio-radius-checked: 50%;
+$checkbox-radius: 3px;
+$checkbox-radius-checked: 2px;
+$radio-checkbox-checked-bg: #337ab7;
+$radio-checkbox-checked-shadow: inset 0 -3px 6px #AAA;
+
+$switcher-off-color: #555;
+$switcher-off-background: #66afe9;
+$switcher-on-color: #FFF;
+$switcher-on-background: linear-gradient(#66afe9, #337ab7), #337ab7;
+
+$select-arrow-size: 4px;
+$select-arrow-color: #333;
+$select-arrow-color-hover: #333;
+$select-arrow-rounded: false;
+$select-item-active-background: #337ab7;
+$select-item-active-color: #FFF;
+$select-item-hover-background: #F5F5F5;
+$select-item-hover-color: $color-hover;
+
+/* */
+
+@import '../_mixins';
+
+/* checkbox */
+
+@import '../_checkbox';
+
+/* radio */
+
+@import '../_radio';
+
+/* switcher */
+
+@import '../_switcher';
+
+/* file */
+
+@import '../_file';
+
+/* number */
+
+@import '../_number';
+
+/* password */
+
+@import '../_password';
+
+/* selectbox */
+
+@import '../_selectbox';
+
+/* selectbox-multi */
+
+@import '../_selectbox-multi';
+
+/* range */
+
+@import '../_range';
+
+/* other */
+
+@import '../_other';

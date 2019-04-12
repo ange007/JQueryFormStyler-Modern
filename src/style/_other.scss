@@ -1,0 +1,122 @@
+@mixin custom-input-element( $main: true )
+{
+	@if( $main )
+	{
+		@include base-element( false );
+	}
+	@else
+	{
+		padding: 8px 9px;
+	}
+}
+
+@mixin custom-inputs( $main: true )
+{
+	@each $input in 'email', 'tel', 'search', 'text', 'url', 
+					'date', 'time', 'datetime', 'datetime-local', 'month', 'week' 
+	{
+		@if( $main )
+		{
+			@at-root input[type=#{$input}]#{&} {
+				@include custom-input-element( $main );
+			}
+		}
+		@else
+		{
+			@at-root input[type=#{$input}].#{$pluginName} {
+				@include custom-input-element( $main );
+			}
+		}
+	}
+	
+	@if( $main )
+	{
+		@at-root :not(.jq-password)>input[type='password']#{&}{
+			@include custom-input-element( $main ); 
+		}
+
+		@at-root textarea#{&} {
+			@include custom-input-element( $main ); 
+		}
+		
+		@at-root textarea#{&} {
+			overflow: auto;
+		}
+		
+		@at-root input[type='search']#{&} { 
+			-webkit-appearance: none; 
+		}
+	}
+	@else
+	{
+		:not(.jq-password)>input[type='password'].#{$pluginName},
+		textarea.#{$pluginName} {
+			@include custom-input-element( $main );
+		}
+	}
+}
+
+@mixin custom-button-element( $main: false ) 
+{	
+	@if( $main )
+	{
+		@include base-element( true );
+	}
+	@else
+	{
+		overflow: visible;
+		padding: 8px 11px;
+		cursor: pointer;
+
+		&::-moz-focus-inner {
+			padding: 0;
+			border: 0;
+		}
+	}
+}
+
+@mixin custom-buttons( $main: true ) 
+{
+	@each $input in 'button', 'reset', 'submit', 'color' 
+	{
+		@if( $main )
+		{
+			@at-root input[type=#{$input}]#{&} {
+				@include custom-button-element( $main );
+			}
+		}
+		@else
+		{
+			@at-root input[type=#{$input}].#{$pluginName} {
+				@include custom-button-element( $main );
+			}
+		}
+	}
+	
+	@if( $main )
+	{
+		@at-root a.button#{&} { 
+			@include custom-button-element( $main ); 
+		}
+
+		@at-root button#{&} { 
+			@include custom-button-element( $main ); 
+		}
+	}
+	@else
+	{
+		a.button.#{$pluginName},
+		button.#{$pluginName} {
+			@include custom-button-element( $main ); 
+		}
+	}
+}
+
+.#{$pluginName} {
+
+	@include custom-inputs( true );
+	@include custom-buttons( true );
+}
+
+@include custom-inputs( false );
+@include custom-buttons( false );

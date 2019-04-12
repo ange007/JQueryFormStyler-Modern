@@ -1,0 +1,27 @@
+
+.jq-radio {
+	top: -1px;
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+	margin: 0 4px 0 0;
+	cursor: pointer;
+	user-select: none;
+	display: inline-block;
+	position: relative;
+
+	&.checked .jq-radio__div {
+		width: 10px;
+		height: 10px;
+		margin: 2px 0 0 2px;
+	}
+
+	&.focused {
+
+	}
+
+	&.disabled {
+		opacity: .55;
+		cursor: default;
+	}
+}
