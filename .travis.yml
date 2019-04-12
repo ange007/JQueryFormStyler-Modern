@@ -47,14 +47,14 @@ deploy:
     on:
       repo: ange007/JQueryFormStyler-Modern
       branch: master
-      # tags: true
+      tags: true
   - provider: npm
     email: ${EMAIL}
     api_key: ${NPM_TOKEN}
     skip_cleanup: true
     on:
       branch: master
-      # tags: true
+      tags: true
 
 sudo: false
 dist: trusty

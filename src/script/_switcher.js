@@ -100,10 +100,12 @@ let Switcher =
 			// Обработка наведения фокуса
 			.on( 'focus.' + pluginName, function( )
 			{
-				if( !switcher.is( '.disabled' ) )
+				if( switcher.is( '.disabled' ) )
 				{
-					switcher.addClass( 'focused' );
+					return;
 				}
+
+				switcher.addClass( 'focused' );
 			} )
 			// Обработка снятия фокуса
 			.on( 'blur.' + pluginName, function( )

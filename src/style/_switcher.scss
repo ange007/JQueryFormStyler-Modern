@@ -2,16 +2,16 @@
 	@include base-element( );
 
 	border-radius: $checkbox-radius;
-	transition: border-color .6s  ease-out;
+	transition: border-color .6s ease-out;
 
 	.toggle-button {
 		position: absolute;
 		top: 1px;
 		width: 50%;
-		/*width: 28px;*/
 		bottom: 1px;
 		left: 1px;
 		background: $switcher-off-background;
+		border: $border; 
 		border-radius: $checkbox-radius-checked; 
 		cursor: pointer;
 		transition: all .3s .1s, width .1s, top .1s, bottom .1s;
@@ -23,7 +23,7 @@
 		text-align: center;
 		font-size: 12px;
 		width: 50%;
-		line-height: 18px;
+		line-height: 23px;
 		transition: all .2s .1s, right .1s;
 	}
 
@@ -36,7 +36,7 @@
 	.toggle-text-on {
 		font-weight: bold;
 		color: rgba(0,0,0,0);
-		right: 1px;
+		right: 2px;
 	}
 	
 	&.checked {
@@ -47,8 +47,9 @@
 			top: 1px;
 			bottom: 1px;
 			left: 100%;
-			margin-left: calc(-50% - 1px);
+			margin-left: calc(-50% - 3px);
 			background: $switcher-on-background;
+			border: $border-active;
 			/*box-shadow: 0 0 16px #4b7a8d;*/
 			transition: all .2s .1s, right .1s;
 		}
@@ -59,11 +60,19 @@
 
 		.toggle-text-on {
 			color: $switcher-on-color;
-			transition: color .3s .15s ;
+			transition: color .3s .15s;
 		}
 
 		.toggle-text-off {
 			color: rgba(0,0,0,0);
+		}
+	}
+
+	&.focused {
+		border: $border-focus;
+
+		.toggle-button {
+			border: $border-focus;
 		}
 	}
 }
