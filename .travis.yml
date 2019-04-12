@@ -17,15 +17,12 @@ env:
 #  - export CHROME_BIN=chromium-browser
 #  - export DISPLAY=:99.0
 #  - sh -e /etc/init.d/xvfb start
-  
-after_failure:
-  - npm ls --depth=1
-  
+
 before_script:
   - npm install -g gulp
 
 script: 
-  - gulp clean && gulp build && gulp build:min
+  - ${TRAVIS_BUILD_DIR}/.travis-gulp-run.sh
 
 after_success: 
   - git config --global user.name "${GIT_NAME}"
@@ -46,30 +43,14 @@ deploy:
     skip_cleanup: true
     on:
       repo: ange007/JQueryFormStyler-Modern
-<<<<<<< HEAD
-<<<<<<< HEAD
       branch: release
-=======
-      branch: master
->>>>>>> 410e508... v2.1.6 - update
-=======
-      branch: release
->>>>>>> dff0c03... Travis-Ci little changes
       tags: true
   - provider: npm
     email: ${EMAIL}
     api_key: ${NPM_TOKEN}
     skip_cleanup: true
     on:
-<<<<<<< HEAD
-<<<<<<< HEAD
       branch: release
-=======
-      branch: master
->>>>>>> 410e508... v2.1.6 - update
-=======
-      branch: release
->>>>>>> dff0c03... Travis-Ci little changes
       tags: true
 
 sudo: false
