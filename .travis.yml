@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - 10
+  - '10'
   
 env:
   global:
@@ -18,20 +18,17 @@ env:
 #  - export DISPLAY=:99.0
 #  - sh -e /etc/init.d/xvfb start
 
-before_script:
-  - npm install -g gulp
-
 script: 
-  - chmod +x ${TRAVIS_BUILD_DIR}/.travis-gulp-run.sh
-  - ${TRAVIS_BUILD_DIR}/.travis-gulp-run.sh
+  - '[ "${TRAVIS_BRANCH}" != "release" ] && npm install -g gulp'
+  - '[ "${TRAVIS_BRANCH}" != "release" ] && gulp clean && gulp build && gulp build:min'
 
 after_success: 
   - git config --global user.name "${GIT_NAME}"
   - git config --global user.email "${GIT_EMAIL}"
-  - chmod +x ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh
-  - ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh
-  - chmod +x ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh
-  - ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh
+  # - chmod +x ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh
+  - '[ "${TRAVIS_BRANCH}" == "master" ] && ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh'
+  # - chmod +x ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh
+  - '[ "${TRAVIS_BRANCH}" == "master" ] && ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh'
 
 deploy:
   - provider: releases
@@ -46,6 +43,7 @@ deploy:
       repo: ange007/JQueryFormStyler-Modern
       branch: release
       tags: true
+      
   - provider: npm
     email: ${EMAIL}
     api_key: ${NPM_TOKEN}
