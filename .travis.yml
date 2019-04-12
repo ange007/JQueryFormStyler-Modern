@@ -38,7 +38,7 @@ script:
     fi
   - >
     if [[ "${TRAVIS_BRANCH}" == "release" ]]; then 
-      cd ${TRAVIS_BUILD_DIR} && git clone ${REPO_URL} . && git checkout release 
+      cd ${TRAVIS_BUILD_DIR} && ls # && git clone ${REPO_URL} . && git checkout release 
     fi
 
 deploy:
