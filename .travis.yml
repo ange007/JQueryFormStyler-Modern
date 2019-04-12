@@ -25,7 +25,7 @@ script:
   - '[ "${TRAVIS_BRANCH}" != "release" ] && npm install -g gulp && gulp clean && gulp build && gulp build:min'
   - '[ "${TRAVIS_BRANCH}" == "master" ] && ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh'
   - '[ "${TRAVIS_BRANCH}" == "master" ] && ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh'
-  - '[ "${TRAVIS_BRANCH}" != "release" ] && echo "Deploy"'
+  - '[ "${TRAVIS_BRANCH}" == "release" ] && echo "Deploy"'
 
 deploy:
   - provider: releases
@@ -45,6 +45,7 @@ deploy:
     email: ${EMAIL}
     api_key: ${NPM_TOKEN}
     skip_cleanup: true
+    tag: next
     on:
       branch: release
       tags: true
