@@ -68,7 +68,7 @@ input[type="file"].jq-hidden {
   position: relative;
   display: inline-block;
   width: 60px;
-  height: 20px; }
+  height: 25px; }
   .jq-switcher .toggle-text {
     cursor: pointer;
     -webkit-user-select: none;
@@ -79,7 +79,7 @@ input[type="file"].jq-hidden {
     /* IE10+ */
     vertical-align: middle;
     height: 100%;
-    line-height: 20px; }
+    line-height: 25px; }
 
 /* file */
 .jq-file {
