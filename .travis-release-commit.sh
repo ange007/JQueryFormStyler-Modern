@@ -3,6 +3,12 @@
 
 DIST_PATH=${TRAVIS_BUILD_DIR}/actual-release
 VERS=$(cat package.json | jq --raw-output '.version')
+
+if [ "${TRAVIS_BRANCH}" != "master" ] 
+then 
+	exit 0;
+fi
+
 # переходим в директорию
 cd ${TRAVIS_BUILD_DIR};
 # копируем в неё репозиторий
@@ -15,15 +21,12 @@ cp -rp ${TRAVIS_BUILD_DIR}/docs/* ${DIST_PATH}/docs/;
 cp -rp ${TRAVIS_BUILD_DIR}/package.json ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/composer.json ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/bower.json ${DIST_PATH};
+cp -rp ${TRAVIS_BUILD_DIR}/.travis.yml ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/README.md ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/CHANGELOG.md ${DIST_PATH};
 cp -rp ${TRAVIS_BUILD_DIR}/LICENSE ${DIST_PATH};
 # переходим в директорию добавляе коммит
 cd ${DIST_PATH} && git add -A && git commit -am "Auto Build (${TRAVIS_BUILD_NUMBER})";
-
 # создаём тег и отправляем коммит
-if [ "${TRAVIS_BRANCH}" == "master" ] 
-then 
-	git tag -a "v${VERS}" -m "Version ${VERS} Release"; 
-	git push ${REPO_URL} release --tags;
-fi
+git tag -a "v${VERS}" -m "Version ${VERS} Release"; 
+git push ${REPO_URL} release --tags;
