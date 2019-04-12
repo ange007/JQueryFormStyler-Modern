@@ -39,21 +39,21 @@ deploy:
   - provider: releases
     api_key: ${OAuth}
     file:
-      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.js
-      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.css
-      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.min.js
-      - ${TRAVIS_BUILD_DIR}/build/jquery.formStylerModern.min.css
+      - ${TRAVIS_BUILD_DIR}/jquery.formStylerModern.js
+      - ${TRAVIS_BUILD_DIR}/jquery.formStylerModern.css
+      - ${TRAVIS_BUILD_DIR}/jquery.formStylerModern.min.js
+      - ${TRAVIS_BUILD_DIR}/jquery.formStylerModern.min.css
     skip_cleanup: true
     on:
       repo: ange007/JQueryFormStyler-Modern
-      branch: master
+      branch: release
       tags: true
   - provider: npm
     email: ${EMAIL}
     api_key: ${NPM_TOKEN}
     skip_cleanup: true
     on:
-      branch: master
+      branch: release
       tags: true
 
 sudo: false
