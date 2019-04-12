@@ -55,44 +55,46 @@ let CheckBox =
 				e.preventDefault( );
 
 				// Обрабатываем только активный псевдобокс
-				if( !checkbox.is( '.disabled' ) )
+				if( checkbox.is( '.disabled' ) )
 				{
-					// Текущее состояние: "Отмечено"
-					if( element.is( ':checked' ) || element.is( ':indeterminate' ) )
-					{
-						// ... если работаем через 3 состояния - отмечаем "не определено",  или просто снимаем отметку
-						element.prop( 'checked', ( options.indeterminate && element.is( ':indeterminate' ) ) );
+					return;
+				}
+				
+				// Текущее состояние: "Отмечено"
+				if( element.is( ':checked' ) || element.is( ':indeterminate' ) )
+				{
+					// ... если работаем через 3 состояния - отмечаем "не определено",  или просто снимаем отметку
+					element.prop( 'checked', ( options.indeterminate && element.is( ':indeterminate' ) ) );
 
-						// "Неопределено" в любом случае снимаем
-						element.prop( 'indeterminate', false );
+					// "Неопределено" в любом случае снимаем
+					element.prop( 'indeterminate', false );
+				}
+				// Текущее состояние: "Не отмечено"
+				else
+				{
+					// ... если работаем через 3 состояния - отмечаем "не определено"
+					if( options.indeterminate )
+					{
+						element.prop( 'checked', false )
+								.prop( 'indeterminate', true );
 					}
-					// Текущее состояние: "Не отмечено"
+					// ... или просто отмечаем
 					else
 					{
-						// ... если работаем через 3 состояния - отмечаем "не определено"
-						if( options.indeterminate )
-						{
-							element.prop( 'checked', false )
-									.prop( 'indeterminate', true );
-						}
-						// ... или просто отмечаем
-						else
-						{
-							element.prop( 'checked', true )
-									.prop( 'indeterminate', false );
-						}
+						element.prop( 'checked', true )
+								.prop( 'indeterminate', false );
 					}
-
-					// Фокусируем и изменяем вызываем состояние изменения
-					element.focus( )
-							.trigger( 'change' )
-							.triggerHandler( 'click' );
 				}
+
+				// Фокусируем и изменяем вызываем состояние изменения
+				element.focus( )
+						.trigger( 'change' )
+						.triggerHandler( 'click' );
 			} );
 
 			// Клик по label привязанному к данному checkbox
 			element.closest( 'label' ).add( 'label[for="' + this.element.attr( 'id' ) + '"]' )
-								.on( 'click.' + pluginName, function( e )
+										.on( 'click.' + pluginName, function( e )
 			{
 				if( !$( e.target ).is( 'a' ) && !$( e.target ).closest( checkbox ).length )
 				{

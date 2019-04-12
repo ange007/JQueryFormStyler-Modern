@@ -55,31 +55,23 @@ let Radio =
 				e.preventDefault( );
 
 				// Обрабатываем только активную радиокнопку
-				if( !radio.is( '.disabled' ) )
+				if( radio.is( '.disabled' ) )
 				{
-					// 
-					const name = element.attr( 'name' );
-
-					// Ищем нужный нам елемент по родителям
-					let findElement = radio.closest( '#' + name )
-											.find( 'input[name="' + name + '"]:radio' );
-
-					// ... или же по всему документу
-					if( findElement.length <= 0 )
-					{
-						findElement = $( 'body' ).find( 'input[name="' + name + '"]:radio' );
-					}
-
-					// Снимаем отметку с найденного блока
-					findElement.prop( 'checked', false )
-							.parent( ).removeClass( 'checked' );			
-
-					// Передаём фокус и вызываем событие - изменения
-					element.prop( 'checked', true )
-							.focus( )
-							.trigger( 'change' )
-							.triggerHandler( 'click' );
+					return;
 				}
+
+				// Ищем общую группу элементов
+				let findElements = context.commonParent( element );
+
+				// Снимаем отметку с найденного блока
+				findElements.prop( 'checked', false )
+							.trigger( 'change' );
+
+				// Передаём фокус и вызываем событие - изменения
+				element.prop( 'checked', true )
+						.focus( )
+						.trigger( 'change' )
+						.triggerHandler( 'click' );
 			} );
 
 			// Обработка изменений
@@ -99,10 +91,12 @@ let Radio =
 			// Обработка наведения фокуса
 			.on( 'focus.' + pluginName, function( )
 			{
-				if( !radio.is( '.disabled' ) )
+				if( radio.is( '.disabled' ) )
 				{
-					radio.addClass( 'focused' );
+					return;
 				}
+
+				radio.addClass( 'focused' );
 			} )
 			// Обработка снятия фокуса
 			.on( 'blur.' + pluginName, function( )
@@ -124,6 +118,24 @@ let Radio =
 			
 			return this;
 		},
+
+		/**
+		 * 
+		 */
+		commonParent: function( element )
+		{
+			// Имя "якорь"
+			const name = element.attr( 'name' ),
+				selector = 'input[name="' + name + '"]:radio';
+
+			// Ищем нужный нам в родительской форме
+			let findElements = element.closest( '.jq-radio' ).closest( 'form' ).find( selector );
+	
+			// ... или же по всему документу
+			if( findElements.length <= 0 ) { findElements = $( 'body' ).find( selector ); }
+
+			return findElements;
+		},
 		
 		/**
 		 * Перерисовка
@@ -133,7 +145,7 @@ let Radio =
 			const element = this.element,
 				radio = this.radio;
 			
-			// Отметка
+			// Отметка оригинального элемента
 			element.parent( ).toggleClass( 'checked', element.is( ':checked' ) );
 
 			// Активация/деактивация

@@ -52,6 +52,11 @@ $checkbox-radius-checked: 2px;
 $radio-checkbox-checked-bg: #337ab7;
 $radio-checkbox-checked-shadow: inset 0 -3px 6px #AAA;
 
+$switcher-off-color: #555;
+$switcher-off-background: #66afe9;
+$switcher-on-color: #FFF;
+$switcher-on-background: linear-gradient(#66afe9, #337ab7), #337ab7;
+
 $select-arrow-size: 4px;
 $select-arrow-color: #333;
 $select-arrow-color-hover: #333;
@@ -72,6 +77,10 @@ $select-item-hover-color: $color-hover;
 /* radio */
 
 @import '../_radio';
+
+/* switcher */
+
+@import '../_switcher';
 
 /* file */
 
