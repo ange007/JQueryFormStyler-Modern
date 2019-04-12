@@ -24,13 +24,10 @@ script:
   # - chmod +x ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh
   - '[ "${TRAVIS_BRANCH}" != "release" ] && npm install -g gulp && gulp clean && gulp build && gulp build:min'
   - '[ "${TRAVIS_BRANCH}" == "master" ] && ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh'
+  - '[ "${TRAVIS_BRANCH}" == "master" ] && ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh'
+  - '[ "${TRAVIS_BRANCH}" != "release" ] && echo "Deploy"'
 
 deploy:
-  - provider: script
-    script: ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh
-    on:
-      branch: master
-
   - provider: releases
     api_key: ${OAuth}
     file:
