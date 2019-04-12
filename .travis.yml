@@ -27,18 +27,19 @@ before_script:
 script: 
   - git config --global user.name "${GIT_NAME}"
   - git config --global user.email "${GIT_EMAIL}"
-  # - chmod +x ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh
   - >
     if [[ "${TRAVIS_BRANCH}" == "master" ]]; then 
+      # - chmod +x ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh
       ${TRAVIS_BUILD_DIR}/.travis-ghpages-commit.sh 
     fi
   - >
     if [[ "${TRAVIS_BRANCH}" == "master" ]]; then 
+      # - chmod +x ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh
       ${TRAVIS_BUILD_DIR}/.travis-release-commit.sh 
     fi
   - >
     if [[ "${TRAVIS_BRANCH}" == "release" ]]; then 
-      cd ${TRAVIS_BUILD_DIR} && ls # && git clone ${REPO_URL} . && git checkout release 
+      cd ${TRAVIS_BUILD_DIR}
     fi
 
 deploy:
